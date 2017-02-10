@@ -1,0 +1,103 @@
+<apex:component Controller="CostingController" allowDML="true">
+    <apex:attribute name="productRec" access="public" description="" type="Product__c" required="true" assignTo="{!productRecord}" />
+    <apex:attribute name="projectRec" access="public" description="" type="Project__c" required="true" assignTo="{!projectRecord}" />
+
+    
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Costing <small>product name:&nbsp;{!productRec.Name}</small></h2>
+                    
+                    <div class="clearfix"></div>
+                  </div>
+                  <apex:actionFunction name="save" action="{!saveProduct}" oncomplete="hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="projectStatus">
+                      <apex:param name="erpDataList" value="" assignTo="{!erpData}"/>
+                  </apex:actionFunction>
+                  <div class="x_content">
+                    <div class="container">
+                    
+                      <form class="form-horizontal">
+                         <apex:outputLabel id="erpOutput" value="{!productRecord.Costing_ERP__c}" styleClass="noDisplay" ></apex:outputLabel>
+                         <apex:outputPanel id="temp">
+                         </apex:outputPanel>
+                         
+                         <div class="form-group">
+                          <label class="control-label col-sm-3"></label>
+                          <label class="control-label col-sm-4" for="email">Have you entered costing data in ERP?</label>
+                          <div class="col-sm-4">
+                              <div class="col-sm-6 form-group">
+                                  <select id="erpDataVal" onchange="erpDataChange();" class="form-control">
+                                      <option value="true">Yes</option>
+                                      <option value="false">No</option>
+                                  </select>
+                              </div>
+                          </div>
+                         </div>
+                         <div class="form-group">
+                            <apex:outputPanel id="projectStatus">
+                            <label class="control-label col-sm-3"></label>
+                            <label class="control-label col-sm-4" for="email">Project Status:</label>
+                            <div class="col-sm-4">
+                                <div class="col-sm-6 form-group">
+                                    <apex:outputText value="{!projectRecord.Status__c}"></apex:outputText>
+                                </div>
+                            </div>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="form-group">        
+                          <div class="col-sm-offset-5 col-sm-10">
+                            <br/>
+                            <button type="submit" class="btn btn-primary"  id="Submitbtn" onclick="completeProject();return false;">Project Complete</button>
+                            
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+   
+    <style>
+   .noDisplay{
+    	display:none;
+    }
+	</style>
+    <script>
+     $(document).ready(function() {
+         debugger;
+         setData();
+         hideLoader();
+	});
+   function setData(){
+    	var erpDataVal =$('[id$=erpDataVal]').text(); 
+        var erpOutputData =$('[id$=erpOutput]').text(); 
+         if(erpDataVal != null && erpDataVal != undefined){
+         	if(erpOutputData.toLowerCase() == 'true'){
+            	$("#erpDataVal").val('true');
+            }
+            else{
+                $("#erpDataVal").val('false');
+            }
+             erpDataChange();
+         } 
+         
+    }
+    function erpDataChange(){
+        debugger;
+        if($("#erpDataVal").val() == 'true'){
+        	$("#Submitbtn").removeAttr('disabled');
+        }
+        else{
+         	$("#Submitbtn").attr("disabled","disabled");
+        }
+    }
+    
+    function completeProject() {
+        debugger;
+        showLoader();
+        var erpDataList = $('[id$=erpDataVal]').val();
+        save(erpDataList);
+   }
+     
+
+       
+    </script>
+</apex:component>

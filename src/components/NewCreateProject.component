@@ -1,0 +1,411 @@
+<apex:component controller="CreateProjectController" allowDML="true">
+    <apex:attribute id="prjRcd" name="prjRecord" access="public" description="" type="Project__c" assignTo="{!projectRecord}"/>
+	<apex:attribute name="oppId" access="public" description="" type="String" assignTo="{!opId}"/>
+    <apex:attribute name="uAction" access="public" description="" type="String" assignTo="{!userAction}"/>
+    <div class="x_panel" id="projectPanel">
+        <div class="x_title">
+            <h2>Marketing Questions for NPI</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <apex:actionFunction name="SaveProduct" action="{!saveProductAndProject}" onComplete="hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
+        	</apex:actionFunction>
+        	<apex:actionFunction name="SaveandSubmit" action="{!saveAndSubmit}" oncomplete="hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage"/>
+        
+            <apex:outputPanel id="RequiredFieldMessagePanel">
+                <div class="row">
+                     <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                     <p id="RequiredFieldMessage" class="RequiredFields col-md-7 col-sm-7 col-xs-7" style="color:red"></p>
+                </div>
+        	</apex:outputPanel>
+            <!--<form class="form-horizontal form-label-left">-->
+                <div id = "tempDivId">
+                </div>
+                	
+                 <div class ="row">
+                	<div class="col-md-3 col-sm-3 col-xs-3"></div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <apex:outputPanel id="errorMessage">
+                        	<apex:pageBlock >
+								<apex:Messages id="message"/>
+                            </apex:pageBlock>
+                            </apex:outputPanel>
+                        </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                </div>
+                
+                <div id="wizard" class="form_wizard wizard_horizontal">
+                    <ul class="wizard_steps">
+                        <li>
+                            <a href="#step-1">
+                                <span class="step_no">1</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-2">
+                                <span class="step_no">2</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-3">
+                                <span class="step_no">3</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-4">
+                                <span class="step_no">4</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-5">
+                                <span class="step_no">5</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li> 
+                        <li>
+                            <a href="#step-6">
+                                <span class="step_no">6</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li> 
+                    </ul>
+                    
+                    <div id="step-1">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CommercialName">Enter a commercial name</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                
+                                    <apex:inputField id="CommercialName" value="{!product.Name}" styleClass="form-control col-md-7 col-xs-6 commercialName">
+                                    </apex:inputField>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="step-2">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="TradeName"> If you have a registered TradeName to assign, please Select
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                
+                                <apex:inputField id="TradeName" value="{!product.Tradename__c}" styleClass="form-control col-md-7 col-xs-6 tradeName"/>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="step-3">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="app">Select the product application
+                            </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                   
+                                    <apex:selectList id="app" size="1" value="{!selectedValue}" styleClass="form-control col-md-7 col-xs-6 desc">
+                                        <apex:selectOptions value="{!application}"/> 
+                                    </apex:selectList>
+                                   
+                                </div>
+                        </div>
+                    </div>
+                    
+                    <div id="step-4">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Type of packaging need
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                            <div id="table-scroll" class="form-control col-md-7 col-xs-6 desc">
+                              
+                                    <table  class="master-table" >
+                                        <apex:repeat id="pkgSizeTable" value="{!pkgSize}" var="pkg">
+                                            <tr>
+                                                <td id="pkgCheckBox">
+                                                    <apex:inputCheckbox value="{!pkg.pkgselected}" styleClass="chkSelected"/>
+                                                </td>
+                                                <td id="pkgLabel">
+                                                    <apex:outputText value="{!pkg.pkSize.Name}"></apex:outputText>
+                                                </td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </table>
+                              
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="step-5">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Select any specific Regulatory registration needs
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                            <div id="table-scroll" class="form-control col-md-7 col-xs-6 desc">
+                                
+                                <table class="master-table">
+                                    <apex:repeat id="ChemRegulationTable" value="{!chemReg}" var="chemr">
+                                        <tr>
+                                            <td id="pkgCheckBox">
+                                                <apex:inputCheckbox value="{!chemr.regselected}" styleClass="chkSelected"/>
+                                            </td>
+                                            <td id="pkgLabel">
+                                                <apex:outputText value="{!chemr.regulation.Name}"></apex:outputText>
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                </table> 
+                               
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step-6">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Description">Add any additional customer relevant to the new product.
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                               
+                                <apex:inputField id="Description" value="{!product.Product_Description__c}" styleClass="form-control col-md-7 col-xs-6 desc" />
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--</form>-->
+            <!-- End SmartWizard Content -->
+                <div id="ApproverModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <apex:outputLabel value="Select R&D Approver"></apex:outputLabel>
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <apex:outputPanel id="rndApproverPanel">
+                                        <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                                        <p id="rndApprover" class="col-md-7 col-sm-7 col-xs-7"></p>
+                                    </apex:outputPanel>   
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ApproverId">Marketer Name:</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <!--<apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                            <apex:selectOptions value="{!UsersByDept}" />
+                                           
+                                        </apex:selectList>-->
+                                        <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                             <apex:selectOptions value="{!Users}" />
+                                        </apex:selectList>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="blankDivId">
+                            </div>
+                            <div class="modal-footer">
+                                <button id="prjSubmitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate(); showLoader();" >Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"  onclick="hideLoader();">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!--End of content -->
+    </div>
+    
+    <!--create opp panel wizard -->
+    
+    
+    <script>
+    
+    $(document).ready(function() {
+        debugger;
+         $('#wizard').smartWizard({
+                transitionEffect: 'slide',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback,
+                onShowStep: onShowStep
+            });
+        
+        function onShowStep(obj, context) {
+
+                $(".buttonPrevious").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goBackward");
+
+                });
+
+                $(".buttonNext").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goForward");
+
+                });
+            }
+
+            function leaveAStepCallback(obj, context) {
+
+                $(".buttonPrevious").unbind("click");
+                $(".buttonNext").unbind("click");
+
+                return true;
+            }
+
+            function onFinishCallback(objs, context) {
+
+            }
+
+        
+        $('.buttonNext').addClass('btn btn-primary');
+        $('.buttonPrevious').addClass('btn btn-primary');
+        $('.buttonFinish').addClass('btn btn-primary'); /**finish rename as submit **/
+        $('.buttonSave').addClass('btn btn-primary');
+        $('.buttonCancel').addClass('btn btn-primary');
+        $('.buttonClose').addClass('btn btn-primary');
+        
+        /* close project*/
+        $('.buttonClose').attr('id','closeBtnId');
+        $("#closeBtnId").hide();
+        /** terminate project button**/
+        $('.buttonClose').click(function() {
+            showLoader();
+            CloseProject();
+        });
+        
+        /** cancel button**/
+        $('.buttonCancel').attr("immediate","true");
+        $('.buttonCancel').attr("novalidate","novalidate");
+        $('.buttonCancel').click(function(){
+            /*closeCreateEditPanel();*/
+            $('#projectPanel').hide();
+            
+            
+        });
+        /** save opp**/
+        
+        $('.buttonSave').click(function() {
+            if(saveProjectValidations()){
+                debugger;
+                showLoader();
+                SaveProduct();                
+            }
+            else{
+                $("#RequiredFieldMessage").text($Label.SaveValidationMessage);
+            }
+        });
+        
+        function saveProjectValidations(){
+            debugger;
+        var flag = true;
+        var commercialName= $('[id$=CommercialName]').val();
+        if( commercialName== undefined ||  commercialName== null ||  commercialName== '')
+        {
+            flag= false;
+        }
+        return flag;
+    }
+        
+        $('.buttonFinish').click(function() {
+            showLoader();
+            // $('[id$=userId]').val("");
+            $('#rndApprover').text("");
+            if(ValidateOpportunityDetails()){
+                openModaljs();
+            }
+            else{ 
+                hideLoader();
+                $("#RequiredFieldMessage").text($Label.SubmitValidationMessage);
+            } 
+        });
+        function ValidateOpportunityDetails(e){
+        var flag = true;
+                var commercialName= $('[id$=CommercialName]').val();
+                var tradeName= $('[id$=TradeName]').val();
+                var applicationName= $('[id$=app]').val();
+                var Description = $('[id$=Description]').val();
+        if( commercialName== undefined ||  commercialName== null ||  commercialName== '')
+        {
+            flag= false;
+        }
+        if( tradeName== undefined ||  tradeName== null ||  tradeName== '')
+        {
+            flag= false;
+        }
+        if( applicationName== undefined ||  applicationName== null ||  applicationName== '')
+        {
+            flag= false;
+        }
+        if( Description== undefined ||  Description== null ||  Description== '')
+        {
+           flag= false;
+        }
+        
+         return flag;
+     }
+    });
+    
+     function approverValidate()
+     {
+         hideLoader();
+         //if(Checkapprover()){
+                $("#prjSubmitBtn").attr("data-dismiss","modal");
+               	SaveandSubmit();
+         //    }
+         //     else{ 
+         //$("#prjSubmitBtn").attr("data-dismiss","");
+         //                $("#rndApprover").text("Please select R&D!");
+         //    } 
+     }
+    
+    function openModaljs(){
+		hideLoader();
+         $('#ApproverModal').modal('show');
+        return false;
+     }
+    </script>
+    <style>
+         .form_wizard .stepContainer {
+         	height: 124px!important;
+         }
+        table {
+            border-collapse: collapse;
+        }
+    #pkgCheckBox{ 
+         width:30px;
+     }
+
+     #table-scroll {
+      height:100px;
+      overflow:auto;  
+      width: 240px;
+    }
+    #errorMessage{
+             color:red;
+             }
+   
+        </style>
+</apex:component>

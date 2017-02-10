@@ -1,0 +1,484 @@
+<apex:component controller="CreateEditOpportunityController" allowDML="true">
+    <apex:attribute name="opportunity" description="This is the value for the component." type="Opportunity" required="true" assignTo="{!oppRec}"/>
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datepicker/moment.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datepicker/daterangepicker.js')}"/>
+    <!--pnotify -->
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.buttons.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.nonblock.js')}"/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/daterangepicker.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}"/>
+    <!--pnotify -->
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.buttons.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.nonblock.css')}"/>
+    <div class="x_panel" id="oppPanel">
+
+        <div class="x_title">
+            <apex:outputPanel rendered="{!(opp.Id ='')}">
+                <h2>Questions For New Opportunity  </h2>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!(opp.Id !='')}">
+                <h2>Edit Opportunity  </h2>
+            </apex:outputPanel>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <!-- Action function for save opportunity -->
+            <apex:actionFunction name="saveAndUpdateOpportunity" action="{!saveOpportunity}" oncomplete="tableRefreshOnly(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage"/>
+            <!-- Smart Wizard -->
+            <apex:outputPanel id="RequiredFieldMessagePanel" rendered="true">
+                <div class="row">
+                    <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                    <p id="RequiredFieldMessage" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                </div>
+            </apex:outputPanel>
+            <div class="row">
+                <div class="col-md-5 col-sm-5 col-xs-5"></div>
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                    <apex:outputPanel id="errorMessage">
+                        <apex:pageBlock >
+                            <apex:messages id="message" style="color:red"/>
+                        </apex:pageBlock>
+                    </apex:outputPanel>
+                </div>
+            </div>
+            <div id="wizard" class="form_wizard wizard_horizontal">
+                <div id="tempDivId"></div>
+                <ul class="wizard_steps">
+                    <li>
+                        <a href="#step-1">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-4">
+                            <span class="step_no">4</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-5">
+                            <span class="step_no">5</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-6">
+                            <span class="step_no">6</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-7">
+                            <span class="step_no">7</span>
+                            <span class="step_descr">
+                            <br />
+                            <small></small>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                 <div id="step-1">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Provide the Opportunity name?</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                <apex:inputField id="oppName" value="{!opp.Name}" required="false" styleClass="form-control col-md-7 col-xs-12">
+                                </apex:inputField>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                
+                <div id="step-2">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="acc">What type of Application?
+                            </label>
+                            <div class="col-md-3 col-sm-3 col-xs-12 ">
+                                
+                                <apex:selectList id="acc" size="1" value="{!opp.AccountId}" styleClass="form-control col-md-7 col-xs-12">
+                                    <apex:selectOptions value="{!Accounts}" />
+                                </apex:selectList>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="step-3">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="first-name">Who are you potential Customers?
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                <apex:inputField id="oppCustName" value="{!opp.Customer_Name__c}" styleClass="form-control col-md-7 col-xs-12" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="step-4">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="first-name">Are these new Customers?
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                <apex:inputField id="oppCustName2" value="{!opp.Customer_Name__c}" styleClass="form-control col-md-7 col-xs-12" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="step-5">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="first-name">What is targeted revenue potential?
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <apex:inputField id="oppAmount" type="text" value="{!opp.Amount}" styleClass="form-control col-md-7 col-xs-12" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="step-6">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="first-name">When do you need the Product?
+                            </label>
+                            <div class="col-md-3 xdisplay_inputx ">
+                                <apex:inputField type="text" value="{!opp.CloseDate}" styleClass="form-control has-feedback-right" id="single_cal2" html-placeholder="" html-aria-describedby="inputSuccess2Status2">
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status2" class="sr-only">(success)</span>
+                                    <apex:actionSupport event="onclick" onComplete="flushRequiredFieldMessage();" reRender="RequiredFieldMessagePanel" />
+                                </apex:inputField>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="step-7">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Add any additional comments relevant to the new opportunity?
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                <apex:inputField id="oppDesc" value="{!opp.Description}" styleClass="form-control col-md-7 col-xs-12" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 
+            </div>
+            <!--End SmartWizard Content-->
+
+            <!--modal for approver-->
+            <div class="modal fade" id="ModalForApprover" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">
+                            	<apex:outputLabel value="Select Marketer"></apex:outputLabel>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <apex:outputPanel id="MarketerIdPanel">
+                                    <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                                    <p id="MarketerId" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                                </apex:outputPanel>
+                            </div>
+                            <div class="row">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12 " for="ApproverId">Marketer Name:</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                        <apex:selectOptions value="{!UsersByDept}"/>
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <apex:actionFunction name="submitForApproval" action="{!submitForApproval}" oncomplete="allPanelsRefresh(); notifier('{!notificationType}','{!notificationMessage}')" reRender=""/>
+                            <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();" reRender="MarketerIdPanel">Submit</button>
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" onclick="hideLoader();">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of content -->
+    </div>
+    <!--end of panel  -->
+    <style>
+        .form_wizard .stepContainer {
+            height: 100px!important;
+        }
+    </style>
+    <script>
+    	
+    	
+    	window.$Label = window.$Label || {};
+		$Label.SaveValidationMessage = '{!JSENCODE($Label.SaveValidationForSales)}';
+		$Label.SubmitValidationMessage = '{!JSENCODE($Label.SubmitValidationMessage)}';
+    	
+        function marketerValidation() {
+            $("#MarketerId").text("");
+        }
+
+        function flushRequiredFieldMessage() {
+            $("#RequiredFieldMessage").text("");
+        }
+    
+    	function flushErrorMessage() {
+            debugger;
+            $("#message").text("");
+        }
+
+        function errorMessageCall() {
+            debugger; 
+            $('[id$=message]').attr('style', 'color:red');
+        }
+
+        /** modal open for  select approver**/
+        function ApproveModal() {
+			hideLoader();
+            $('#ModalForApprover').modal('show');
+            return false;
+
+        }
+
+        function approverValidate() {
+            if (Checkapprover()) {
+
+                $("#submitBtn").attr("data-dismiss", "modal");
+                showLoader();
+                submitForApproval();
+            } else {
+
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#MarketerId").text("Please select Marketer!");
+            }
+        }
+
+        function Checkapprover() {
+            var flag = true;
+            var approver = $('[id$=ApproverId]').val();
+
+            if (approver == undefined || approver == null || approver == '' || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+        /** wizard**/
+        $(document).ready(function() {
+            //For handling look up icon
+            $("a.lookupControl").removeClass("form-control");
+            var linkHtmlContent = $("a.lookupControl");
+            $("#targetLookupLocation").append(linkHtmlContent);
+
+            $("a.lookupControl1").removeClass("form-control col-md-7 col-xs-12");
+            var linkHtmlContent1 = $("a.lookupControl1");
+            $("#targetLookupLocation1").append(linkHtmlContent1);
+            //For handling look up icon
+            debugger;
+            $('#wizard').smartWizard({
+                transitionEffect: 'slide',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback,
+                onShowStep: onShowStep
+            });
+
+            function onShowStep(obj, context) {
+
+                $(".buttonPrevious").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goBackward");
+
+                });
+
+                $(".buttonNext").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goForward");
+
+                });
+            }
+
+            function leaveAStepCallback(obj, context) {
+
+                $(".buttonPrevious").unbind("click");
+                $(".buttonNext").unbind("click");
+
+                return true;
+            }
+
+            function onFinishCallback(objs, context) {
+
+            }
+
+            $('.buttonPrevious').addClass('btn btn-primary');
+            $('.buttonNext').addClass('btn btn-primary');
+
+            $('.buttonFinish').addClass('btn btn-primary'); /**finish rename as submit **/
+            $('.buttonSave').addClass('btn btn-primary');
+            $('.buttonCancel').addClass('btn btn-primary');
+            $('.buttonClose').addClass('btn btn-primary');
+            /** save opp**/
+            $('.buttonSave').click(function() {
+                 $("#RequiredFieldMessage").text("");
+                //debugger;
+                if (saveValidation()) {
+                	    showLoader();
+                    saveAndUpdateOpportunity();
+                } else {
+                    $("#RequiredFieldMessage").text($Label.SaveValidationMessage);
+                }
+            });
+
+            function saveValidation() {
+                debugger;
+                var flag = true;
+                var opName = $('[id$=oppName]').val();
+                var closeDate = $('[id$=single_cal2]').val();
+
+                if (opName == undefined || opName == null || opName == '') {
+                    flag = false;
+                }
+                if (closeDate == undefined || closeDate == null || closeDate == '') {
+                    flag = false;
+                }
+                return flag;
+            }
+
+            /*Close button*/
+            $('.buttonClose').attr('id', 'closeBtnId');
+            $("#closeBtnId").hide();
+            /** cancel opp**/
+
+            $('.buttonCancel').attr("immediate", "true");
+            $('.buttonCancel').attr("formnovalidate", "formnovalidate");
+            $('.buttonCancel').click(function() {
+                /*closeCreateEditPanel();*/
+                $("#RequiredFieldMessage").text("");
+                /*$('#oppPanel').hide();*/
+                cancelBtnFunc();
+                showLoader();
+
+            });
+            /** submit opp**/
+            $('.buttonFinish').click(function() {
+                $('[id$=ApproverId]').val("0");
+                $('#MarketerId').text("");
+                $("#RequiredFieldMessage").text("");
+                  if (ValidateOpportunityDetails()) {
+                    showLoader();
+                    ApproveModal();
+                  } else {
+                      $("#RequiredFieldMessage").text($Label.SubmitValidationMessage);
+                  }
+            });
+
+            function ValidateOpportunityDetails() {
+                var flag = true;
+
+                var opName = $('[id$=oppName]').val();
+                var AccName = $('[id$=acc]').val();
+                var CustNm = $('[id$=oppCustName]').val();
+                var CustNm1 = $('[id$=oppCustName2]').val();
+                var Ammount = $('[id$=oppAmount]').val();
+                var closeDate = $('[id$=single_cal2]').val();
+                var Description = $('[id$=oppDesc]').val();
+				
+                if (opName == undefined || opName == null || opName == '') {
+                    flag = false;
+                }
+                if (AccName == undefined || AccName == null || AccName == '001000000000000') {
+                    flag = false;
+                }
+                if (CustNm == undefined || CustNm == null || CustNm == '') {
+                    flag = false;
+                }
+                if (CustNm1 == undefined || CustNm1 == null || CustNm1 == '') {
+                    flag = false;
+                }
+                if (Ammount == undefined || Ammount == null || Ammount == '') {
+                    flag = false;
+                }
+                if (closeDate == undefined || closeDate == null || closeDate == '') {
+                    flag = false;
+                }
+                if (Description == undefined || Description == null || Description == '') {
+                    flag = false;
+                }
+                return flag;
+            }
+        });
+        /** wizard**/
+        /** validation rules for create /edit opportunity **/
+
+        $(document).ready(function() {
+
+            $('[id$=single_cal2]').daterangepicker({
+                singleDatePicker: true,
+                singleClasses: "picker_2"
+            });
+            /*for hide the date value below datepicker */
+            $("span.dateFormat").hide();
+            /*approver validation */
+        });
+    </script>
+    <style>
+        .lookupMargin {
+            margin: -27px -22px 0px 0px;
+        }
+        
+        .RequiredFields {
+            color: red;
+        }
+    </style>
+</apex:component>

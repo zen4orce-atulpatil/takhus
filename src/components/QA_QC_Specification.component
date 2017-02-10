@@ -1,0 +1,274 @@
+<apex:component controller="QA_QC_SpecificationController" allowDML="true">
+    <apex:attribute name="projectRec" access="public" description="" type="Project__c" required="true" assignTo="{!projectRecord}"/>
+    
+    <div class="x_panel">
+        <apex:actionFunction name="addAnotherPmQa" action="{!addAnotherPmQa}" reRender="Q2" oncomplete="hideLoader();">
+        </apex:actionFunction>
+        
+        <apex:actionFunction Name="refreshQaSpec" reRender="Q2" oncomplete="hideLoader();"/>
+        
+        <apex:actionFunction Name="resetQAQCDetails" action="{!resetComponent}" reRender="Q2" oncomplete="hideLoader();"/>
+        
+        <apex:actionFunction name="Save" action="{!SaveQASpecDetails}" reRender="Q2" oncomplete="hideLoader(); notifier('{!notificationType}','{!notificationMessage}');">
+        </apex:actionFunction>
+        <apex:actionFunction name="submitForApproval" action="{!saveAndSubmitQaQcSpecDetails}" oncomplete="errorMessageCall();isWizardRerender();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,errorFlagPanel" />
+        
+        <div class="x_title">
+            <h2>QA_QC_Specification<small>Product Name:&nbsp;{!projectRec.Product__r.Name}</small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <apex:outputPanel id="errorFlagPanel">
+                <apex:inputHidden id="errorFlagVal" value="{!flagForError}" />
+            </apex:outputPanel>
+            <div class="row">
+                <p class="col-md-4 col-sm-4 col-xs-4"></p>
+                <p id="RequiredFieldMessage" class="RequiredFields col-md-8 col-sm-8 col-xs-8"></p>
+            </div>
+            <div class="form-horizontal form-label-left">
+                <div id="tempDivId">
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <apex:outputPanel id="errorMessage">
+                            <apex:pageBlock >
+                                <apex:messages id="message"/>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                </div>
+                   
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Add Suggested QA/QC Specification</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="rm" class="control-label">Parameter</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="percent" class="control-label">Range</label>
+                                </div>
+                                
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="qasUnitLabel" class="control-label">Unit of measurement</label>
+                                </div>
+                                
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="testMethos" class="control-label">Test Method</label>
+                                </div>
+                            </div>
+                        
+                        <apex:outputPanel id="Q2">
+                            <apex:repeat value="{!pmQas}" var="pm">
+                                <apex:outputPanel rendered="{!pm.isRemove=false}">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
+                                            <apex:selectList id="qaParamId" size="1" value="{!pm.selectedParam}" styleClass="form-control ">
+                                                <apex:selectOptions value="{!pm.soParamList}"/>
+                                                <apex:actionSupport event="onchange" action="{!pm.setQasUnit}" rerender="qasUnit">
+                                                    <apex:param name="qasUnit" value="{!pm.selectedParam}" assignTo="{!selectedQas}" />
+                                                </apex:actionSupport>
+                                            </apex:selectList>
+                                        </div>
+                                        
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:inputText value="{!pm.range}" id="qaRangeId" styleClass="form-control margin" />
+                                        </div>
+                                        
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:outputPanel id="qasUnit">
+                                                <apex:outputLabel value="{!pm.uom}" id="qasUnitLabel" />
+                                            </apex:outputPanel>
+                                        </div>
+                                        
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:selectList id="testMethos" size="1" required="true" value="{!pm.selectedTestMethod}" styleClass="form-control col-md-2 col-sm-2 col-xs-2">
+                                                <apex:selectOptions value="{!TestMethods}"/>
+                                            </apex:selectList>
+                                        </div>
+                                        
+                                        <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                            <!--<button type="submit" class="btn btn-link" onclick="AddMore();return false;">
+                                                <span class="fa fa-remove plusIconSize"></span></button>	-->
+                                            <apex:commandLink action="{!pm.removePmQaSpecRecord}" onclick="showLoader();" oncomplete="refreshQaSpec();">
+                                                <span class="fa fa-remove plusIconSize"></span>
+                                            </apex:commandLink>
+                                        </div>
+
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                		<div class="row">
+                            <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                                <button type="submit" class="btn btn-primary btn-xs" onclick="addAnotherPmQa();showLoader(); return false;">
+                                    Add more
+                                </button>
+                            </div>
+                		</div>
+                	
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 col-xs-8"></div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <button type="submit" class="btn btn-primary" onclick="Save(); showLoader();return false;">Save</button>
+                        <button type="submit" class="btn btn-primary"  id="Submitbtn" onclick="ApproveModal();return false;">Submit</button>  
+                    </div>
+                </div>        
+                <!-- End SmartWizard Content -->
+                 <!-- Modal for approval -->
+                <div id="ModalForApprover" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <apex:outputLabel value="Select SHE User"></apex:outputLabel>
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <apex:outputPanel id="SHEUserPanel">
+                                        <p class="col-md-4 col-sm-4 col-xs-4"></p>
+                                        <p id="SHEId" class="RequiredFields col-md-8 col-sm-8 col-xs-8"></p>
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label>SHE Approver</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <!--<apex:inputField id="ApproverId"  value="{!opp.Approver__c}" />-->
+                                                <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                                    <apex:selectOptions value="{!Users}" />
+                                                    <apex:actionSupport event="onclick" oncomplete="flushSHEErrorMessage();" reRender="SHEUserPanel" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="blankDivId"></div>
+                            <div class="modal-footer">
+                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of content -->
+    </div>
+    <script>
+    	
+    	function flushSHEErrorMessage(){
+    		$("#SHEId").text("");
+    	}
+    
+    	function isWizardRerender() {
+            var error = $('[id$=errorFlagVal]').val();
+            if (error == 'true') {
+                closeAllAndTableRefresh();
+            }
+        }
+    
+    	function errorMessageCall() {
+            $('[id$=message]').attr('style', 'color:red');
+        }
+    
+    	function approverValidate() {
+            if (Checkapprover()) {
+		        $("#submitBtn").attr("data-dismiss", "modal");
+                showLoader();
+                submitForApproval();
+            } else {
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#SHEId").text("Please select SHE user!");
+                $("#SHEId").attr('style', 'color:red');
+            }
+        }
+    
+    	function Checkapprover() {
+            var flag = true;
+            var approver = $('[id$=ApproverId]').val();
+            if (approver == undefined || approver == null || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+
+		function ApproveModal() {
+            $("#SHEId").text("");
+            $('#ModalForApprover').modal('show');
+            return false;
+        }
+    
+    	$(document).ready(function() {
+
+            $('#wizard').smartWizard({
+                transitionEffect: 'slide',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback,
+                onShowStep: onShowStep
+            });
+
+            function onShowStep(obj, context) {
+                //debugger;
+                $(".buttonPrevious").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goBackward");
+                });
+
+                $(".buttonNext").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goForward");
+                });
+            }
+
+            function leaveAStepCallback(obj, context) {
+                $(".buttonPrevious").unbind("click");
+                $(".buttonNext").unbind("click");
+                return true;
+            }
+
+            function onFinishCallback(objs, context) {
+
+            }
+
+            $('.buttonNext').addClass('btn btn-primary');
+            $('.buttonPrevious').addClass('btn btn-primary');
+            $('.buttonFinish').addClass('btn btn-primary'); /**finish rename as submit **/
+            $('.buttonSave').addClass('btn btn-primary');
+            $('.buttonCancel').addClass('btn btn-primary');
+            $('.buttonClose').hide(); /**close button rename as terminated **/
+            /** save opp**/
+            $('.buttonSave').click(function() {
+                Save();
+                showLoader();
+            });
+
+            //cancel button
+            $('.buttonCancel').click(function() {
+                $("#RequiredFieldMessage").text("");
+                closeAllPanels();
+            });
+            
+            /** submit opp**/
+            $('.buttonFinish').click(function() {
+                $('[id$=ApproverId]').val("0");
+                $('#SCId').text("");
+                ApproveModal();
+            });
+        });
+    </script>
+</apex:component>

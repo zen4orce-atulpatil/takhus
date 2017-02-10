@@ -1,0 +1,223 @@
+<apex:page sidebar="false" showHeader="false" controller="OpportunitySalesController" standardStylesheets="false" docType="html-5.0">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Opportunity for Sales </title>
+         <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/custom.js')}" />
+       
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/fastclick.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+        <!--<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.flash.min.js')}" />-->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.html5.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.print.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.fixedHeader.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.keyTable.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.responsive.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/responsive.bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.scroller.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jszip.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/pdfmake.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/vfs_fonts.js')}" />
+        <!-- Datatables -->
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatables css-->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+        <!-- Custom Theme Style -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
+    </head>
+    <apex:form >
+        <apex:actionFunction name="tableRefreshOnly" oncomplete="assignDataTable();hideLoader();" reRender="OppTable"></apex:actionFunction>
+        <apex:actionFunction name="cancelBtnFunc" action="{!closeAllPanel}" oncomplete="hideLoader();" immediate="true" reRender="ViewWizardWrapper,CreateEditWizardWrapper">
+            <apex:param name="oppId" value="{!opp.Id}" assignTo="{!oppId}" />
+        </apex:actionFunction>
+        <apex:actionFunction name="allPanelsRefresh" oncomplete="assignDataTable();" action="{!closeAllPanel}" reRender="CreateEditWizardWrapper,ViewWizardWrapper,OppTable"></apex:actionFunction>
+        <body class="nav-md">
+            <div class="container body">
+                <div class="main_container">
+                    <!--sidebar -->
+                    <c:sidebar ></c:sidebar>
+                    <!--sidebar -->
+                    <!-- top navigation -->
+                    <c:topnavigation ></c:topnavigation>
+                    <!-- /top navigation -->
+                    <div class="right_col" role="main">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="OppTable">
+                                    <div class="x_panel">
+                                        <div class="x_title row">
+                                            <div class="col-md-10 col-sm-10 col-xs-10">
+                                                <h2>All My Opportunities</h2>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                <apex:commandButton action="{!createNewOpportunity}" onclick="showLoader();" oncomplete="hideLoader();" styleClass="btn btn-primary btn-sm" value="Create New Opportunity" rerender="CreateEditWizardWrapper,ViewWizardWrapper" immediate="true" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            <table id="opportunityDatatable" style="display:none;" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Opportunity Name</th>
+                                                        <th>StageName</th>
+                                                        <th>ClosedDate</th>
+                                                        <th>Amount</th>
+                                                        <th>Approve Status</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!fetchOpportunities}" var="opp">
+                                                        <tr>
+                                                            <td>{!opp.Name}</td>
+                                                            <td>{!opp.StageName}</td>
+                                                            <td>
+                                                                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                                                    <apex:param value="{!opp.CloseDate}" />
+                                                                </apex:outputText>
+                                                            </td>
+                                                            <td>{!opp.Amount}</td>
+                                                            <td>{!opp.Approval_Status__c}</td>
+                                                            <td>
+                                                                <!-- ICON FOR SALES -->
+                                                                <apex:outputPanel >
+                                                                    &nbsp;&nbsp;
+                                                                    <apex:commandLink onclick="showLoader();" oncomplete="hideLoader();" title="View Opportunity" action="{!viewOpportunityData}" html-data-toggle="tooltip" reRender="ViewWizardWrapper,CreateEditWizardWrapper" immediate="true">
+                                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                                        <apex:param name="oppId" assignTo="{!oppId}" value="{!opp.Id}" />
+                                                                    </apex:commandLink>
+                                                                    &nbsp;&nbsp;
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!opp.Approval_Status__c =='Not Submitted'}">
+                                                                    <apex:commandLink onclick="showLoader();" oncomplete="hideLoader();" title="Edit" action="{!editOpportunity}" reRender="CreateEditWizardWrapper,ViewWizardWrapper" html-data-toggle="tooltip" immediate="true">
+                                                                        <i class="glyphicon glyphicon-pencil"></i>
+                                                                        <apex:param name="oppId" assignTo="{!oppId}" value="{!opp.Id}" />
+                                                                    </apex:commandLink>
+                                                                    &nbsp;&nbsp;
+                                                                    <apex:commandLink title="Delete" onclick="showLoader();" oncomplete="showModal();return false;" html-data-toggle="tooltip" html-data-target="#deleteModal">
+                                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                                        <apex:param name="oppId" value="{!opp.Id}" assignTo="{!oppId}" />
+                                                                    </apex:commandLink>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!NOT(opp.Approval_Status__c =='Not Submitted')}">
+                                                                    <apex:outputLink title="Lock" html-data-toggle="tooltip" disabled="true">
+                                                                        <i class="glyphicon glyphicon-lock"></i>
+                                                                    </apex:outputLink>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12" id="CreateEditDiv">
+                                <!--create opp panel wizard -->
+                                <apex:outputPanel id="CreateEditWizardWrapper">
+                                    <apex:outputPanel rendered="{!oppNewEdit}">
+                                        <c:CreateOpportunity opportunity="{!opp}"></c:CreateOpportunity>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12" id="viewDiv">
+                                <!--View opp panel -->
+                                <apex:outputPanel id="ViewWizardWrapper">
+                                    <apex:outputPanel rendered="{!viewOpportunity}">
+                                        <div class="x_panel">
+                                            <c:ViewOpportunity oppRecord="{!opp}"></c:ViewOpportunity>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <!--modal for delete opportunity -->
+                        <div id="deleteModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title">Delete Confirmation</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>Are you sure to delete a Record?</h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <apex:commandButton styleClass="btn btn-primary" value="Yes" onclick="showLoader();"  action="{!deleteOpportunity}" oncomplete="allPanelsRefresh(); notifier('{!notificationType}','{!notificationMessage}')" html-data-dismiss="modal">
+                                        </apex:commandButton>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal end-->
+                </div>
+                <!-- footer content -->
+                <c:footer ></c:footer>
+                <!-- /footer content -->
+            </div>
+        </body>
+        <script>
+        	 $(document).ready(function() {
+                hideLoader();
+             	/* below code is work for sorting according to last modified date but it affects the table rendering issue*/
+                assignDataTable();
+                 $('[data-toggle="tooltip"]').click(function() {
+                    $('.tooltip').fadeOut('fast', function() {
+                        $('.tooltip').remove();
+                    });
+                });
+            });
+        
+            function assignDataTable() {
+                $('#opportunityDatatable').dataTable({
+                    "aaSorting": []
+                });
+                $('[data-toggle="tooltip"]').tooltip({
+            		trigger: 'hover',
+            		html: true
+            	});
+                $('#opportunityDatatable').show();
+                hideLoader();
+            }
+            
+        /*$('[data-toggle="tooltip"]').click(function() {
+	            $('.tooltip').fadeOut('fast', function() {
+	                $('.tooltip').remove();
+	            });
+        	});*/
+           
+            function showModal() {
+                hideLoader();
+                 $('#deleteModal').modal('show');
+                return false;
+            }
+        </script>
+    </apex:form>
+</apex:page>

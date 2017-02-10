@@ -1,0 +1,597 @@
+<apex:component controller="RndQuestionsController" allowDML="true">
+    <apex:attribute name="prodId" access="public" description="" type="String" required="true" assignTo="{!productID}" />
+    <apex:attribute name="rst" access="public" description="" type="boolean" required="true" assignTo="{!reset}" />
+    <apex:attribute name="projectRec" access="public" description="" type="Project__c" required="true" assignTo="{!projectRecord}" />
+    <apex:attribute name="productNm" access="public" description="" type="String" required="false" />
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>R&amp;D Questions for NPI  <small>Product Name:&nbsp;{!productNm}</small></h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <apex:actionFunction name="refreshRawMat" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="hideLoader();"/>
+        <apex:actionFunction name="resetComp" action="{!resetComponent}" reRender="Q1,Q2,Q3,Q4,Q5" />
+        <apex:actionFunction name="Save" action="{!saveRnDDetails}" oncomplete="errorMessageCall();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
+            <apex:param name="action" value="save" assignTo="{!actionType}" />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="AddMore" action="{!addAnotherBom}" reRender="Q1" oncomplete="hideLoader();">
+        </apex:actionFunction>
+        <apex:actionFunction name="AddMoreInv" action="{!addAnotherRegInv}" reRender="Q2" oncomplete="hideLoader();">
+        </apex:actionFunction>
+        <apex:actionFunction name="AddMorePmPhy" action="{!addAnotherPmPhyProp}" reRender="Q4" oncomplete="hideLoader();">
+        </apex:actionFunction>
+        <apex:actionFunction name="addAnotherPmQa" action="{!addAnotherPmQa}" reRender="Q5" oncomplete="hideLoader();">
+        </apex:actionFunction>
+        <apex:actionFunction name="submitForApproval" action="{!submitRnDDetailsForApproval}" oncomplete="errorMessageCall();isWizardRerender(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,errorFlagPanel" >
+        	<apex:param name="approver" value="" assignTo="{!selectedUser}"/>
+        </apex:actionFunction>
+        <div class="x_content">
+            <div class="row">
+                <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                <p id="RequiredFieldMessage" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+            </div>
+            <apex:variable var="bomPercentValue" value="{!0}" />
+            <apex:outputPanel id="errorFlagPanel">
+                <apex:inputHidden id="errorFlagVal" value="{!flagForError}" />
+            </apex:outputPanel>
+            <div class="form-horizontal form-label-left">
+                <div id="tempDivId">
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <apex:outputPanel id="errorMessage">
+                            <apex:pageBlock >
+                                <apex:Messages id="message"/>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"></div>
+                </div>
+                <div id="wizard" class="form_wizard wizard_horizontal">
+
+                    <ul class="wizard_steps">
+                        <li>
+                            <a href="#step-1">
+                                <span class="step_no">1</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-2">
+                                <span class="step_no">2</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-3">
+                                <span class="step_no">3</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-4">
+                                <span class="step_no">4</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#step-5">
+                                <span class="step_no">5</span>
+                                <span class="step_descr">
+                                    <small></small>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div id="step-1">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Enter BOM Details</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="rm" class="control-label">Raw Material</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="percent" class="control-label">Percent</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="bomDes" class="control-label">Description</label>
+                                </div>
+                            </div>
+                            <apex:outputPanel id="Q1">
+
+                                <apex:variable var="index" value="{!0}" />
+                                <apex:repeat value="{!bomList}" var="bom">
+                                    <apex:outputPanel rendered="{!bom.isRemove =false}">
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                                <apex:selectList id="rawmat" size="1" value="{!bom.rwSelected}" styleClass="form-control">
+                                                    <apex:selectOptions value="{!bom.rawMaterialList}" />
+                                                    <apex:actionSupport event="onchange" action="{!bom.setBomDescription}" rerender="bomDesc">
+                                                        <apex:param name="b" value="{!bom.rwSelected}" assignTo="{!selectedRawMat}" />
+                                                    </apex:actionSupport>
+                                                </apex:selectList>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                <apex:input value="{!bom.percent}" id="rmPercent" styleClass="form-control margin col-md-3 col-sm-3 col-xs-12 " />
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                <apex:outputPanel id="bomDesc">
+                                                    <apex:outputLabel value="{!bom.wrapperBomDescription}" id="bomDes" />
+                                                </apex:outputPanel>
+                                            </div>
+                                            <apex:variable var="bomPercentValue" value="{!bomPercentValue+bom.percent}" />
+                                            <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                                <apex:commandLink action="{!bom.removeBomRecord}" onclick="showLoader();" oncomplete="refreshRawMat();">
+                                                    <span class="fa fa-remove plusIconSize"></span>
+                                                </apex:commandLink>
+                                            </div>
+
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                        <div class="col-md-3 col-sm-3 col-xs-6 ">
+                            <button type="submit" class="btn btn-primary btn-xs" onclick="AddMore();showLoader(); return false;">
+                                Add more
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step-2">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Enter Product Composition</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="rm" class="control-label">CAS</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="percent" class="control-label">Percent</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="casDes" class="control-label">Description</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="casRegDetail" class="control-label">Not Cleared</label>
+                                </div>
+                            </div>
+                            <apex:outputPanel id="Q2">
+                                <apex:variable var="index1" value="{!0}" />
+                                <apex:repeat value="{!PmCompList}" var="cas">
+                                    <apex:outputPanel rendered="{!cas.isRemove=false}">
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                                <apex:selectList id="cas1" size="1" value="{!cas.invSelected}" styleClass="form-control margin">
+                                                    <apex:selectOptions value="{!cas.soCasList}" />
+                                                    <apex:actionSupport event="onchange" action="{!cas.setCasDescription}" rerender="casDesc,casRegDetails">
+                                                        <apex:param name="q" value="{!cas.invSelected}" assignTo="{!selectedRegInv}" />
+                                                    </apex:actionSupport>
+                                                </apex:selectList>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                <apex:input value="{!cas.percent}" id="casPercent" styleClass="form-control margin col-md-3 col-sm-3 col-xs-12 " />
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                                <apex:outputPanel id="casDesc">
+                                                    <apex:outputLabel value="{!cas.wrapperCasDescription}" id="casDes" />
+                                                </apex:outputPanel>
+                                            </div>
+                                            <apex:outputPanel id="casRegDetails">
+                                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                    <apex:variable var="index" value="{!0}" />
+                                                    <apex:repeat value="{!cas.regInvDetailList}" var="reg">
+                                                        <apex:outputLabel value="{!reg.Regulation__c}" /> -
+                                                        <apex:outputLabel value="{!reg.Country__c}" />
+                                                        <apex:outputPanel rendered="{!cas.regInvDetailList != null && cas.regInvDetailList.size > 0}">,</apex:outputPanel>
+                                                        <apex:variable var="idx" value="{!index + 1}" />
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                                <apex:commandLink action="{!cas.removePmCompRecord}" onclick="showLoader();" oncomplete="refreshRawMat();">
+                                                    <span class="fa fa-remove plusIconSize"></span>
+                                                </apex:commandLink>
+
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 ">
+                            <button type="submit" class="btn btn-primary btn-xs" onclick="AddMoreInv();showLoader(); return false;">
+                                Add more
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step-3">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <apex:outputPanel id="Q3">
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                            <label class="control-label">Add Order Of Addition</label>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                            <apex:inputTextarea id="orderOfIns" value="{!PmMixIns.orderOfAddition}" styleClass="col-md-8 col-sm-8 col-xs-12 " />
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                            <label class="control-label">Is it Reaction,Blend or Blend/Reaction?</label>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:selectList id="Reaction" size="1" required="true" value="{!PmMixIns.selectedReaction}" styleClass="form-control col-md-2 col-sm-2 col-xs-2">
+                                                <apex:selectOptions value="{!PmMixIns.soReactionsList}" />
+                                            </apex:selectList>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4 ">
+                                            <label class="control-label" for="rm">Add detailed instruction of formation</label>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4 ">
+                                            <apex:inputTextarea id="order" value="{!PmMixIns.mixingDetails}" styleClass="col-md-8 col-sm-8 col-xs-12 " />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                            </apex:outputPanel>
+
+                        </div>
+
+                    </div>
+
+                    <div id="step-4">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Add Physical Properties</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="rm" class="control-label">Physical Properties</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="percent" class="control-label">Value</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="phyPropLabel" class="control-label">Unit of measurement</label>
+                                </div>
+                            </div>
+
+                            <apex:outputPanel id="Q4">
+                                <apex:variable var="index2" value="{!0}" />
+                                <apex:repeat value="{!AllPmPhyPropList}" var="p">
+                                    <apex:outputPanel rendered="{!p.isRemove=false}">
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                                <apex:selectList id="ph1" size="1" required="true" value="{!p.selectedParam}" styleClass="form-control margin">
+                                                    <apex:selectOptions value="{!p.soParamList}" />
+                                                    <apex:actionSupport event="onchange" action="{!p.setUOM}" rerender="phyUnit">
+                                                        <apex:param name="phypropUnit" value="{!p.selectedParam}" assignTo="{!selectedPhyProp}" />
+                                                    </apex:actionSupport>
+                                                </apex:selectList>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                <apex:inputText value="{!p.value}" id="value1" styleClass="form-control margin" />
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                                <apex:outputPanel id="phyUnit">
+                                                    <apex:outputLabel value="{!p.uom}" id="phyPropLabel" />
+                                                </apex:outputPanel>
+                                            </div>
+
+                                            <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                                <apex:commandLink action="{!p.removePmPhyRecord}" onclick="showLoader();" oncomplete="refreshRawMat();">
+                                                    <span class="fa fa-remove plusIconSize"></span>
+                                                </apex:commandLink>
+                                            </div>
+
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                            <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                                <button type="submit" class="btn btn-primary btn-xs" onclick="AddMorePmPhy();showLoader(); return false;">
+                                    Add more
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step-5">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Add Suggested QA/QC Specification</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="rm" class="control-label">Parameter</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="percent" class="control-label">Range</label>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                    <label for="qasUnitLabelqasUnitLabel" class="control-label">Unit of measurement</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <apex:outputPanel id="Q5">
+                            <apex:variable var="index3" value="{!0}" />
+                            <apex:repeat value="{!pmQas}" var="pm">
+                                <apex:outputPanel rendered="{!pm.isRemove=false}">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
+                                            <apex:selectList id="qaParamId" size="1" value="{!pm.selectedParam}" styleClass="form-control ">
+                                                <apex:selectOptions value="{!pm.soParamList}" />
+                                                <apex:actionSupport event="onchange" action="{!pm.setQasUnit}" rerender="qasUnit">
+                                                    <apex:param name="qasUnit" value="{!pm.selectedParam}" assignTo="{!selectedQas}" />
+                                                </apex:actionSupport>
+                                            </apex:selectList>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:inputText value="{!pm.range}" id="qaRangeId" styleClass="form-control margin" />
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 ">
+                                            <apex:outputPanel id="qasUnit">
+                                                <apex:outputLabel value="{!pm.uom}" id="qasUnitLabel" />
+                                                <!--                                              <apex:inputText value="{!pm.uom}" id="qaUOM" styleClass="form-control margin" /> -->
+                                            </apex:outputPanel>
+                                        </div>
+
+                                        <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                            <!--<button type="submit" class="btn btn-link" onclick="AddMore();return false;">
+                                                <span class="fa fa-remove plusIconSize"></span></button>	-->
+                                            <apex:commandLink action="{!pm.removePmQaSpecRecord}" onclick="showLoader();" oncomplete="refreshRawMat();">
+                                                <span class="fa fa-remove plusIconSize"></span>
+                                            </apex:commandLink>
+                                        </div>
+
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                        <div class="col-md-2 col-sm-2 col-xs-12 "></div>
+                        <div class="col-md-3 col-sm-3 col-xs-6 ">
+                            <button type="submit" class="btn btn-primary btn-xs" onclick="addAnotherPmQa();showLoader(); return false;">
+                                Add more
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End SmartWizard Content -->
+                <!-- Modal for approval -->
+                <div id="ModalForApprover" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <apex:outputLabel value="Select Supply Chain User"></apex:outputLabel>
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <apex:outputPanel id="SCIdPanel">
+                                        <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                                        <p id="SCId" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label>Approver</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                                    <apex:selectOptions value="{!Users}" /> 
+                                                    <apex:actionSupport event="onclick" oncomplete="marketerValidation();" reRender="MarketerIdPanel" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="blankDivId"></div>
+                            <div class="modal-footer">
+                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of content -->
+    </div>
+    <style>
+        .RequiredFields {
+            color: red;
+        }
+        
+        .form_wizard .stepContainer {
+            height: 200px!important;
+        }
+        
+        .customCssRm {
+            margin-left: 27px;
+        }
+        
+        .customCssPercent {
+            margin-left: 12px;
+        }
+        
+        .plusIconSize {
+            font-size: 22px;
+        }
+        
+        .margin {
+            margin-bottom: 10px;
+        }
+        
+        .customoffset-5 {
+            margin-left: 46.666667%;
+            margin-top: 8%;
+        }
+    </style>
+    <script>
+        /* */
+        function isWizardRerender() {
+            var error = $('[id$=errorFlagVal]').val();
+            if (error == 'true') {
+                closeAllAndTableRefresh();
+            }
+        }
+
+        function ApproveModal() {
+            $("#SCId").text("");
+            $('#ModalForApprover').modal('show');
+            return false;
+        }
+
+        function approverValidate() {
+            if (Checkapprover()) {
+		        $("#submitBtn").attr("data-dismiss", "modal");
+                 var approver = $('[id$=ApproverId]').val();
+                showLoader();
+                submitForApproval(approver);
+            } else {
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#SCId").text("Please select SC user!");
+            }
+        }
+
+        function Checkapprover() {
+            var flag = true;
+            var approver = $('[id$=ApproverId]').val();
+            if (approver == undefined || approver == null || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+
+    	function addRemoveButton() {
+            $("#removeButton").attr({
+                "class": "col-md-3 col-sm-3 col-xs-12",
+                "style": "display"
+            });
+        }
+
+        function errorMessageCall() {
+            $('[id$=message]').attr('style', 'color:red');
+        }
+        $(document).ready(function() {
+
+            $('#wizard').smartWizard({
+                transitionEffect: 'slide',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback,
+                onShowStep: onShowStep
+            });
+
+            function onShowStep(obj, context) {
+                //debugger;
+                $(".buttonPrevious").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goBackward");
+                });
+
+                $(".buttonNext").unbind("click").click(function(e) {
+                    e.preventDefault();
+                    $("#wizard").smartWizard("goForward");
+                });
+            }
+
+            function leaveAStepCallback(obj, context) {
+                $(".buttonPrevious").unbind("click");
+                $(".buttonNext").unbind("click");
+                return true;
+            }
+
+            function onFinishCallback(objs, context) {
+
+            }
+
+            $('.buttonNext').addClass('btn btn-primary');
+            $('.buttonPrevious').addClass('btn btn-primary');
+            $('.buttonFinish').addClass('btn btn-primary'); /**finish rename as submit **/
+            $('.buttonSave').addClass('btn btn-primary');
+            $('.buttonCancel').addClass('btn btn-primary');
+            $('.buttonClose').hide(); /**close button rename as terminated **/
+            /** save opp**/
+            $('.buttonSave').click(function() {
+                Save();
+                showLoader();
+            });
+
+            //cancel button
+            $('.buttonCancel').click(function() {
+                $("#RequiredFieldMessage").text("");
+                closeAllPanels();
+            });
+            
+            /** submit opp**/
+            $('.buttonFinish').click(function() {
+                $('[id$=ApproverId]').val("0");
+                $('#SCId').text("");
+                ApproveModal();
+            });
+        });
+    </script>
+</apex:component>

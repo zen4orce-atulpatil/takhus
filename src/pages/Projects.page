@@ -1,0 +1,526 @@
+<apex:page sidebar="false" showHeader="false" controller="ProjectController" standardStylesheets="false" docType="html-5.0">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Zen4orce | MVP</title>
+        <!-- jQuery -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+
+        <!-- Bootstrap -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}"/>
+        <!-- Custom Theme Scripts -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/custom.js')}" />
+        <!-- jQuery Smart Wizard -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard.js')}" />
+        <!--<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard1.js')}"/>-->
+        <!-- FASTCLICK-->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/fastclick.js')}" />
+        <!-- Datatables -->
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.flash.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.html5.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.print.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.fixedHeader.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.keyTable.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.responsive.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/responsive.bootstrap.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.scroller.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jszip.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/pdfmake.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/vfs_fonts.js')}" />
+        <!-- Datatables -->
+        <!-- css-->
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatables css-->
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+
+        <!-- Custom Theme Style -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}"/>
+    </head>
+
+    <apex:form id="ProjectPage">
+        <apex:actionFunction name="tableRefresh" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable" />
+        <apex:actionFunction name="closeAllAndTableRefresh" action="{!closeAllAndRerenderTable}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable,wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
+        <apex:actionFunction name="closeAllPanels" action="{!closeAllOpenPanels}" oncomplete="hideLoader();" reRender="wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
+        <apex:actionFunction name="rejectProject" action="{!rejectProject}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable" />
+		<apex:actionFunction name="reasignProject" action="{!reassignProject}" oncomplete="hideLoader();loadDatatable();" reRender="wrapProjectTabs,wrapProjectPanel,projectTable" />
+        
+        <body class="nav-md">
+            <div class="container body">
+                <div class="main_container">
+                    <!--sidebar -->
+                    <c:sidebar ></c:sidebar>
+                    <!--sidebar -->
+                    <!-- top navigation -->
+                    <c:topnavigation ></c:topnavigation>
+                    <!-- /top navigation -->
+                    <div class="right_col" role="main">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:Messages id="message" />
+                                <apex:outputPanel id="projectTable">
+                                    <div class="x_panel">
+                                        <div class="x_title row">
+                                            <div class="col-md-10 col-sm-10 col-xs-10">
+                                                <h2>Projects</h2>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            <table id="projectsDatatable" style="display:none;" class="table table-striped table-bordered dt-responsive nowrap" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th>Trade Name</th>
+                                                        <th>Project Type</th>
+                                                        <th>Approval Status</th>
+                                                        <th>Department</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!fetchProjects}" var="pro">
+                                                        <tr>
+                                                            <td>{!pro.Product__r.Name}</td>
+                                                            <td>{!pro.Product__r.Tradename__c}</td>
+                                                            <td>{!pro.Project_Type__c}</td>
+                                                            <td>{!pro.Approval_Status__c}</td>
+                                                            <td>{!pro.Department__c}</td>
+                                                            <td>
+                                                                <!-- ICON FOR  -->
+                                                                <apex:commandLink title="View" onclick="showLoader();" oncomplete="hideLoader();" action="{!viewProjectDetails}" reRender="wrapProjectTabs,wrapProjectPanel,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel,wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" html-data-toggle="tooltip">
+                                                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                                                    <apex:param name="productId" value="{!pro.Product__r.id}" assignTo="{!productId}" />
+                                                                    <apex:param name="projectId" value="{!pro.id}" assignTo="{!projectId}" />
+                                                                    <apex:param name="prodName" value="{!pro.Product__r.Name}" assignTo="{!productName}"></apex:param>
+                                                                </apex:commandLink> &nbsp;&nbsp;
+																<!-- {!OR(pro.Approval_Status__c =='Not Submitted',pro.Approval_Status__c =='Rejected')}-->
+                                                                <apex:outputPanel rendered="{!AND(usr.Department=='Marketing',pro.Department__c=='Marketing')}">
+                                                                    <apex:commandLink title="Edit" onclick="showLoader();" oncomplete="showCloseProjectBtn(); hideLoader();" action="{!editProjectDetails}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel,wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" html-data-toggle="tooltip">
+                                                                        <i class="glyphicon glyphicon-pencil"></i>
+                                                                        <apex:param name="projectId" value="{!pro.id}" assignTo="{!projectId}" />
+                                                                    </apex:commandLink>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapProjectPanel">
+                                    <apex:outputPanel rendered="{!isreRenderProject}">
+                                        <c:CreateProject prjRecord="{!pro}"></c:CreateProject>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="rndQuestions">
+                                    <apex:outputPanel rendered="{!isRerenderRnD}">
+                                        <c:RndQuestions productNm="{!productName}" prodId="{!pro.Product__c}" projectRec="{!pro}" rst="true"></c:RndQuestions>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <!--Department should be added-->
+                                <apex:outputPanel id="wrapProjectTabs">
+                                    <apex:outputPanel rendered="{!isreRenderView}">
+                                        <div class="x_panel">
+                                            <c:ProjectTabs productId="{!productId}" Record="{!pro}"></c:ProjectTabs>
+                                            <!--buttons for R&D department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department=='R&D',pro.Department__c=='R&D')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton oncomplete="openRejectCommentModal();" value="Reject" styleClass="btn btn-primary" reRender="blankDivId" />
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!displayRndQuestions}" onComplete="resetComp(); hideLoader();" reRender="rndQuestions,wrapProjectPanel,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                             <!--buttons for supply chain department  -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department=='SC Opt',pro.Department__c=='SC Opt')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!createEditSCProject}" onComplete="resetSCComp();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            <!--buttons for procurement department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department=='Procurement',pro.Department__c=='Procurement')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewProcurementProject}" onComplete="hideLoader();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                             <!--buttons for regulatory clearance department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department=='Regulatory Clearance',pro.Department__c == 'Regulatory Clearance')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewRegulatoryClearanceProject}" onComplete="resetRegulatoryDetails();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            
+                                            <!--buttons for QAQC department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='QA/QC',pro.Department__c == 'QA/QC')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewQaQcSpecificationProject}" onComplete="resetQAQCDetails();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                             <!--buttons for SHE department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='SHE',pro.Department__c == 'SHE')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewSHEProject}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            <!--buttons for MFG department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='MFG',pro.Department__c == 'MFG')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewMFGProject}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            <!--buttons for WH department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='Warehouse',pro.Department__c == 'Warehouse',pro.Status__c != 'Completed')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewWHProject}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                             <!--buttons for costing department -->
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='Costing',pro.Department__c == 'Costing',pro.Status__c!='Completed')}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewCostingProject}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--supply chain component -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapSCQuestionsPanel">
+                                    <apex:outputPanel rendered="{!isRerenderSC}">
+                                        <c:SupplyChainQuestions projectRec="{!pro}" productNm="{!productName}" prodId="{!productId}" rst="true"></c:SupplyChainQuestions>
+                                     </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--supply chain component ends -->
+                        <!--procurement component start -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapProcurementPanel">
+                                    <apex:outputPanel rendered="{!isRerenderProc}">
+                                    	<c:Procurement productRec="{!prod}" projectRec="{!pro}"></c:Procurement>                                        
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--procurement component end -->
+                        <!--regulatory clearance component start -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapRegulatoryPanel">
+                                    <apex:outputPanel rendered="{!isRerenderRegulatory}">
+                                    	  <c:regulatoryClearance productRec="{!prod}" projectRec="{!pro}" rst="true"></c:regulatoryClearance>                                      
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--regulatory clearance component end -->
+                        
+                        <!--QA/QC component start-->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapQAQCPanel">
+                                    <apex:outputPanel rendered="{!isRenderQaQc}">
+                                        <c:QA_QC_Specification projectRec="{!pro}"></c:QA_QC_Specification>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--QA/QC component end-->
+                        <!-- SHE component start -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapSHEPanel">
+                                    <apex:outputPanel rendered="{!isRerenderSHE}">
+                                    	 <c:SHE productRec="{!prod}" projectRec="{!pro}"></c:SHE>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--SHE component end -->
+                        <!-- MFG component start -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapMFGPanel">
+                                    <apex:outputPanel rendered="{!isRenderMfg}">
+                                    	 <c:MFG productRec="{!prod}" projectRec="{!pro}"></c:MFG>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--WH component end -->
+						<div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapWHPanel">
+                                    <apex:outputPanel rendered="{!isRenderWh}">
+                                    	 <c:Warehouse productRec="{!prod}" projectRec="{!pro}"></c:Warehouse>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--WH component end -->  
+                        <!--costing component end -->
+						<div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapCostingPanel">
+                                    <apex:outputPanel rendered="{!isRenderCosting}">
+                                    	 <c:Costing productRec="{!prod}" projectRec="{!pro}"></c:Costing>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--costing component end -->
+                        <br />
+                        <br />
+                    </div>
+                    <!-- end class="right_col" -->
+                    <div id="reassignUserSelection" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">
+										<apex:outputLabel value="Select User"></apex:outputLabel>
+									</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                    <apex:outputPanel id="ReasignProjectPanel">
+                                        <p class="col-md-4 col-sm-4 col-xs-4"></p>
+                                        <p id="ReasignId" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                                    </apex:outputPanel>
+                                </div>
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <label>Reassign To</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <apex:selectList id="ReasignUserId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                                        <apex:selectOptions value="{!Users}" />
+                                                    </apex:selectList>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="blankDivId"></div>
+                                <div class="modal-footer">
+                                    <!--<apex:commandButton value="Submit" onclick="showLoader();" action="{!reassignProject}" html-data-dismiss="modal" styleClass="btn btn-primary" oncomplete="hideLoader();loadDatatable();" reRender="wrapProjectTabs,wrapProjectPanel,projectTable"/>-->
+                                    <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="reasignUserValidate();">Submit</button>
+                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="rejectComment" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="rejectlabel">Rejection Details</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                                        <p id="rejectMessage" class="col-md-7 col-sm-7 col-xs-7"></p>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Comment">Comments<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <apex:inputTextarea id="comment" value="{!opp.Approve_Reject_Comment__c}" styleClass="resizable_textarea form-control">
+                                                    <apex:actionSupport event="onclick" oncomplete="resetComment();" reRender="" />
+                                                </apex:inputTextarea>
+                                            </div>
+                                            <div class="control-label col-md-3 col-sm-3 col-xs-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="prjRejectBtn" type="button" class="btn btn-primary btn-sm" onclick="commentValidate();">Proceed</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end class="main_container"> -->
+                <!-- footer content -->
+                <c:footer ></c:footer>
+                <!-- /footer content -->
+            </div>
+        </body>
+    </apex:form>
+    <style>
+        #rejectMessage,#ReasignId {
+            color: red;
+        }
+    </style>
+    <script>
+        function commentValidate() {
+            if (CheckComment()) {
+                $("#prjRejectBtn").attr("data-dismiss", "modal");
+                showLoader();
+                rejectProject();
+            } else {
+                $("#rejectMessage").text("Please add rejection comment");
+            }
+        }
+
+        function CheckComment() {
+            var flag = true;
+            var user = $('[id$=comment]').val();
+            if (user == undefined || user == null || user == 'Select') {
+                flag = false;
+            }
+            return flag;
+        }
+
+        function resetComment() {
+            $("#rejectMessage").text("");
+        }
+
+        function showCloseProjectBtn() {
+            $("#closeBtnId").show();
+        }
+
+        function loadDatatable() {
+            $('#projectsDatatable').dataTable({
+                "aaSorting": []
+            });
+			 $('#projectsDatatable').show();
+        }
+
+        $(document).ready(function() {
+            hideLoader();
+            loadDatatable();
+        });
+
+
+        $('[data-toggle="tooltip"]').click(function() {
+            $('.tooltip').fadeOut('fast', function() {
+                $('.tooltip').remove();
+            });
+        });
+
+        function openReassignUserModal() {
+            $('[id$=ReasignUserId]').val('0');
+            $("#ReasignId").text("");
+            $('#reassignUserSelection').modal('show');
+            return false;
+        }
+
+        function openRejectCommentModal() {
+            $('[id$=comment]').val("");
+            $('#rejectComment').modal('show');
+            return false;
+        }
+    function reasignUserValidate() {
+        debugger;
+            if(CheckUser()) {
+		        $("#submitBtn").attr("data-dismiss", "modal");
+                showLoader();
+                reasignProject();
+            } else {
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#ReasignId").text("Please select user!");
+            }
+        }
+     function CheckUser() {
+            var flag = true;
+            var approver = $('[id$=ReasignUserId]').val();
+           	if (approver == undefined || approver == null || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+    </script>
+</apex:page>

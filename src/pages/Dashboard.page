@@ -1,0 +1,261 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="DashboardService">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Dashboard</title>
+        <!-- jQuery -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+        <!-- Bootstrap -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}" />
+        <!-- Custom Theme Scripts-->
+        <apex:includeScript value="{!URLFOR($Resource.NewTurboPLM, 'NewTurboPLM/js/newcustom.js')}" />
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatable JS -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+        <!-- DataTable CSS -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+        <!-- NProgress -->
+        <!--Changed Custom CSS-->
+        <apex:stylesheet value="{!URLFOR($Resource.NewTurboPLM, 'NewTurboPLM/css/custom.css')}" />
+        <script>
+            j$ = jQuery.noConflict();
+            var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
+                j$BODY = j$('body'),
+                j$MENU_TOGGLE = j$('#menu_toggle'),
+                j$SIDEBAR_MENU = j$('#sidebar-menu'),
+                j$SIDEBAR_FOOTER = j$('.sidebar-footer'),
+                j$LEFT_COL = j$('.left_col'),
+                j$RIGHT_COL = j$('.right_col'),
+                j$NAV_MENU = j$('.nav_menu'),
+                j$FOOTER = j$('footer');
+            var lsttask = {!taskJson};
+
+            j$(document).ready(function() {
+                hideLoader();
+                j$('#ItemsToApproveTable').dataTable({
+                    "aaSorting": []
+                });
+                var taskRecords = [];
+                for (var i = 0; i < lsttask.data.length; i++) {
+                    var item = lsttask.data[i];
+                    taskRecords.push({
+                        "subject": item.subject,
+                        "relatedTo": item.relatedTo,
+                        "status": item.status,
+                        "duedate": item.duedate
+                    });
+                }
+                var tasktable = j$('#opentasks').DataTable({
+                    data: taskRecords,
+                    "oLanguage": {
+                        "sInfo": "_TOTAL_ entries", //"_START_ to _END_ of _TOTAL_ entries",
+                        "sInfoEmpty": "0 to 0 of 0 entries",
+                        "oPaginate": {
+                            "sPrevious": "<", // This is the link to the previous page
+                            "sNext": ">" // This is the link to the next page
+                        }
+                    },
+                    columns: [{
+                        "data": "subject"
+                    }, {
+                        "data": "relatedTo"
+                    }, {
+                        "data": "status"
+                    }, {
+                        "data": "duedate"
+                    }]
+                });
+                
+                j$(".navigate").click(function(){
+            		showLoader();
+            	});
+            });
+        </script>
+    </head>
+    <apex:form >
+        <div class="container body">
+            <div class="main_container">
+            <c:sidebar ></c:sidebar>
+            <!-- top navigation -->
+            <c:topnavigation ></c:topnavigation>
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="">
+                            <div class="row x_title text-center">
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="x_panel">
+                                        <div class="x_title ">
+                                            <h4>Monthly Project view for you</h4>
+                                        </div>
+                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h4>Your performance</h4>
+                                        </div>
+                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h4>Your performance</h4>
+                                        </div>
+                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row x_title">
+                                <div class="col-md-6">
+                                    <h3>Create a New Project</h3>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <a href="/apex/OpportunitySales" class="navigate">
+                                        <div class="tile-stats bgcolor">
+                                            <div class="count1">
+                                                <i class="fa fa-caret-square-o-right white"></i>
+                                                <h4 class="white">Opportunity</h4>
+                                            </div>
+                                            <p class="dashboard-description">New/Update</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <a href="/apex/OpportunityMarketing" class="navigate">
+                                        <div class="tile-stats bgcolor">
+                                            <div class="count1">
+                                                <i class="fa fa-comments-o white"></i>
+                                            </div>
+                                            <h4 class="white">NPI</h4>
+                                            <p class="dashboard-description">New product introduction
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <a href="/apex/Projects" class="navigate">
+                                        <div class="tile-stats bgcolor">
+                                            <div class="count1">
+                                                <i class="fa fa-sort-amount-desc white"></i>
+                                            </div>
+                                            <h4 class="white">Project</h4>
+                                            <p class="dashboard-description">Project Maintenance
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <div class="tile-stats bgcolor">
+                                        <div class="count1">
+                                            <i class="fa fa-check-square-o white"></i>
+                                        </div>
+                                        <h4 class="white">Raw material</h4>
+                                        <p class="dashboard-description">New raw material introduction
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <div class="tile-stats bgcolor">
+                                        <div class="count1">
+                                            <i class="fa fa-check-square-o white"></i>
+                                        </div>
+                                        <h4 class="white">Maintenance of RM</h4>
+                                        <p class="dashboard-description">Maintenance of existing RM
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            </div>
+                            <div class="clearfix"></div>
+                            <!-- table-->
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2>All Open Tasks</h2>
+                                            <table id="opentasks" class="display">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Subject</th>
+                                                        <th>Related To</th>
+                                                        <th>Status</th>
+                                                        <th>Due Date</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <apex:outputPanel id="itemsToApproveTableOpPanel">
+                            <div class="x_panel">
+                                <div class="x_title row">
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <h2>Items To Approve</h2>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <table id="ItemsToApproveTable" class="table table-striped table-bordered dt-responsive nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Related To</th>
+                                                <th>Type</th>
+                                                <th>Most Recent Approver</th>
+                                                <th>Date Submitted</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!ItemsToApproverDetails}" var="ITA">
+                                                <tr>
+                                                    <td>{!ITA.relatedTo}</td>
+                                                    <td>{!ITA.objType}</td>
+                                                    <td>{!$User.FirstName} {!$User.LastName}</td>
+                                                    <td>{!ITA.dateSubmitted}</td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <c:footer ></c:footer>
+        </div>
+    </apex:form>
+</apex:page>

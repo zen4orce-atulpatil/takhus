@@ -1,0 +1,199 @@
+<apex:component controller="MfgController" allowDML="true">
+    <apex:attribute name="productRec" access="public" description="" type="Product__c" required="true" assignTo="{!productRecord}" />
+    <apex:attribute name="projectRec" access="public" description="" type="Project__c" required="true" assignTo="{!projectRecord}" />
+
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Mfg Plants <small>product name:&nbsp;{!productRec.Name}</small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <apex:actionFunction name="save" action="{!saveMFGProduct}" oncomplete="hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="temp">
+                      <apex:param name="allFUnctionsLst" value="" assignTo="{!allFunctions}"/>
+                      <apex:param name="erpDataLst" value="" assignTo="{!mfgERP}"/>
+                  </apex:actionFunction>
+                  <apex:actionFunction name="submitForApproval" action="{!submitMFGDetailsForApproval}" oncomplete="closeAllAndTableRefresh();notifier('{!notificationType}','{!notificationMessage}');" reRender="temp">
+                      <apex:param name="allFUnctionsLst" value="" assignTo="{!allFunctions}"/>
+                      <apex:param name="erpDataLst" value="" assignTo="{!mfgERP}"/>
+                  </apex:actionFunction>  
+                  <div class="x_content">
+                    <div class="container">
+                      <form class="form-horizontal">
+                         <apex:outputLabel id="allFunctionOutput" value="{!productRecord.All_MFG_Function__c}" styleClass="noDisplay" ></apex:outputLabel>
+                         <apex:outputLabel id="erpOutput" value="{!productRecord.MFG_ERP__c}" styleClass="noDisplay" ></apex:outputLabel>
+                          <apex:outputPanel id="temp">
+                         </apex:outputPanel>
+                         
+                         <div class="form-group">
+                          <label class="control-label col-sm-3"></label>
+                          <label class="control-label col-sm-4" for="email">Have you completed all Mfg functions for this product?</label>
+                          <div class="col-sm-4">
+                              <div class="col-sm-6 form-group">
+                                  <select id="allFunctionsSecuredList" onchange="allFunctionSecuredChange();" class="form-control">
+                                      <option value="true">Yes</option>
+                                      <option value="false">No</option>
+                                  </select>
+                              </div>
+                          </div>
+                        </div>
+                          <!-- noDisplay-->
+                        <div class="form-group noDisplay" id="erpDataSection">
+                          <label class="control-label col-sm-3"></label>
+                          <label class="control-label col-sm-4" for="pwd">Have you entered necessary data in ERP?</label>
+                          <div class="col-sm-4">
+                              <div class="col-sm-6 form-group">
+                                  <select id="erpDataList" class="form-control" onchange="erpDataChange()">
+                                      <option value="true">Yes</option>
+                                      <option value="false">No</option>
+                                  </select>
+                              </div>
+                          </div> 
+                        </div>
+                       
+                        <div class="form-group">        
+                          <div class="col-sm-offset-5 col-sm-10">
+                            <br/>
+                            <button type="submit" class="btn btn-primary"  id="Submitbtn" onclick="ApproveModal();return false;">Submit</button>
+                            <button type="submit" class="btn btn-primary" onclick="saveProduct();return false;">Save</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              
+    			<!-- Modal for approval -->
+                <div id="ModalForApprover" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <apex:outputLabel value="Select Warehouse User"></apex:outputLabel>
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <p class="col-md-4 col-sm-4 col-xs-4"></p>
+                                    <p id="MFGId" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label>Approver</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <apex:selectList id="whApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                                    <apex:selectOptions value="{!Users}" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="blankDivId"></div>
+                            <div class="modal-footer">
+                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <style>
+   .noDisplay{
+    	display:none;
+    }
+	</style>
+    <script>
+     $(document).ready(function() {
+         hideLoader();
+         debugger;
+         setData();
+	});
+    function setData(){
+    	var allFunctionsData =$('[id$=allFunctionOutput]').text(); 
+        var erpData =$('[id$=erpOutput]').text(); 
+         if(allFunctionsData != null && allFunctionsData != undefined){
+         	if(allFunctionsData.toLowerCase() == 'true'){
+            	$("#allFunctionsSecuredList").val('true');
+            }
+            else{
+                $("#allFunctionsSecuredList").val('false');
+            }
+             allFunctionSecuredChange();
+         } 
+         if(erpData != null && erpData != undefined){
+         	if(erpData.toLowerCase() == 'true'){
+            	$("#erpDataList").val('true');
+            }
+            else{
+                $("#erpDataList").val('false');
+            }
+             erpDataChange();
+         } 
+    }
+    
+    function allFunctionSecuredChange(){
+        debugger;
+        if($("#allFunctionsSecuredList").val() == 'true'){
+        	$("#erpDataSection").removeClass('noDisplay');
+        }
+        else{
+            $("#erpDataList").val("false");
+        	$("#erpDataSection").addClass('noDisplay');
+            //$("#Submitbtn").addClass('noDisplay');
+            //$("#Submitbtn").attr('disabled','disabled');
+           $("#Submitbtn").attr("disabled","disabled");
+        }
+    }
+    function erpDataChange(){
+		if($("#erpDataList").val() == 'true'){
+            //$("#Submitbtn").removeClass('noDisplay');
+            //$("#Submitbtn").removeAttr('disabled');
+           $("#Submitbtn").removeAttr("disabled");
+        }
+        else{
+            //$("#Submitbtn").addClass('noDisplay');
+            //$("#Submitbtn").removeAttr('disabled');
+           $("#Submitbtn").attr("disabled","disabled");
+        }
+    }
+    function saveProduct(){
+        debugger;
+        showLoader();
+        var allFUnctionsLst = $('[id$=allFunctionsSecuredList]').val();
+        var erpDataLst = $('[id$=erpDataList]').val();
+        save(allFUnctionsLst,erpDataLst);
+    }
+    function ApproveModal() {
+            $("#MFGId").text("");
+        	$('[id$=whApproverId]').val("0");
+            $('#ModalForApprover').modal('show');
+            return false;
+        }
+     function approverValidate() {
+            if (Checkapprover()) {
+		        $("#submitBtn").attr("data-dismiss", "modal");
+                showLoader();
+                var allFUnctionsLst = $('[id$=allFunctionsSecuredList]').val();
+        		var erpDataLst = $('[id$=erpDataList]').val();
+                submitForApproval(allFUnctionsLst,erpDataLst);
+            } else {
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#MFGId").text("Please Warehouse user!");
+                $("#MFGId").attr('style','color:red');
+            }
+        }
+
+        function Checkapprover() {
+            var flag = true;
+            var approver = $('[id$=whApproverId]').val();
+           	if (approver == undefined || approver == null || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+    </script>
+</apex:component>

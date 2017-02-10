@@ -1,0 +1,299 @@
+<apex:page sidebar="false" showHeader="false" controller="OppMarketingController" standardStylesheets="false" docType="html-5.0">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Opportunity Marketing</title>
+        <!-- jQuery -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+        <!-- Bootstrap -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}" />
+        <!-- Custom Theme Scripts -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/custom.js')}" />
+        <!-- jQuery Smart Wizard -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard.js')}" />
+        <!--<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard1.js')}"/>-->
+        <!-- FASTCLICK-->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/fastclick.js')}" />
+        <!-- Datatables -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.flash.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.html5.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.print.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.fixedHeader.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.keyTable.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.responsive.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/responsive.bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.scroller.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jszip.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/pdfmake.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/vfs_fonts.js')}" />
+        <!-- Datatables -->
+
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatables css-->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+        <!-- Custom Theme Style -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
+    </head>
+    <apex:form id="opp4mktID" styleClass="form-horizontal form-label-left">
+        <apex:actionFunction name="modalSumbitBtn" action="{!udateComments}" oncomplete="refreshMasterTable();hideLoader();">
+            <apex:param name="buttonClicked" value="" assignTo="{!buttonAction}" />
+            <apex:param name="sumbitButton" value="" assignTo="{!oppAction}" />
+        </apex:actionFunction>
+        <apex:actionFunction name="refreshMasterTable" oncomplete="makeDataTable();hideLoader();" reRender="masterTablePanel,viewOppPanel,selectProjectPanel" />
+        <apex:actionFunction name="sample" oncomplete="alert('Sample Called')" reRender="createProjectPanel" />
+		<apex:actionFunction name="tableRefresh" oncomplete="makeDataTable(); hideLoader();" reRender="masterTablePanel" />
+        <apex:actionFunction name="closeAllAndTableRefresh" oncomplete="makeDataTable(); hideLoader();" action="{!closeAllPanel}" reRender="masterTablePanel,viewOppPanel,selectProjectPanel,createProjectPanel"  />
+        
+        <body class="nav-md">
+            <div class="container body">
+                <div class="main_container">
+                    <!--sidebar -->
+                    <c:sidebar ></c:sidebar>
+                    <!--sidebar -->
+                    <!-- top navigation -->
+                    <c:topnavigation ></c:topnavigation>
+                    <!-- /top navigation -->
+                    <div class="right_col" role="main">
+                        <div class="x_panel">
+                            <div class="x_title row">
+                                <div class="col-md-10 col-sm-10 col-xs-10">
+                                    <apex:outputPanel >
+                                        <h2>Opportunities To Approve</h2>
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <apex:outputPanel id="masterTablePanel">
+                                    <table id="opportunityDatatable" style="display:none;" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Opportunity Name</th>
+                                                <th>StageName</th>
+                                                <th>ClosedDate</th>
+                                                <th>Amount</th>
+                                                <th>Approval Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!fetchOpportunities}" var="opp">
+                                                <tr>
+                                                    <td>{!opp.Name}</td>
+                                                    <td>{!opp.StageName}</td>
+                                                    <td>
+                                                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                                            <apex:param value="{!opp.CloseDate}" />
+                                                        </apex:outputText>
+                                                    </td>
+                                                    <td>{!opp.Amount}</td>
+                                                    <td>{!opp.Approval_Status__c}</td>
+                                                    <td>
+                                                        <!-- ICON FOR MARKETING -->
+                                                        <apex:outputPanel >
+                                                            <apex:commandLink title="View Opportunity" onclick="showLoader();" oncomplete="hideLoader();" action="{!viewOppportunity}" html-data-toggle="tooltip" rerender="viewOppPanel,selectProjectPanel,createProjectPanel">
+                                                                <i class="glyphicon glyphicon-eye-open"></i>
+                                                                <apex:param name="oppSelectedId" assignTo="{!selectedOppId}" value="{!opp.Id}" />
+                                                                <apex:param name="userAction" assignTo="{!userAction}" value="ViewOpp" />
+                                                            </apex:commandLink>
+                                                            &nbsp;&nbsp;
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!(opp.Approval_Status__c ='Approved')}">
+                                                            <apex:commandLink title="Create Project" onclick="showLoader();" oncomplete="hideLoader();" action="{!viewOppportunity}" html-data-toggle="tooltip" reRender="viewOppPanel,selectProjectPanel,createProjectPanel">
+                                                                <i class="glyphicon glyphicon glyphicon-hdd"></i>
+                                                                <apex:param name="oppSelectedId" value="{!opp.Id}" assignTo="{!selectedOppId}" />
+                                                                <apex:param name="userAction" value="CreateProject" assignTo="{!userAction}" />
+                                                            </apex:commandLink>
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!-- table end-->
+                        <!-- veiw-->
+                        <div class="row" id="oppdetail">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="viewOppPanel">
+                                    <apex:outputPanel rendered="{!rendereViewOppPanel}">
+                                        <div class="x_panel">
+                                            <c:ViewOpportunity oppRecord="{!opp}"></c:ViewOpportunity>
+                                            <apex:outputPanel rendered="{!opp.Approval_Status__c=='Submitted'}">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4" id="buttonDiv">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="setBtnClicked('Approved');">
+                                                        <span class="glyphicon glyphicon-ok"></span>&nbsp;Approve
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="setBtnClicked('Rejected');">
+                                                        <span class="glyphicon glyphicon-remove"></span>&nbsp;Reject
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-user"></span>&nbsp;Discuss
+                                                    </button>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                <!--modal -->
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                                </button>
+                                                <h4 class="modal-title" id="approvelabel">Opportunity Approval</h4>
+                                                <h4 class="modal-title" id="rejectlabel">Opportunity Reject</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <p class="col-md-3 col-sm-3 col-xs-3"></p>
+                                                    <p id="requiredField" class="col-md-9 col-sm-9 col-xs-9"></p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Comment">Comments<span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <apex:inputTextarea id="comment" value="{!opp.Approve_Reject_Comment__c}" styleClass="resizable_textarea form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="buttonClicked" id="bc" />
+                                                <button type="button" class="btn btn-primary" id="saveCreateBtn" data-dismiss="modal" onclick="captureModalInput('savecreate');showLoader();">Save &amp; Create Project</button>
+                                                <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal" onclick="captureModalInput('save');showLoader();">Save</button>
+                                                <button type="button" class="btn btn-default" id="cancelBtn" onclick="hideLoader();" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end model-->
+                            </div>
+                        </div>
+                        <!-- select project panel-->
+                        <div class="row" id="prjType">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="selectProjectPanel">
+                                    <apex:outputPanel rendered="{!renderSelectProject}">
+                                        <div class="x_panel">
+                                            <div class="form-group">
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="ProjectType">Select Project Type</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <apex:selectList id="ProjectType" value="{!selectedProjectType}" size="1" required="true" styleClass="form-control col-md-7 col-xs-12">
+                                                            <apex:selectOptions value="{!projectTypeOptionList}"/>
+                                                            <apex:actionSupport event="onchange" onsubmit="showLoader();" action="{!viewCreateProjectPanel}" oncomplete="hideLoader(); resetComponent();" reRender="createProjectPanel"></apex:actionSupport>
+                                                        </apex:selectList>
+                                                    </div>
+                                                </div>
+                                                <apex:outputPanel id="tempPanel" rendered="true"></apex:outputPanel>
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!--create project -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="createProjectPanel">
+                                    <apex:outputPanel rendered="{!renderCreateProjectPanel}">
+                                       <!-- <c:NewCreateProject oppId="{!selectedOppId}"></c:NewCreateProject>-->
+                                      <c:CreateProject oppId="{!selectedOppId}"></c:CreateProject>
+                                        <!--<c:createprojectsample oppId="{!selectedOppId}"></c:createprojectsample>-->
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+                <!-- footer content -->
+                <c:footer ></c:footer>
+                <!-- /footer content -->
+            </div>
+            <script>
+                /** tooltip on button**/
+                $(document).ready(function() {
+                    hideLoader();
+                    $('[data-toggle="tooltip"]').click(function() {
+                        $('.tooltip').fadeOut('fast', function() {
+                            $('.tooltip').remove();
+                        });
+                    });
+                    makeDataTable();
+                });
+
+                function makeDataTable() {
+                    $('#opportunityDatatable').dataTable({
+                        "aaSorting": []
+                    });
+                    $('[data-toggle="tooltip"]').tooltip({
+            			trigger: 'hover',
+            			html: true
+            		});
+                    $("#opportunityDatatable").show();
+                }
+
+                /* Function for Modal */
+                function captureModalInput(sumbitButton) {
+                    var buttonClicked = $('#bc').val();
+                    var oppComment = $('[id$=comment]').val();
+                    if (oppComment == undefined || oppComment == null || oppComment == '') {
+                        $('#saveCreateBtn').attr("data-dismiss", "");
+                        $('#saveBtn ').attr("data-dismiss", "");
+                        document.getElementById("requiredField").innerHTML = "Please Enter Comment!";
+                    } else {
+                        $('#saveCreateBtn').attr("data-dismiss", "modal");
+                        $('#saveBtn ').attr("data-dismiss", "modal");
+                        modalSumbitBtn(buttonClicked, sumbitButton, oppComment);
+                    }
+                }
+
+                function setBtnClicked(buttonClicked) {
+                    $('#bc').val(buttonClicked);
+                    $('[id$=comment]').val("");
+                    document.getElementById("requiredField").innerHTML = "";
+                    if (buttonClicked == 'Rejected') {
+                        $("#saveCreateBtn").hide();
+                        $("#approvelabel").hide();
+                        $("#rejectlabel").show();
+                        $("#comment").attr("placeholder", "Rejection Comments");
+                    } else if (buttonClicked == 'Approved') {
+                        $("#saveCreateBtn").show();
+                        $("#approvelabel").show();
+                        $("#rejectlabel").hide();
+                        $("#comment").attr("placeholder", "Approval Comments");
+                    }
+                }
+            </script>
+            <style>
+                #requiredField {
+                    color: red;
+                }
+            </style>
+        </body>
+    </apex:form>
+</apex:page>

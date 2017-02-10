@@ -1,0 +1,12 @@
+<apex:component >
+	<div class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container">
+			<div class="pull-right" style="margin:15px">
+				<a href="https://zen4orce.com"><span
+					class="glyphicon glyphicon-copyright-mark"></span>&nbsp;&nbsp;Copyright Takhus,
+					LLC <script type="text/javascript">document.write(new Date().getFullYear());</script></a>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</apex:component>

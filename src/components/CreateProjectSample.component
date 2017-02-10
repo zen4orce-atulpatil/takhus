@@ -1,0 +1,40 @@
+<apex:component controller="CreateProjectController" allowDML="true">
+    
+    <apex:attribute name="oppId" access="public" description="" type="String" assignTo="{!opId}"/>
+    
+    <apex:inputField id="CommercialName" value="{!product.Name}" styleClass="form-control col-md-7 col-xs-6 commercialName"/>
+	<apex:inputField id="TradeName" value="{!product.Tradename__c}" styleClass="form-control col-md-7 col-xs-6 tradeName"/>
+    <apex:selectList id="app" size="1" value="{!selectedValue}" styleClass="form-control col-md-7 col-xs-6 desc">
+        <apex:selectOptions value="{!application}"/> 
+    </apex:selectList>
+    
+    <table  class="master-table" >
+        <apex:repeat id="pkgSizeTable" value="{!pkgSize}" var="pkg">
+            <tr>
+                <td id="pkgCheckBox">
+                    <apex:inputCheckbox value="{!pkg.pkgselected}" styleClass="chkSelected"/>
+                </td>
+                <td id="pkgLabel">
+                    <apex:outputText value="{!pkg.pkSize.Name}"></apex:outputText>
+                </td>
+            </tr>
+        </apex:repeat>
+    </table>
+    
+    <table class="master-table">
+        <apex:repeat id="ChemRegulationTable" value="{!chemReg}" var="chemr">
+            <tr>
+                <td id="pkgCheckBox">
+                    <apex:inputCheckbox value="{!chemr.regselected}" styleClass="chkSelected"/>
+                </td>
+                <td id="pkgLabel">
+                    <apex:outputText value="{!chemr.regulation.Name}"></apex:outputText>
+                </td>
+            </tr>
+        </apex:repeat>
+    </table> 
+    
+    <apex:inputField id="Description" value="{!product.Product_Description__c}" styleClass="form-control col-md-7 col-xs-6 desc" />
+    
+    <apex:commandButton action="{!saveProductAndProject}"/>
+</apex:component>

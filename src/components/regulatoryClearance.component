@@ -1,0 +1,366 @@
+<apex:component Controller="RegulatoryClearanceController" allowDML="true">
+    <apex:attribute name="productRec" access="public" description="" type="Product__c" required="true" assignTo="{!productRecord}" />
+    <apex:attribute name="projectRec" access="public" description="" type="Project__c" required="true" assignTo="{!projectRecord}" />
+    <apex:attribute name="rst" access="public" description="" type="boolean" required="true" assignTo="{!reset}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datepicker/moment.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datepicker/daterangepicker.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.buttons.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.nonblock.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/daterangepicker.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.buttons.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/pnotify/pnotify.nonblock.css')}" />
+    
+    <div class="x_panel" id="oppPanel">
+        <div class="x_title">
+            <h2>Questions For Regulatory Clearance  <small>Product Name:&nbsp;{!productRecord.Name}</small></h2>
+           	<div class="clearfix"></div>
+        </div>
+        <apex:actionFunction name="AddMore" action="{!addRegClearanceWrapperObj}" oncomplete="hideLoader();" reRender="regClearancePanel"/>
+        <apex:actionFunction name="refreshRegulatoryClearance" oncomplete="hideLoader();" reRender="regClearancePanel"/>
+        <apex:actionFunction name="resetRegulatoryDetails" action="{!resetComponent}" oncomplete="hideLoader();" reRender="regClearancePanel" />
+		<apex:actionFunction name="Save" action="{!saveRegulatoryClearanceDetails}" oncomplete="errorMessageCall();hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
+        </apex:actionFunction>            
+        <apex:actionFunction name="submitForApproval" action="{!submitRCDetailsForApproval}" oncomplete="errorMessageCall();isWizardRerender();notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,errorFlagPanel" />
+
+        <div class="x_content">
+        	<div class="row">
+                <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                <p id="RequiredFieldMessage" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+            </div>
+            <apex:outputPanel id="errorFlagPanel">
+                <apex:inputHidden id="errorFlagVal" value="{!flagForError}" />
+            </apex:outputPanel>
+            <div class="form-horizontal form-label-left">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5 col-xs-5"></div>
+                    <div class="col-md-7 col-sm-7 col-xs-7">
+                        <apex:outputPanel id="errorMessage">
+                            <apex:pageBlock >
+                                <apex:messages id="message" />
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </div>
+                    
+                </div>
+                
+                <div id="wizard" class="form_wizard wizard_horizontal">
+                <div id="tempDivId"></div>
+                <ul class="wizard_steps">
+                    <li>
+                        <a href="#step-1">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                                <br />
+                                <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                                <br/>
+                                <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                                <br/>
+                                <small></small>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <div id="step-1">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        
+                        <div class="form-group">
+                           	<div class="row" >
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                               <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Select regulatory clearance</label>
+                            </div>
+                               
+                            <apex:outputPanel id="regClearancePanel"> 	
+                            <apex:repeat value="{!regulatoryClearance}" var="reg">
+                                <apex:outputPanel rendered="{!reg.isRemoveRegulatory =false}"> 
+                            		<div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+                                            <apex:selectList id="regId" size="1" value="{!reg.selRegulatoryClearance}" styleClass="form-control" >
+                                                <apex:selectOptions value="{!reg.ChemRegulationDetails}" />
+                                            </apex:selectList>
+                                        </div>
+                                        <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                            	
+                                            <apex:commandLink action="{!reg.removeRegulatoryRecord}" onclick="showLoader();" oncomplete="refreshRegulatoryClearance();">
+                                                <span class="fa fa-remove plusIconSize"></span>
+                                            </apex:commandLink>
+                                        </div>
+                            		</div>
+                                </apex:outputPanel> 
+                           	</apex:repeat> 
+                            </apex:outputPanel>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                    <div class="col-md-3 col-sm-3 col-xs-6 ">
+                    	<button type="submit" class="btn btn-primary btn-xs" onclick="showLoader();AddMore(); return false;">
+                           Add more
+                    	</button>
+                    </div>
+                </div>
+              
+                <div id="step-2">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                           	<div class="row" >
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                               <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Have you created MSDS?</label>
+                            </div>
+                            <div class="row">
+                            	<div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+                                	<apex:selectList id="MSDSId" size="1" value="{!productRecord.MSDS__c}"  styleClass="form-control" >
+                                		<apex:selectOption itemValue="True" itemLabel="Yes"></apex:selectOption>
+                                        <apex:selectOption itemValue="False" itemLabel="No"></apex:selectOption>
+                                       <!-- <apex:actionSupport event="onchange" onsubmit="showLoader();"  oncomplete="enableButton();loadTheWizard();hideLoader();" reRender="regWizardPanel" />-->
+                                	</apex:selectList>
+                                </div>
+                                <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                            
+                                           
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   
+                    <div id="step-3">
+                    <div class="form-horizontal form-label-left">
+                        <h2 class="StepTitle"></h2>
+                        <div class="form-group">
+                           	<div class="row" >
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                               <label for="rm" class="col-md-4 col-sm-4 col-xs-12 ">Have you completed all regulatory functions?</label>
+                            </div>
+                            <div class="row">
+                            	<div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+                                	<apex:selectList id="allRegFunctionId" size="1" value="{!productRecord.All_Regulatory_Functions__c}" styleClass="form-control" >
+                                		<apex:selectOption itemValue="True" itemLabel="Yes"></apex:selectOption>
+                                        <apex:selectOption itemValue="False" itemLabel="No"></apex:selectOption>
+                                        <!--<apex:actionSupport event="onchange" onsubmit="showLoader();"  oncomplete="enableButton();loadTheWizard();hideLoader();" reRender="Q3" />
+                                -->	</apex:selectList>
+                                </div>
+                                <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
+                                            
+                                           
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                </div> 
+              
+                <!-- Modal for approval -->
+                <div id="ModalForApprover" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <apex:outputLabel value="Select QA/QC User"></apex:outputLabel>
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <p class="col-md-4 col-sm-4 col-xs-4"></p>
+                                    <p id="SHEId" class="RequiredFields col-md-7 col-sm-7 col-xs-7"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label>Approver</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
+                                                    <apex:selectOptions value="{!Users}" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="blankDivId"></div>
+                            <div class="modal-footer">
+                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    .RequiredFields {
+            color: red;
+        }
+    .form_wizard .stepContainer {
+            height: 200px!important;
+        }
+    </style>
+    <script>
+    $(document).ready(function() {
+            loadTheWizard();
+            hideLoader();
+           enableButton();
+        });
+        
+        function loadTheWizard() {
+            debugger;
+            $('#wizard').smartWizard({
+                transitionEffect: 'slide',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback,
+                onShowStep: onShowStep
+            });
+            
+            /*Wizard buttons CSS*/
+            $('.buttonPrevious,.buttonNext,.buttonFinish,.buttonSave,.buttonCancel,.buttonClose').addClass('btn btn-primary');
+            /*Wizard buttons CSS*/
+            
+            /** save opp**/
+            $('.buttonSave').click(function() {
+                $('#RequiredFieldMessage').text("")
+                $('[id$=message]').text("");
+                Save();
+                showLoader();
+            });
+
+            /*Close button*/
+            $('.buttonClose').attr('id', 'closeBtnId');
+            $("#closeBtnId").hide();
+            /** cancel opp**/
+            $('.buttonCancel').attr("immediate", "true");
+            $('.buttonCancel').attr("formnovalidate", "formnovalidate");
+            $('.buttonCancel').click(function() {
+                /*closeCreateEditPanel();*/
+                $("#RequiredFieldMessage").text("");
+                /*$('#oppPanel').hide();*/
+                closeAllPanels();
+                showLoader();
+
+            });
+             
+            /** submit opp**/
+            $('.buttonFinish').click(function() {
+                debugger;
+                $('[id$=message]').text("");
+                $('[id$=RequiredFieldMessage]').text("");
+                $('[id$=ApproverId]').val("0");
+                $('#SHEId').text("");
+                $('#RequiredFieldMessage').text("")
+                   regulatoryFunctionValidation();
+            });
+        }
+        function onShowStep(obj, context) {
+            $(".buttonPrevious").unbind("click").click(function(e) {
+                e.preventDefault();
+                $("#wizard").smartWizard("goBackward");
+
+            });
+            $(".buttonNext").unbind("click").click(function(e) {
+                e.preventDefault();
+               $("#wizard").smartWizard("goForward");
+             });
+        }
+        function leaveAStepCallback(obj, context) {
+            $(".buttonPrevious").unbind("click");
+            $(".buttonNext").unbind("click");
+            return true;
+        }
+        function onFinishCallback(objs, context) {
+
+        }
+     	function errorMessageCall() {
+            $('[id$=message]').attr('style', 'color:red');
+            hideLoader();
+        }
+        function regulatoryFunctionValidation(){
+            debugger;
+           
+            var regulatoryCheck= $('[id$=allRegFunctionId]').val();
+            if (validate()) {
+		        $("#SHEId").text("");
+            	$('#ModalForApprover').modal('show');
+            	return false;
+            } 
+        }
+    	function validate() {
+           var flag = true;
+           var regVal = $('[id$=regId]').val();
+           var MSDSVal = $('[id$=MSDSId]').val();
+           var regulatoryCheck= $('[id$=allRegFunctionId]').val();
+           	if(regVal =='Select') {
+                flag = false;
+                $("#RequiredFieldMessage").text("please select regulatory clearance!");
+            }
+            if(regulatoryCheck !='True') {
+                flag = false;
+                $("#RequiredFieldMessage").text("Have you completed all regulatory functions value should be Yes!");
+            }
+            if(MSDSVal !='True'){
+                flag = false;
+                $("#RequiredFieldMessage").text("Have you created MSDS value should be Yes!");
+            }
+            return flag;
+        }
+    function approverValidate() {
+            if (Checkapprover()) {
+		        $("#submitBtn").attr("data-dismiss", "modal");
+                showLoader();
+                submitForApproval();
+            } else {
+                $("#submitBtn").attr("data-dismiss", "");
+                $("#SHEId").text("Please select Procurement user!");
+            }
+        }
+
+        function Checkapprover() {
+            var flag = true;
+            var approver = $('[id$=ApproverId]').val();
+           	if (approver == undefined || approver == null || approver == '0') {
+                flag = false;
+            }
+            return flag;
+        }
+         /* wizard rerender after final save*/
+     function isWizardRerender() {
+            var error = $('[id$=errorFlagVal]').val();
+            if(error == 'true') {
+                closeAllAndTableRefresh();
+            }else{
+            	hideLoader();
+            }
+        }
+       
+    </script>
+</apex:component>

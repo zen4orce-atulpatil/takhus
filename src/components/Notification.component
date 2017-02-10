@@ -1,0 +1,66 @@
+<apex:component >
+  	<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.toastr, 'toastr/toastr.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.toastr, 'toastr/toastr.css')}" />
+  	<script>
+    	if($ != undefined){
+            $(document).ready(function() {
+  				toastr.options = {
+  				"closeButton": true,
+  				"debug": false,
+  				"newestOnTop": false,
+  				"progressBar": false,
+  				"rtl": false,
+  				"positionClass": "toast-top-right",
+  				"preventDuplicates": false,
+  				"onclick": null,
+  				"showDuration": 300,
+  				"hideDuration": 1000,
+  				"timeOut": 5000,
+  				"extendedTimeOut": 1000,
+  				"showEasing": "swing",
+  				"hideEasing": "linear",
+  				"showMethod": "fadeIn",
+  				"hideMethod": "fadeOut"
+				}
+  			});
+        }
+        else if(j$ != undefined){
+        	j$(document).ready(function() {
+  				toastr.options = {
+  				"closeButton": true,
+  				"debug": false,
+  				"newestOnTop": false,
+  				"progressBar": false,
+  				"rtl": false,
+  				"positionClass": "toast-top-right",
+  				"preventDuplicates": false,
+  				"onclick": null,
+  				"showDuration": 300,
+  				"hideDuration": 1000,
+  				"timeOut": 5000,
+  				"extendedTimeOut": 1000,
+  				"showEasing": "swing",
+  				"hideEasing": "linear",
+  				"showMethod": "fadeIn",
+  				"hideMethod": "fadeOut"
+				}
+  			});
+        }
+ 		
+    function notifier(type,message){
+    	if(type == 'success'){
+        	toastr.success(message);
+        }
+        else if(type == 'error'){
+        	toastr.error(message);
+        }
+        else if(type == 'warning'){
+        	toastr.warning(message);
+        }
+        else if(type == 'info'){
+        	toastr.info(message);
+        }
+    }
+  </script>
+</apex:component>

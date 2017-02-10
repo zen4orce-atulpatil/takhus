@@ -1,0 +1,142 @@
+<apex:page sidebar="false" showHeader="false" controller="SupplyChainPageController" standardStylesheets="false" docType="html-5.0">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Zen4orce | MVP </title>
+        <!-- jQuery -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+
+        <!-- Bootstrap -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}" />
+        <!-- Custom Theme Scripts -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/custom.js')}" />
+        <!-- jQuery Smart Wizard -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard.js')}" />
+        <!--<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.smartWizard1.js')}"/>-->
+        <!-- FASTCLICK-->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/fastclick.js')}" />
+        <!-- Datatables -->
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.flash.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.html5.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.print.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.fixedHeader.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.keyTable.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.responsive.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/responsive.bootstrap.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.scroller.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jszip.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/pdfmake.min.js')}" />
+
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/vfs_fonts.js')}" />
+        <!-- Datatables -->
+        <!-- css-->
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatables css-->
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+
+        <!-- Custom Theme Style -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
+    </head>
+     
+    <apex:form id="SupplyChainPage">
+        <body class="nav-md">
+            <div class="container body">
+                <div class="main_container">
+                    <!--sidebar -->
+                    <c:sidebar ></c:sidebar>
+                    <!--sidebar -->
+                    <!-- top navigation -->
+                    <c:topnavigation ></c:topnavigation>
+                    <!-- /top navigation -->
+                    <div class="right_col" role="main">
+						<!-- for table -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <apex:pageMessages id="message"/>
+                                
+                            </div>
+                        </div>
+                       <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <apex:outputPanel id="wrapSCQuestionsPanel">
+                                    <apex:outputPanel rendered="true">
+                                    	<c:regulatoryClearance ></c:regulatoryClearance>
+                                     </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- end class="right_col" -->
+                </div>
+                <!-- end class="main_container"> -->
+                <!-- footer content -->
+                <c:footer ></c:footer>
+                <!-- /footer content -->
+            </div>
+        </body>
+    </apex:form>
+    <script>
+          
+        function loadDatatable() {
+            debugger;
+            $('#projectsDatatable').dataTable({
+                "aaSorting": []
+            });
+        }
+
+        $(document).ready(function() {
+            debugger;
+            assignDataTable();
+            hideLoader();
+           
+        });
+        function assignDataTable(){
+            $('#projectsDatatable').dataTable({
+                "aaSorting": []
+            });        
+        }
+       
+    $('[data-toggle="tooltip"]').click(function() {
+            $('.tooltip').fadeOut('fast', function() {
+                $('.tooltip').remove();
+            });
+            
+        });
+    </script>
+</apex:page>
