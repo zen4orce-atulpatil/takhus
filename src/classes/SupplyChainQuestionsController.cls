@@ -140,6 +140,7 @@ public class SupplyChainQuestionsController {
                         tempLstWarehouse.add(new plantsWrapper(null,soPlantListForWH,null,null,null,mapOfWarehouse,new PM_Approved_WH__c()));
                     }
                     warehouseWrapperList.addAll(tempLstWarehouse);
+                		
             	}
         }catch(Exception e){
          	System.debug('ERROR='+e.getMessage());
@@ -185,6 +186,8 @@ public class SupplyChainQuestionsController {
     //Description : purpose of this method is save supplychain record details.
     public void saveSupplyChainDetails(){
         boolean isSuccess = true;
+        List<plantsWrapper> tempLstPlant = new List<plantsWrapper>();
+        List<plantsWrapper> tempLstWarehouse = new List<plantsWrapper>();
         //upsert plants
         List<PM_Approved_Mfg_Plant__c> PlantsToUpsert = new List<PM_Approved_Mfg_Plant__c>();
         List<PM_Approved_Mfg_Plant__c> PlantsToDelete = new List<PM_Approved_Mfg_Plant__c>();
@@ -195,6 +198,7 @@ public class SupplyChainQuestionsController {
             flagForError = true;
             for(plantsWrapper pw:WrapperList){
                 if(pw.isRemove==false){
+                    tempLstPlant.add(pw);
                     if(!pw.selManufacturePlant.equalsIgnoreCase('Select')){
                         if(pw.plantRef.Product__c==null){
                             pw.plantRef.Product__c= productID;
@@ -203,9 +207,9 @@ public class SupplyChainQuestionsController {
                         PlantsToUpsert.add(pw.plantRef);
                     }else{
                         flagForError = false;//check whether this will be replaced by notificationtype variable
-                        notificationType = '';
-                        notificationMessage = '';
-                        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,System.Label.SC_Manufacturing_Plant_Validation));
+                       // notificationType = '';
+                        //notificationMessage = '';
+                       // ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,System.Label.SC_Manufacturing_Plant_Validation));
                     }
                 }else{
                     if(pw.plantRef.Id!=null){
@@ -214,9 +218,12 @@ public class SupplyChainQuestionsController {
                 }
                 
             }
+            WrapperList.clear();
+            WrapperList.addAll(tempLstPlant);
             //upsert warehouse
             for(plantsWrapper pw:warehouseWrapperList){
                 if(pw.isRemoveWh==false){
+                    tempLstWarehouse.add(pw);
                     if(!pw.selWarehousePlant.equalsIgnoreCase('Select')){
                         if(pw.varPlantWh.Product__c==null){
                             pw.varPlantWh.Product__c= productID;
@@ -226,9 +233,9 @@ public class SupplyChainQuestionsController {
                         warehouseToUpsert.add(pw.varPlantWh);
                     }else{
                         flagForError = false;
-                        notificationType = '';
-                        notificationMessage = '';
-                        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,System.Label.SC_Warehouse_Plant_Validation));
+                       // notificationType = '';
+                        //notificationMessage = '';
+                       // ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,System.Label.SC_Warehouse_Plant_Validation));
                     }
                 }else{
                     if(pw.varPlantWh.Id!=null){
@@ -237,7 +244,9 @@ public class SupplyChainQuestionsController {
                 }
                 
             }
-            if(flagForError == true){
+            warehouseWrapperList.clear();
+            warehouseWrapperList.addAll(tempLstWarehouse);
+            //if(flagForError == true){
                 //upsert plant
                 if(!SupplyChainDomain.upsertManufacturingPlants(PlantsToUpsert)){
                     isSuccess = false;
@@ -261,13 +270,17 @@ public class SupplyChainQuestionsController {
                     notificationType = 'warning';
                     notificationMessage = Label.PartialSaveMessageRnD;
                 }
-            }
+            //}
         }catch(Exception e){
             flagForError = false;
             notificationType = '';
             notificationMessage = '';
             ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,e.getMessage()));
         }
+        /*PlantsToUpsert = null;
+        PlantsToDelete = null;
+        warehouseToUpsert = null;
+        warehouseToDelete = null;*/
     }
     //Description : purpose of this method is save and submit record and send it to procurement departmentdetails.
      public void submitSCDetailsForApproval()
@@ -308,6 +321,9 @@ public class SupplyChainQuestionsController {
                 		notificationMessage = Label.FailureMessage;    
                     }
                 } 
+            }else{
+                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'please enter all details'));
+                
             }
         }catch(Exception e){
             System.debug('ERROR='+e.getMessage());

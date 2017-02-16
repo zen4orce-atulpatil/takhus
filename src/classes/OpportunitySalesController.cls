@@ -11,7 +11,14 @@ public class OpportunitySalesController
     public String notificationType{get;set;}
    	public String oppId{get; set;}
     public Opportunity opp{get;set;}
+    public User usr{get;set;}
+    public String loggedInUserId{get;set;}
     
+    public OpportunitySalesController(){
+       
+        loggedInUserId = UserInfo.getUserId();
+        usr =[Select Department From User where Id=:loggedInUserId limit 1];
+     }
     /*Description : Purpose of this method is to get all the Opportunities details
     to display into the datatable*/
     public List<Opportunity> getfetchOpportunities(){

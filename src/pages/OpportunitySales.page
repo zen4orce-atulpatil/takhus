@@ -65,9 +65,11 @@
                                             <div class="col-md-10 col-sm-10 col-xs-10">
                                                 <h2>All My Opportunities</h2>
                                             </div>
+                                            <apex:outputPanel rendered="{!usr.Department=='Sales'}">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                 <apex:commandButton action="{!createNewOpportunity}" onclick="showLoader();" oncomplete="hideLoader();" styleClass="btn btn-primary btn-sm" value="Create New Opportunity" rerender="CreateEditWizardWrapper,ViewWizardWrapper" immediate="true" />
                                             </div>
+                                            </apex:outputPanel>
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
@@ -104,7 +106,7 @@
                                                                     </apex:commandLink>
                                                                     &nbsp;&nbsp;
                                                                 </apex:outputPanel>
-                                                                <apex:outputPanel rendered="{!opp.Approval_Status__c =='Not Submitted'}">
+                                                                <apex:outputPanel rendered="{!AND(opp.Approval_Status__c =='Not Submitted',usr.Department=='Sales')}">
                                                                     <apex:commandLink onclick="showLoader();" oncomplete="hideLoader();" title="Edit" action="{!editOpportunity}" reRender="CreateEditWizardWrapper,ViewWizardWrapper" html-data-toggle="tooltip" immediate="true">
                                                                         <i class="glyphicon glyphicon-pencil"></i>
                                                                         <apex:param name="oppId" assignTo="{!oppId}" value="{!opp.Id}" />

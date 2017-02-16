@@ -11,7 +11,10 @@ public class OppMarketingController {
     public Boolean renderCreateProjectPanel{get;set;}
     public String userAction{get;set;}
     public Map<Id, Opportunity> opportunityMap = new Map<Id,Opportunity>();
+    public User usr{get;set;}
+    public String loggedInUserId{get;set;}
     
+
     //Description : Purpose of this method is to get all the opportunities details
     public List<Opportunity> getfetchOpportunities() {
         try{
@@ -36,6 +39,8 @@ public class OppMarketingController {
             for( Schema.PicklistEntry f : ple){
                 projectTypeOptionList.add(new SelectOption(f.getLabel(), f.getValue()));
             } 
+            loggedInUserId = UserInfo.getUserId();
+        	usr =[Select Department From User where Id=:loggedInUserId limit 1];
         }catch(Exception e){
             System.debug('ERROR'+e.getMessage()); 
         }            

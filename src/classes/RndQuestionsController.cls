@@ -33,7 +33,7 @@ public with sharing class RndQuestionsController {
     Decimal totalBomPercent=0;
     Decimal totalPmInvPercent=0;
     public boolean flagForError{get;set;}
-    
+    public boolean allFieldCheck;
     public RndQuestionsController(){
         resetFlag = true;
     }
@@ -74,6 +74,7 @@ public with sharing class RndQuestionsController {
                         String selectedRawMat = String.valueOf(varBom.RNumber__r.Id);
                         bomList.add(new Bom(mapRawMaterial, solist, varBom.Percent__c,selectedRawMat,varBom)); 
                         bomDescription = mapRawMaterial.get(selectedRawMat).R_Description__c;   
+                        System.debug('bomDescription==>'+bomDescription);
                     }
                 }else{
                     bomList = new List<Bom>();
@@ -248,8 +249,9 @@ public with sharing class RndQuestionsController {
                   list<PM_Physical_Properties__c> latPmPhyProperties = TurboPLMSelector.getPhyPropertiesByProductId(productID);
                   if(latPmPhyProperties.size()>0){
                       for(PM_Physical_Properties__c varPmPhyProperties:latPmPhyProperties){
-                          pmPhyPropList.add(new PmPhysicalProperties(mapPhysicalPrpperties,soPhyPropList, varPmPhyProperties.Physical_Properties__r.Id,varPmPhyProperties.Value__c,String.valueOf(varPmPhyProperties.UOM__c),varPmPhyProperties));
                           pmphyUnit = mapPhysicalPrpperties.get(varPmPhyProperties.Physical_Properties__r.Id).UOM__c;
+                          pmPhyPropList.add(new PmPhysicalProperties(mapPhysicalPrpperties,soPhyPropList, varPmPhyProperties.Physical_Properties__r.Id,varPmPhyProperties.Value__c,String.valueOf(varPmPhyProperties.UOM__c),varPmPhyProperties));
+                          
                       }
                   }else{
                       pmPhyPropList.add(new PmPhysicalProperties(mapPhysicalPrpperties,soPhyPropList, null,null, null,new PM_Physical_Properties__c()));                
@@ -329,8 +331,9 @@ public with sharing class RndQuestionsController {
                  if(lstPmQaSpec.size()>0){
                      for(PM_QA_Spec__c varPmQaSpec : lstPmQaSpec){
                          String selectedParam = String.valueOf(varPmQaSpec.QA_Spec__r.Id);
+                         pmQasUnit =mapQaSpec.get(selectedParam).UOM__c;
                          pmQaSpecList.add(new PmQaSpec(mapQaSpec,soPmQaSpecList,selectedParam,varPmQaSpec.Range__c,varPmQaSpec.UOM__c,varPmQaSpec, varPmQaSpec.Test_Method__c));
-                         pmQasUnit =	mapQaSpec.get(selectedParam).UOM__c;       
+                           System.debug('pmQasUnit==>'+pmQasUnit);    
                      } 
                  } 
                  else{
@@ -393,8 +396,11 @@ public with sharing class RndQuestionsController {
     /*Description : Purpose of this method is to perform save and delete operation.*/
     public void saveRnDDetails(){//persistData
     	boolean isSuccess = true;
+        
         if(onSaveValidate()){
         	try{
+            flagForError = true;
+            allFieldCheck = true;
             list<Where_Used__c> bomsToUpsert = new  list<Where_Used__c>();
             list<Where_Used__c> bomsToDelete = new  list<Where_Used__c>();
             list<PM_Composition__c> pmCompToUpsert = new list<PM_Composition__c>();
@@ -406,13 +412,17 @@ public with sharing class RndQuestionsController {
                 if(b.isRemove == false){
                     tempBomList.add(b);//@new
                     if(!b.rwSelected.equalsIgnoreCase('Select')){
+                        System.debug('^&*^&*^^*^*&^ BOM - ' + b);
                         b.bomRef.Percent__c =  b.percent;
                         b.bomRef.RNumber__c = b.rwSelected;
                         if(b.bomRef.Product__c==null){
                             b.bomRef.Product__c = productID;    
                         }
-                        bomsToUpsert.add(b.bomRef);     
+                        bomsToUpsert.add(b.bomRef);   
+                        System.debug('#%$&^*(&*(() insertinng in list BOM - ' +b.bomRef);
                         totalBomPercent +=b.percent;    
+                    }else{
+                        allFieldCheck = false;
                     }
                 }
                 else{
@@ -435,6 +445,8 @@ public with sharing class RndQuestionsController {
                         }
                         pmCompToUpsert.add(b.PmCompRef);        
                         totalPmInvPercent +=b.percent;
+                    }else{
+                        allFieldCheck = false;
                     }
                 }
                 else{
@@ -463,7 +475,9 @@ public with sharing class RndQuestionsController {
                         pmMixInstructionsObj.pmMixInsRef.Blend__c = false;
                         pmMixInstructionsObj.pmMixInsRef.Blend_RXN__c = true;
                     }   
-                }
+                }else{
+                        allFieldCheck = false;
+                    }
                 pmMixInstructionsObj.pmMixInsRef.Mixing_Details__c=pmMixInstructionsObj.mixingDetails;
                 pmMixInstructionsObj.pmMixInsRef.Order_of_Addition__c=pmMixInstructionsObj.orderOfAddition;
             }
@@ -471,15 +485,20 @@ public with sharing class RndQuestionsController {
             list<PM_Physical_Properties__c> pmPhToDelete = new  list<PM_Physical_Properties__c>();
             list<PmPhysicalProperties> tempPmPhysicalProperties = new List<PmPhysicalProperties>();//@new    
             for(PmPhysicalProperties b:pmPhyPropList){
+                System.debug('%%%%%%%%%%%%%%%%%%%%%%%%% b - ' + b.uom);
                 if(b.isRemove == false){
                     tempPmPhysicalProperties.add(b);//@new
                     if(!b.selectedParam.equalsIgnoreCase('Select')){
                         b.pmPhyPropRef.Physical_Properties__c=b.selectedParam;
                         b.pmPhyPropRef.Value__c = b.value;
+                        //b.pmPhyPropRef.UOM__c = b.uom;
                         if(b.pmPhyPropRef.Project__c==null){
                             b.pmPhyPropRef.Project__c = productID;    
                         }
-                        pmPhToUpsert.add(b.pmPhyPropRef);     
+                        pmPhToUpsert.add(b.pmPhyPropRef);  
+                        System.debug('@@@@@@@@@@ while inserting in upsert list - ' + b.pmPhyPropRef);
+                    }else{
+                       allFieldCheck = false;
                     }
                 }
                 else{
@@ -504,6 +523,8 @@ public with sharing class RndQuestionsController {
                             b.pmQaSpecRef.Product__c = productID;
                         }
                         pmQaToUpsert.add(b.pmQaSpecRef);     
+                    }else{
+                        allFieldCheck = false;
                     }
                 }
                 else{
@@ -514,12 +535,13 @@ public with sharing class RndQuestionsController {
             }
             pmQaSpecList.clear();
             pmQaSpecList.addAll(tempPmQaSpec);//@new
-                flagForError = true;
+                
                 if(!RndQuestionsDomain.upsertBom(bomsToUpsert)){
                     isSuccess = false;
                 }
+                System.debug('#%$&^*(&*(() after upsert in list BOM - ' +bomsToUpsert);
                 if(!RndQuestionsDomain.upsertPmComp(pmCompToUpsert)){
-                    isSuccess = false;
+                    isSuccess = false; 
                 }
                 if(!RndQuestionsDomain.upsertPmMixInstruction(pmMixInstructionsObj.pmMixInsRef)){
                     isSuccess = false;
@@ -527,6 +549,7 @@ public with sharing class RndQuestionsController {
                 if(!RndQuestionsDomain.upsertPmPhysicalPrperties(pmPhToUpsert)){
                     isSuccess = false;
                 }
+                System.debug('$$$$$$$$$$$$$$$$$ after upsert operation pmPhToUpsert - ' + pmPhToUpsert);
                 if(!RndQuestionsDomain.upertPmQaSpec(pmQaToUpsert)){
                     isSuccess = false;
                 }
@@ -566,7 +589,11 @@ public with sharing class RndQuestionsController {
                 
                 pmPhyPropList = new List<PmPhysicalProperties>();
                 List<SelectOption> lstsoParamList =  getSOPmPhyProp();
+               // soParamList = getSOPmPhyProp();
+                //soPhyPropList= getSOPmPhyProp();
+                //list<PM_Physical_Properties__c> trial = TurboPLMSelector.getPhyPropertiesByProductId(productID);
                 for(PM_Physical_Properties__c varPmPhyProp : pmPhToUpsert){
+                    System.debug('^^^^^^^^^^^^^^^^^^^^^ varPmPhyProp.UOM__c - ' + varPmPhyProp.UOM__c);
                     pmPhyPropList.add(new PmPhysicalProperties(mapPhysicalPrpperties,lstsoParamList, varPmPhyProp.Physical_Properties__c, varPmPhyProp.Value__c,varPmPhyProp.UOM__c,varPmPhyProp ));
                 }
                 
@@ -579,20 +606,66 @@ public with sharing class RndQuestionsController {
             }catch(Exception e){
                 flagForError = false;
                 System.debug('ERROR=>'+e);
-                notificationType = 'error';
-                notificationMessage = Label.FailureMessage;
+                //notificationType = 'error';
+               // notificationMessage = e.getDmlMessage(0);// Label.FailureMessage;
                 ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,e.getDmlMessage(0)));
             }  
         }
         //return null;
     }
-    
+     /*Description : Purpose of this method is to check validations before save Data.*/
+    public boolean onSubmitValidate(){
+		boolean Status;
+    try{
+    	Decimal bomPercent = 0;
+    	Decimal casPercent = 0;
+    	boolean bomStatus = true;
+    	boolean casStatus = true;
+        
+        //BOM Percentage Validation 
+    	for(Bom objBOM:bomList){
+    		bomPercent = bomPercent + objBOM.percent;
+    	}
+    	if(bomPercent <100){
+    		bomStatus = false;
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'BOM percentage should be 100%'));
+    	}
+        
+        //cas percent validation  PmComp
+        for(PmComp objCAS:casList){
+            casPercent = casPercent+ objCAS.percent;
+            
+        }
+        if(casPercent <100){
+    			casStatus = false;
+                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'CAS percentage should be 100%'));
+                
+    		}
+        if(bomStatus == true && casStatus == true){
+            Status = true;
+            flagForError = true;
+        }else{
+            Status = false;
+            flagForError = false;
+        }
+        //all fields are filled or not validation
+        if(allFieldCheck == false){
+            flagForError = false;
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,System.Label.SubmitValidationMessage));
+        }
+        }catch(Exception e){
+            System.debug('ERROR='+e.getMessage());
+        }
+    	return Status; 
+    }
     /*Description : Purpose of this method is to submit the product*/
     public void submitRnDDetailsForApproval()
     {
         try{
             //1.save
             saveRnDDetails();
+            
+            if(onSubmitValidate()){
             if(flagForError == true){
                 //2.send the Project for Approval, 
                 Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
@@ -626,6 +699,10 @@ public with sharing class RndQuestionsController {
                     }
                 } 
             }
+        }/*else{
+                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'please enter all details'));
+                
+            }*/
         }catch(Exception e){
             System.debug('ERROR='+e.getMessage());
         }

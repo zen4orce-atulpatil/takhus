@@ -10,8 +10,8 @@
         </div>
 
         <apex:actionFunction name="refreshRawMat" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="hideLoader();"/>
-        <apex:actionFunction name="resetComp" action="{!resetComponent}" reRender="Q1,Q2,Q3,Q4,Q5" />
-        <apex:actionFunction name="Save" action="{!saveRnDDetails}" oncomplete="errorMessageCall();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
+        <apex:actionFunction name="resetComp" action="{!resetComponent}" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="hideLoader();"/>
+        <apex:actionFunction name="Save" action="{!saveRnDDetails}" oncomplete="errorMessageCall();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,Q1,Q2,Q3,Q4,Q5">
             <apex:param name="action" value="save" assignTo="{!actionType}" />
         </apex:actionFunction>
 
@@ -387,7 +387,7 @@
                                         <div class="col-md-2 col-sm-2 col-xs-12 ">
                                             <apex:outputPanel id="qasUnit">
                                                 <apex:outputLabel value="{!pm.uom}" id="qasUnitLabel" />
-                                                <!--                                              <apex:inputText value="{!pm.uom}" id="qaUOM" styleClass="form-control margin" /> -->
+                                                <!--  <apex:inputText value="{!pm.uom}" id="qaUOM" styleClass="form-control margin" /> -->
                                             </apex:outputPanel>
                                         </div>
 
@@ -496,6 +496,8 @@
             var error = $('[id$=errorFlagVal]').val();
             if (error == 'true') {
                 closeAllAndTableRefresh();
+            }else{
+            	hideLoader();
             }
         }
 
@@ -576,6 +578,8 @@
             $('.buttonClose').hide(); /**close button rename as terminated **/
             /** save opp**/
             $('.buttonSave').click(function() {
+                
+                $('[id$=message]').text("");
                 Save();
                 showLoader();
             });
@@ -583,11 +587,13 @@
             //cancel button
             $('.buttonCancel').click(function() {
                 $("#RequiredFieldMessage").text("");
+                showLoader();
                 closeAllPanels();
             });
             
             /** submit opp**/
             $('.buttonFinish').click(function() {
+                $('[id$=message]').text("");
                 $('[id$=ApproverId]').val("0");
                 $('#SCId').text("");
                 ApproveModal();

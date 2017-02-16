@@ -108,7 +108,7 @@
                                                         <th>Product Name</th>
                                                         <th>Trade Name</th>
                                                         <th>Project Type</th>
-                                                        <th>Approval Status</th>
+                                                        <th>Status</th>
                                                         <th>Department</th>
                                                         <th></th>
                                                     </tr>
@@ -206,7 +206,7 @@
                                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                                     <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
-                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewRegulatoryClearanceProject}" onComplete="resetRegulatoryDetails();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!viewRegulatoryClearanceProject}" onComplete="resetRegulatoryDetails(); loadTheWizard();" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
                                                 </div>
                                             </apex:outputPanel>

@@ -49,11 +49,11 @@
         <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
     </head>
     <apex:form id="opp4mktID" styleClass="form-horizontal form-label-left">
-        <apex:actionFunction name="modalSumbitBtn" action="{!udateComments}" oncomplete="refreshMasterTable();hideLoader();">
+        <apex:actionFunction name="modalSumbitBtn" action="{!udateComments}" oncomplete="refreshMasterTable();">
             <apex:param name="buttonClicked" value="" assignTo="{!buttonAction}" />
             <apex:param name="sumbitButton" value="" assignTo="{!oppAction}" />
         </apex:actionFunction>
-        <apex:actionFunction name="refreshMasterTable" oncomplete="makeDataTable();hideLoader();" reRender="masterTablePanel,viewOppPanel,selectProjectPanel" />
+        <apex:actionFunction name="refreshMasterTable" oncomplete="makeDataTable();" reRender="masterTablePanel,viewOppPanel,selectProjectPanel" />
         <apex:actionFunction name="sample" oncomplete="alert('Sample Called')" reRender="createProjectPanel" />
 		<apex:actionFunction name="tableRefresh" oncomplete="makeDataTable(); hideLoader();" reRender="masterTablePanel" />
         <apex:actionFunction name="closeAllAndTableRefresh" oncomplete="makeDataTable(); hideLoader();" action="{!closeAllPanel}" reRender="masterTablePanel,viewOppPanel,selectProjectPanel,createProjectPanel"  />
@@ -115,7 +115,7 @@
                                                             &nbsp;&nbsp;
                                                         </apex:outputPanel>
 
-                                                        <apex:outputPanel rendered="{!(opp.Approval_Status__c ='Approved')}">
+                                                        <apex:outputPanel rendered="{!AND(opp.Approval_Status__c ='Approved',usr.Department=='Marketing')}">
                                                             <apex:commandLink title="Create Project" onclick="showLoader();" oncomplete="hideLoader();" action="{!viewOppportunity}" html-data-toggle="tooltip" reRender="viewOppPanel,selectProjectPanel,createProjectPanel">
                                                                 <i class="glyphicon glyphicon glyphicon-hdd"></i>
                                                                 <apex:param name="oppSelectedId" value="{!opp.Id}" assignTo="{!selectedOppId}" />
@@ -166,8 +166,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <p class="col-md-3 col-sm-3 col-xs-3"></p>
-                                                    <p id="requiredField" class="col-md-9 col-sm-9 col-xs-9"></p>
+                                                    <p class="col-md-5 col-sm-5 col-xs-5"></p>
+                                                    <p id="requiredField" class="col-md-7 col-sm-7 col-xs-7"></p>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Comment">Comments<span class="required">*</span>
@@ -179,8 +179,8 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <input type="hidden" name="buttonClicked" id="bc" />
-                                                <button type="button" class="btn btn-primary" id="saveCreateBtn" data-dismiss="modal" onclick="captureModalInput('savecreate');showLoader();">Save &amp; Create Project</button>
-                                                <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal" onclick="captureModalInput('save');showLoader();">Save</button>
+                                                <button type="button" class="btn btn-primary" id="saveCreateBtn" data-dismiss="modal" onclick="captureModalInput('savecreate');">Save &amp; Create Project</button>
+                                                <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal" onclick="captureModalInput('save');">Save</button>
                                                 <button type="button" class="btn btn-default" id="cancelBtn" onclick="hideLoader();" data-dismiss="modal">Cancel</button>
                                             </div>
                                         </div>
@@ -237,13 +237,14 @@
             <script>
                 /** tooltip on button**/
                 $(document).ready(function() {
-                    hideLoader();
+                    
                     $('[data-toggle="tooltip"]').click(function() {
                         $('.tooltip').fadeOut('fast', function() {
                             $('.tooltip').remove();
                         });
                     });
                     makeDataTable();
+                    hideLoader();
                 });
 
                 function makeDataTable() {
@@ -255,6 +256,7 @@
             			html: true
             		});
                     $("#opportunityDatatable").show();
+                    
                 }
 
                 /* Function for Modal */
@@ -268,6 +270,7 @@
                     } else {
                         $('#saveCreateBtn').attr("data-dismiss", "modal");
                         $('#saveBtn ').attr("data-dismiss", "modal");
+                        showLoader();
                         modalSumbitBtn(buttonClicked, sumbitButton, oppComment);
                     }
                 }
