@@ -80,7 +80,7 @@
                                                         <th>StageName</th>
                                                         <th>ClosedDate</th>
                                                         <th>Amount</th>
-                                                        <th>Approve Status</th>
+                                                        <th>Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>

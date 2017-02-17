@@ -78,49 +78,59 @@
                 <div id="step-1">
                     <div class="form-horizontal form-label-left">
                         <h2 class="StepTitle"></h2>
-                        
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12 "></div>
-                            <div class="col-md-4 col-sm-4 col-xs-12 ">
-                                <apex:outputPanel id="MFPackagesPanel">
-                                <label>Product packages:</label>&nbsp;
-                                <apex:repeat value="{!packagesDetails}" var="pkg">
-                                    <apex:outputText value="{!pkg.Package_Name__c}"></apex:outputText>
-                                    <apex:outputPanel rendered="{!packagesDetails != null && packagesDetails.size > 0}">,</apex:outputPanel>
-                                </apex:repeat>
-                                </apex:outputPanel>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12 "></div>
-                        </div> 
-                        
-                        <div class="form-group">
-                           	<div class="row" >
-                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                               <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Enter manufacturing plant</label>
-                            </div>
+                        <div class = "row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <div class="row" >
+                                        <div class="col-md-4 col-sm-4 col-xs-12"></div>
+                                       <label for="rm" class="col-md-6 col-sm-6 col-xs-12 ">Enter manufacturing plant</label>
+                                    </div>
                                
-                            <apex:outputPanel id="mfPlantPanel"> 	
-                            <apex:repeat value="{!plantsList}" var="plant">
-                                <apex:outputPanel rendered="{!plant.isRemove =false}"> 
-                            		<div class="row">
-                                        <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 form-group">
-                                            <apex:selectList id="plantId" size="1" value="{!plant.selManufacturePlant}"  styleClass="form-control" >
-                                                <apex:selectOptions value="{!plant.PlantDetails}" />
-                                            </apex:selectList>
+                                        <apex:outputPanel id="mfPlantPanel"> 	
+                                        <apex:repeat value="{!plantsList}" var="plant">
+                                            <apex:outputPanel rendered="{!plant.isRemove =false}"> 
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12"></div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                                                        <apex:selectList id="plantId" size="1" value="{!plant.selManufacturePlant}"  styleClass="form-control" >
+                                                            <apex:selectOptions value="{!plant.PlantDetails}" />
+                                                        </apex:selectList>
+                                                    </div>
+                                                    <div id="removeButton" class="col-md-2 col-sm-2 col-xs-12">
+                                                        <!--<button type="submit" class="btn btn-link" onclick="AddMore();return false;">
+                                                            <span class="fa fa-remove plusIconSize"></span></button>	-->
+                                                        <apex:commandLink action="{!plant.removePlantRecord}" onclick="showLoader();" oncomplete="refreshPlantMat();">
+                                                            <span class="fa fa-remove plusIconSize"></span>
+                                                        </apex:commandLink>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel> 
+                                        </apex:repeat> 
+                                        </apex:outputPanel>
+                        		</div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                   
+                                        <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                            <apex:outputPanel id="MFPackagesPanel">
+                                            <label>Product packages:</label>&nbsp;
+                                            <table class="table borderless">
+                                              <apex:repeat value="{!packagesDetails}" var="pkg">  
+                                              <tr>
+                                                 <td><apex:outputText value="{!pkg.Package_Name__c}"></apex:outputText></td>
+                                              </tr> 
+                                              </apex:repeat>
+                                            </table>
+                                            </apex:outputPanel>
                                         </div>
-                                        <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
-                                            <!--<button type="submit" class="btn btn-link" onclick="AddMore();return false;">
-                                                <span class="fa fa-remove plusIconSize"></span></button>	-->
-                                            <apex:commandLink action="{!plant.removePlantRecord}" onclick="showLoader();" oncomplete="refreshPlantMat();">
-                                                <span class="fa fa-remove plusIconSize"></span>
-                                            </apex:commandLink>
-                                        </div>
-                            		</div>
-                                </apex:outputPanel> 
-                           	</apex:repeat> 
-                            </apex:outputPanel>
+                                    <div class="col-md-4 col-sm-4 col-xs-12 "></div>
+                        		</div>  
+                            </div>
                         </div>
+                        
+                        
+                        
                         
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-12"></div>
@@ -133,47 +143,54 @@
                 <div id="step-2">
                     <div class="form-horizontal form-label-left">
                         <h2 class="StepTitle"></h2>
-                        
                         <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12 "></div>
-                            <div class="col-md-4 col-sm-4 col-xs-12 ">
-                                <apex:outputPanel id="MFPackagesPanel1">
-                                <label>Product packages:</label>&nbsp;
-                                <apex:repeat value="{!packagesDetails}" var="pkg">
-                                    <apex:outputText value="{!pkg.Package_Name__c}"></apex:outputText>
-                                    <apex:outputPanel rendered="{!packagesDetails != null && packagesDetails.size > 0}">,</apex:outputPanel>
-                                </apex:repeat>
-                                </apex:outputPanel>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12 "></div>
-                        </div> 
-                        
-                        <div class="form-group">
-                           	<div class="row" >
-                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                               <label for="rm" class="col-md-3 col-sm-3 col-xs-12 ">Enter warehouse location</label>
-                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="row" >
+                                    <div class="col-md-4 col-sm-4 col-xs-12"></div>
+                                   <label for="rm" class="col-md-6 col-sm-6 col-xs-12 ">Enter warehouse location</label>
+                                </div>
                                
-                            <apex:outputPanel id="warehousePanel"> 	
-                            <apex:repeat value="{!warehouseList}" var="wh">
-                                <apex:outputPanel rendered="{!wh.isRemoveWh =false}"> 
-                            		<div class="row">
-                                        <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 form-group">
-                                            <apex:selectList id="warehouseId" size="1" value="{!wh.selWarehousePlant}"  styleClass="form-control" >
-                                                <apex:selectOptions value="{!wh.WarehouseDetails}" />
-                                            </apex:selectList>
+                                <apex:outputPanel id="warehousePanel"> 	
+                                <apex:repeat value="{!warehouseList}" var="wh">
+                                    <apex:outputPanel rendered="{!wh.isRemoveWh =false}"> 
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 col-xs-12"></div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                                                <apex:selectList id="warehouseId" size="1" value="{!wh.selWarehousePlant}"  styleClass="form-control" >
+                                                    <apex:selectOptions value="{!wh.WarehouseDetails}" />
+                                                </apex:selectList>
+                                            </div>
+                                            <div id="removeButton" class="col-md-2 col-sm-2 col-xs-12">
+                                                
+                                                <apex:commandLink action="{!wh.removeWarehouseRecord}" onclick="showLoader();" oncomplete="refreshPlantMat();">
+                                                    <span class="fa fa-remove plusIconSize"></span>
+                                                </apex:commandLink>
+                                            </div>
                                         </div>
-                                        <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
-                                            
-                                            <apex:commandLink action="{!wh.removeWarehouseRecord}" onclick="showLoader();" oncomplete="refreshPlantMat();">
-                                                <span class="fa fa-remove plusIconSize"></span>
-                                            </apex:commandLink>
-                                        </div>
-                            		</div>
-                                </apex:outputPanel> 
-                           	</apex:repeat> 
-                            </apex:outputPanel>
+                                    </apex:outputPanel> 
+                                </apex:repeat> 
+                                </apex:outputPanel>
+                        	</div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                       
+                                            <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                                <apex:outputPanel id="MFPackagesPanel1">
+                                                <label>Product packages:</label>&nbsp;
+                                                <table class="table borderless">
+                                                  <apex:repeat value="{!packagesDetails}" var="pkg">  
+                                                  <tr>
+                                                     <td><apex:outputText value="{!pkg.Package_Name__c}"></apex:outputText></td>
+                                                  </tr> 
+                                                  </apex:repeat>
+                                                </table>
+                                                </apex:outputPanel>
+                                            </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 "></div>
+                        		</div>  
+                            </div>
                         </div>
                         
                     </div>
@@ -234,8 +251,14 @@
     </div>
     <style>
     .RequiredFields {
-            color: red;
-        }
+       color: red;
+    }
+    .table borderless ,td{
+       border-top: none !important;
+    }
+    .plusIconSize {
+       font-size: 20px;
+    }
     </style>
     <script>
         $(document).ready(function() {
@@ -245,8 +268,7 @@
         });
         
         function loadTheWizard() {
-            debugger;
-            $('#wizard').smartWizard({
+             $('#wizard').smartWizard({
                 transitionEffect: 'slide',
                 onLeaveStep: leaveAStepCallback,
                 onFinish: onFinishCallback,

@@ -504,7 +504,7 @@
             return false;
         }
     function reasignUserValidate() {
-        debugger;
+       
             if(CheckUser()) {
 		        $("#submitBtn").attr("data-dismiss", "modal");
                 showLoader();

@@ -8,9 +8,9 @@
             <h2>R&amp;D Questions for NPI  <small>Product Name:&nbsp;{!productNm}</small></h2>
             <div class="clearfix"></div>
         </div>
-
+		<apex:actionFunction name="loaderStop" oncomplete="hideLoader();"/>
         <apex:actionFunction name="refreshRawMat" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="hideLoader();"/>
-        <apex:actionFunction name="resetComp" action="{!resetComponent}" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="hideLoader();"/>
+        <apex:actionFunction name="resetComp" action="{!resetComponent}" reRender="Q1,Q2,Q3,Q4,Q5" oncomplete="loaderStop();"/>
         <apex:actionFunction name="Save" action="{!saveRnDDetails}" oncomplete="errorMessageCall();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,Q1,Q2,Q3,Q4,Q5">
             <apex:param name="action" value="save" assignTo="{!actionType}" />
         </apex:actionFunction>
@@ -539,16 +539,16 @@
             $('[id$=message]').attr('style', 'color:red');
         }
         $(document).ready(function() {
-
+			
             $('#wizard').smartWizard({
                 transitionEffect: 'slide',
                 onLeaveStep: leaveAStepCallback,
                 onFinish: onFinishCallback,
                 onShowStep: onShowStep
             });
-
+           
             function onShowStep(obj, context) {
-                //debugger;
+                
                 $(".buttonPrevious").unbind("click").click(function(e) {
                     e.preventDefault();
                     $("#wizard").smartWizard("goBackward");
