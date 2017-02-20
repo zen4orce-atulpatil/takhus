@@ -76,7 +76,7 @@
         <apex:actionFunction name="tableRefresh" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable" />
         <apex:actionFunction name="closeAllAndTableRefresh" action="{!closeAllAndRerenderTable}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable,wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
         <apex:actionFunction name="closeAllPanels" action="{!closeAllOpenPanels}" oncomplete="hideLoader();" reRender="wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
-        <apex:actionFunction name="rejectProject" action="{!rejectProject}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable" />
+        <apex:actionFunction name="rejectProject" action="{!rejectProject}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable,wrapProjectTabs" />
 		<apex:actionFunction name="reasignProject" action="{!reassignProject}" oncomplete="hideLoader();loadDatatable();" reRender="wrapProjectTabs,wrapProjectPanel,projectTable" />
         
         <body class="nav-md">
@@ -176,10 +176,10 @@
                                             <!--buttons for R&D department -->
                                             <apex:outputPanel rendered="{!AND(usr.Department=='R&D',pro.Department__c=='R&D')}">
                                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                                    <apex:commandButton oncomplete="openRejectCommentModal();" value="Reject" styleClass="btn btn-primary" reRender="blankDivId" />
+                                                    <apex:commandButton onclick="openRejectCommentModal();" value="Reject" styleClass="btn btn-primary" reRender="blankDivId" />
                                                     <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
-                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!displayRndQuestions}" onComplete="resetComp(); hideLoader();" reRender="rndQuestions,wrapProjectPanel,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
+                                                    <apex:commandButton value="Continue" onclick="showLoader();" action="{!displayRndQuestions}" onComplete="resetComp();" reRender="rndQuestions,wrapProjectPanel,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Reassign" onclick="openReassignUserModal();" styleClass="btn btn-primary" immediate="true" reRender="blankDivId" />
                                                 </div>
                                             </apex:outputPanel>
@@ -457,8 +457,8 @@
 
         function CheckComment() {
             var flag = true;
-            var user = $('[id$=comment]').val();
-            if (user == undefined || user == null || user == 'Select') {
+            var comments = $('[id$=comment]').val();
+            if (comments == undefined || comments == null || comments == '') {
                 flag = false;
             }
             return flag;
@@ -499,6 +499,7 @@
         }
 
         function openRejectCommentModal() {
+            $("#rejectMessage").text("");
             $('[id$=comment]').val("");
             $('#rejectComment').modal('show');
             return false;

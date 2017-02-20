@@ -7,12 +7,12 @@
         
         <apex:actionFunction Name="refreshQaSpec" reRender="Q2" oncomplete="hideLoader();"/>
         
-        <apex:actionFunction Name="resetQAQCDetails" action="{!resetComponent}" reRender="Q2" oncomplete="hideLoader();"/>
+        <apex:actionFunction Name="resetQAQCDetails" action="{!resetComponent}" reRender="Q2" oncomplete="loaderStop();"/>
         
-        <apex:actionFunction name="Save" action="{!SaveQASpecDetails}" reRender="Q2" oncomplete="hideLoader(); notifier('{!notificationType}','{!notificationMessage}');">
+        <apex:actionFunction name="Save" action="{!SaveQASpecDetails}" reRender="Q2,errorMessage" oncomplete="errorMessageCall(); hideLoader(); notifier('{!notificationType}','{!notificationMessage}');">
         </apex:actionFunction>
         <apex:actionFunction name="submitForApproval" action="{!saveAndSubmitQaQcSpecDetails}" oncomplete="errorMessageCall();isWizardRerender();hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,errorFlagPanel" />
-        
+		<apex:actionFunction name="loaderStop" oncomplete="hideLoader();"/>        
         <div class="x_title">
             <h2>QA_QC_Specification<small>Product Name:&nbsp;{!projectRec.Product__r.Name}</small></h2>
             <div class="clearfix"></div>
@@ -150,7 +150,6 @@
                                                 <!--<apex:inputField id="ApproverId"  value="{!opp.Approver__c}" />-->
                                                 <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
                                                     <apex:selectOptions value="{!Users}" />
-                                                    <apex:actionSupport event="onclick" oncomplete="flushSHEErrorMessage();" reRender="SHEUserPanel" />
                                                 </apex:selectList>
                                             </div>
                                         </div>
@@ -159,7 +158,7 @@
                             </div>
                             <div id="blankDivId"></div>
                             <div class="modal-footer">
-                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate();">Submit</button>
+                                <button id="submitBtn" type="button" class="btn btn-primary btn-sm" onclick="approverValidate(); ">Submit</button>
                                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -170,11 +169,6 @@
         <!--End of content -->
     </div>
     <script>
-    	
-    	function flushSHEErrorMessage(){
-    		$("#SHEId").text("");
-    	}
-    
     	function isWizardRerender() {
             var error = $('[id$=errorFlagVal]').val();
             if (error == 'true') {
@@ -208,67 +202,13 @@
         }
 
 		function ApproveModal() {
+             $('[id$=message]').text("");
+             $('[id$=ApproverId]').val('0');
             $("#SHEId").text("");
             $('#ModalForApprover').modal('show');
             return false;
         }
     
-    	$(document).ready(function() {
-
-            $('#wizard').smartWizard({
-                transitionEffect: 'slide',
-                onLeaveStep: leaveAStepCallback,
-                onFinish: onFinishCallback,
-                onShowStep: onShowStep
-            });
-
-            function onShowStep(obj, context) {
-                //debugger;
-                $(".buttonPrevious").unbind("click").click(function(e) {
-                    e.preventDefault();
-                    $("#wizard").smartWizard("goBackward");
-                });
-
-                $(".buttonNext").unbind("click").click(function(e) {
-                    e.preventDefault();
-                    $("#wizard").smartWizard("goForward");
-                });
-            }
-
-            function leaveAStepCallback(obj, context) {
-                $(".buttonPrevious").unbind("click");
-                $(".buttonNext").unbind("click");
-                return true;
-            }
-
-            function onFinishCallback(objs, context) {
-
-            }
-
-            $('.buttonNext').addClass('btn btn-primary');
-            $('.buttonPrevious').addClass('btn btn-primary');
-            $('.buttonFinish').addClass('btn btn-primary'); /**finish rename as submit **/
-            $('.buttonSave').addClass('btn btn-primary');
-            $('.buttonCancel').addClass('btn btn-primary');
-            $('.buttonClose').hide(); /**close button rename as terminated **/
-            /** save opp**/
-            $('.buttonSave').click(function() {
-                Save();
-                showLoader();
-            });
-
-            //cancel button
-            $('.buttonCancel').click(function() {
-                $("#RequiredFieldMessage").text("");
-                closeAllPanels();
-            });
-            
-            /** submit opp**/
-            $('.buttonFinish').click(function() {
-                $('[id$=ApproverId]').val("0");
-                $('#SCId').text("");
-                ApproveModal();
-            });
-        });
+    	
     </script>
 </apex:component>

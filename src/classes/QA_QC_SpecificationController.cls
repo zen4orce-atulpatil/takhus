@@ -139,9 +139,8 @@ public class QA_QC_SpecificationController {
                         pmQaToUpsert.add(b.pmQaSpecRef);     
                     }else{
                         selectedAll = false;
-                        notificationType = 'error';
-                        notificationMessage = 'Please Select QA/QC Specification and Test Method';
-                    	//ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Select QA/Qc Specification and Test Method'));	    
+                        flagForError = false;
+                    	ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Select QA/Qc Specification and Test Method'));	    
                     }
                 }
                 else{
@@ -165,8 +164,7 @@ public class QA_QC_SpecificationController {
         }catch(Exception e){
             flagForError = false;
             System.debug('ERROR='+e.getMessage());
-            notificationType = 'error';
-            notificationMessage = Label.FailureMessage;
+            
         }    
     }
     

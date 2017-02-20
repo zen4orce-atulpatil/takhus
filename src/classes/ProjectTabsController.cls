@@ -122,4 +122,36 @@ public with sharing class  ProjectTabsController {
         }
             return prdPkg;
     }
+    public List<ProcessInstance> getapprovalList(){
+       List<ProcessInstance> approvalList = new List<ProcessInstance>();
+       // List<StepsAndWorkitems> approvalListWI = new List<StepsAndWorkitems>();
+        try{
+            approvalList= [SELECT Id, (SELECT ID, 
+                                       ProcessNodeId,
+                                       StepStatus,
+                                       Comments,
+                                       TargetObjectId,
+                                       ActorId,
+                                       CreatedById,
+                                       IsDeleted,
+                                       IsPending,
+                                       OriginalActorId,
+                                       ProcessInstanceId,
+                                       RemindersSent,
+                                       CreatedDate, 
+                                       Actor.Name, 
+                                       OriginalActor.Name, 
+                                       ProcessNode.Name,
+                                       ElapsedTimeInDays
+                                       FROM StepsAndWorkitems order by CreatedDate DESC) 
+							FROM ProcessInstance 
+                           	where TargetObjectId =: projectRecord.Id order by CreatedDate DESC];
+            //approvalListWI = 
+            System.debug('approvalList - ' + approvalList+'StepsAndWorkitems.Workitems'+approvalList[0].StepsAndWorkitems);
+                
+        }catch(Exception e){
+           System.debug('ERROR'+e.getMessage()); 
+       	}
+    	return approvalList;
+    }
 }

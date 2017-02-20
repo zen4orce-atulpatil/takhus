@@ -89,6 +89,37 @@
                                     </div>
                                     
                                 </div>
+                                <div class="x_content">
+                                	<table id="apprvlProcessDatatable"  class="table table-striped table-bordered dt-responsive nowrap" width="100%">
+                                    	<thead>
+                                            <tr>
+                                            	<th>Department </th>
+                                                <th>User</th>
+                                                <th>Status</th>
+                                                <th>Action Date</th>
+                                                <th>Elapsed Time(In Days)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<apex:repeat value="{!approvalList}" var="ap">
+                                            	<apex:repeat value="{!ap.StepsAndWorkitems}" var="app">
+                                                	<tr>
+                                                    	<td>{!app.ProcessNode.Name}</td>
+                                                        <td>{!app.Actor.Name}</td>
+                                                        <td>{!app.StepStatus}</td>
+                                       					<td>
+                                                        	<apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                                            	<apex:param value="{!app.CreatedDate}" />
+                                                        	</apex:outputText>
+                                                        </td>
+                                                        <td>{!LEFT(TEXT(app.ElapsedTimeInDays),4)}</td>
+                                                        
+                                                    </tr>
+                                                </apex:repeat>
+                                            </apex:repeat>
+                                    	</tbody>
+                                	</table>
+                                </div>
                             </apex:outputPanel>
                         </div>
                         <!--End Project Detail Tab-->
@@ -529,4 +560,13 @@
              	</div>
             </div>
     </div>
+    <script>
+    	$('#apprvlProcessDatatable').dataTable({
+                "aaSorting": [],
+            	"ordering": false,
+            	"bFilter": false,
+            	"bLengthChange": false
+        });
+		$('#apprvlProcessDatatable').show();
+    </script>
 </apex:component>

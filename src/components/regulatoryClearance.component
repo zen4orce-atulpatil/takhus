@@ -23,11 +23,11 @@
         </div>
         <apex:actionFunction name="AddMore" action="{!addRegClearanceWrapperObj}" oncomplete="hideLoader();" reRender="regClearancePanel"/>
         <apex:actionFunction name="refreshRegulatoryClearance" oncomplete="hideLoader();" reRender="regClearancePanel"/>
-        <apex:actionFunction name="resetRegulatoryDetails" action="{!resetComponent}" oncomplete="hideLoader();" reRender="regClearancePanel" />
+        <apex:actionFunction name="resetRegulatoryDetails" action="{!resetComponent}" oncomplete="loaderStop();" reRender="regClearancePanel" />
 		<apex:actionFunction name="Save" action="{!saveRegulatoryClearanceDetails}" oncomplete="errorMessageCall();hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
         </apex:actionFunction>            
         <apex:actionFunction name="submitForApproval" action="{!submitRCDetailsForApproval}" oncomplete="errorMessageCall();isWizardRerender();notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage,errorFlagPanel" />
-
+		<apex:actionFunction name="loaderStop" oncomplete="hideLoader();"/>
         <div class="x_content">
         	<div class="row">
                 <p class="col-md-5 col-sm-5 col-xs-5"></p>
@@ -229,7 +229,7 @@
     </style>
     <script>
     $(document).ready(function() {
-            loadTheWizard();
+        //loadTheWizard();
             hideLoader();
            enableButton();
         });
@@ -249,6 +249,7 @@
             
             /** save opp**/
             $('.buttonSave').click(function() {
+                debugger;
                 $('#RequiredFieldMessage').text("")
                 $('[id$=message]').text("");
                 Save();
@@ -334,6 +335,7 @@
             return flag;
         }
     function approverValidate() {
+        debugger;
             if (Checkapprover()) {
 		        $("#submitBtn").attr("data-dismiss", "modal");
                 showLoader();
