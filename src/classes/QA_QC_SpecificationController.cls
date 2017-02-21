@@ -10,6 +10,7 @@ public class QA_QC_SpecificationController {
     public List<SelectOption> soPmQaSpecList;
     public map<id,QA_Spec__c> mapQaSpec = new map<id,QA_Spec__c>();
     public boolean flagForError{get;set;}
+    public boolean selectedAll;
     public String notificationType{get;set;}
     public String notificationMessage{get;set;}
     
@@ -19,7 +20,7 @@ public class QA_QC_SpecificationController {
             if(testMethodsSOList == null){
                 testMethodsSOList = new List<SelectOption>();
                 List<Test_Method__c> lstTestMethods = new List<Test_Method__c>([select Id,Name from Test_Method__c]);
-                testMethodsSOList.add(new SelectOption('Select','---Select---'));
+                testMethodsSOList.add(new SelectOption('Select','--Select--'));
                 for(Test_Method__c varTestMethod : lstTestMethods){
                     testMethodsSOList.add(new SelectOption(varTestMethod.Id,varTestMethod.Name));    
                 }
@@ -121,7 +122,7 @@ public class QA_QC_SpecificationController {
     //Description:- Purpose of this method is to save the details specified.
     public void SaveQASpecDetails(){
     	flagForError = true;
-        boolean selectedAll = true;
+        selectedAll = true;
         List<PmQaSpec> tempPmQasList = new List<PmQaSpec>();
         try{
             list<PM_QA_Spec__c> pmQaToUpsert = new list<PM_QA_Spec__c>();
@@ -129,19 +130,32 @@ public class QA_QC_SpecificationController {
             for(PmQaSpec b:pmQaSpecList){
                 if(b.isRemove==false){ 
                     tempPmQasList.add(b);
-                    if(b.pmQaSpecRef!=null &&!b.selectedParam.equalsIgnoreCase('Select') && !b.selectedTestMethod.equalsIgnoreCase('Select')){
+                    if(b.pmQaSpecRef!=null &&!b.selectedParam.equalsIgnoreCase('Select')){
                         b.pmQaSpecRef.QA_Spec__c =  b.selectedParam;
-                        b.pmQaSpecRef.Range__c = b.range;
-                        b.pmQaSpecRef.Test_Method__c = b.selectedTestMethod;
+                        
+                        if(b.range!=''){
+                        	b.pmQaSpecRef.Range__c = b.range;  
+                        }else{
+                            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please enter value for Range')); 
+        					flagForError = false;
+                            selectedAll = false;
+                        }
+                        if(b.selectedTestMethod!='Select'){
+                           b.pmQaSpecRef.Test_Method__c = b.selectedTestMethod;  
+                        }else{
+                            b.selectedTestMethod = null;
+                            selectedAll = false;
+                        }
+                       
                         if( b.pmQaSpecRef.Product__c==null){
                             b.pmQaSpecRef.Product__c = projectRecord.Product__c;
-                        }
+                        }//&&b.range.equalsIgnoreCase('')
+                        
                         pmQaToUpsert.add(b.pmQaSpecRef);     
                     }else{
-                        selectedAll = false;
-                        flagForError = false;
-                    	ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Select QA/Qc Specification and Test Method'));	    
+                         selectedAll = false;
                     }
+                   
                 }
                 else{
                     if(b.pmQaSpecRef.Id!=null){
@@ -151,14 +165,17 @@ public class QA_QC_SpecificationController {
             }
             pmQaSpecList.clear();
             pmQaSpecList.addAll(tempPmQasList);
-            if(selectedAll){
-                if(QA_QC_SpecificationDomain.upsertQaQcSpecification(pmQaToUpsert)){
-                    notificationType = 'success';
-                    notificationMessage = Label.SaveMessage;    
-                }    
-            }
+            
+            if(!QA_QC_SpecificationDomain.upsertQaQcSpecification(pmQaToUpsert)){
+                flagForError = false; 
+            }    
             pmQaToUpsert = null;
-            if(QA_QC_SpecificationDomain.deleteQaQcSpecification(pmQaToDelete)){
+            if(!QA_QC_SpecificationDomain.deleteQaQcSpecification(pmQaToDelete)){
+                flagForError = false;
+            }
+            if(flagForError == true){
+                notificationType = 'success';
+ 				notificationMessage = Label.SaveMessage; 
             }
             pmQaToDelete = null;
         }catch(Exception e){
@@ -167,12 +184,24 @@ public class QA_QC_SpecificationController {
             
         }    
     }
-    
+    /*Description : Purpose of this method is to check validations before submit Data.*/
+    public boolean onSubmitValidate(){
+        boolean Status;
+        if(selectedAll == false){
+            flagForError = false;
+            Status = false;
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Select QA/Qc Specification and Test Method')); 
+        }else{
+            Status = true;
+        }
+        return Status;
+    }
     //Description:- Purpose of this method is to save changes and submit to next department.
     public void saveAndSubmitQaQcSpecDetails(){
     	 try{
             //1.save
             SaveQASpecDetails();
+            if(onSubmitValidate()){
             if(flagForError == true){
                 //2.send the Project for Approval, 
                 Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
@@ -206,6 +235,7 @@ public class QA_QC_SpecificationController {
                     }
                 } 
             }
+          }
         }catch(Exception e){
             System.debug('ERROR='+e.getMessage());
             notificationType = 'error';

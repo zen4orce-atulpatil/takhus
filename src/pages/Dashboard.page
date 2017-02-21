@@ -99,9 +99,17 @@
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <div class="x_panel">
                                         <div class="x_title ">
-                                            <h4>Monthly Project view for you</h4>
+                                            <h4>Overall monthly project status</h4>
                                         </div>
-                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
+                                        <analytics:reportChart reportId="00O41000007JAKq" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h4>Monthly project view for you</h4>
+                                        </div>
+                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
@@ -109,15 +117,7 @@
                                         <div class="x_title">
                                             <h4>Your performance</h4>
                                         </div>
-                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-4">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <h4>Your performance</h4>
-                                        </div>
-                                        <!--<analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>-->
+                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
                                     </div>
 
                                 </div>
@@ -133,7 +133,7 @@
                                     <a href="/apex/OpportunitySales" class="navigate">
                                         <div class="tile-stats bgcolor">
                                             <div class="count1">
-                                                <i class="fa fa-caret-square-o-right white"></i>
+                                                <i class="fa fa-lightbulb-o white"></i>
                                                 <h4 class="white">Opportunity</h4>
                                             </div>
                                             <p class="dashboard-description">New/Update</p>
@@ -144,7 +144,7 @@
                                     <a href="/apex/OpportunityMarketing" class="navigate">
                                         <div class="tile-stats bgcolor">
                                             <div class="count1">
-                                                <i class="fa fa-comments-o white"></i>
+                                                <i class="fa fa-rocket white"></i>
                                             </div>
                                             <h4 class="white">NPI</h4>
                                             <p class="dashboard-description">New product introduction
@@ -156,9 +156,9 @@
                                     <a href="/apex/Projects" class="navigate">
                                         <div class="tile-stats bgcolor">
                                             <div class="count1">
-                                                <i class="fa fa-sort-amount-desc white"></i>
+                                                <i class="fa fa-gears white"></i>
                                             </div>
-                                            <h4 class="white">Project</h4>
+                                            <h4 class="white">Open Project</h4>
                                             <p class="dashboard-description">Project Maintenance
                                             </p>
                                         </div>
@@ -167,7 +167,7 @@
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <div class="tile-stats bgcolor">
                                         <div class="count1">
-                                            <i class="fa fa-check-square-o white"></i>
+                                            <i class="fa fa-flask white"></i>
                                         </div>
                                         <h4 class="white">Raw material</h4>
                                         <p class="dashboard-description">New raw material introduction
@@ -177,7 +177,7 @@
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <div class="tile-stats bgcolor">
                                         <div class="count1">
-                                            <i class="fa fa-check-square-o white"></i>
+                                            <i class="fa fa-cubes white"></i>
                                         </div>
                                         <h4 class="white">Maintenance of RM</h4>
                                         <p class="dashboard-description">Maintenance of existing RM
