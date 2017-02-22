@@ -12,7 +12,7 @@
             <apex:actionFunction name="SaveProduct" action="{!saveProductAndProject}" onComplete="tableRefresh(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage">
         </apex:actionFunction>
         <apex:actionFunction name="SaveandSubmit" action="{!saveAndSubmit}" oncomplete="closeAllAndTableRefresh();errorMessageCall(); notifier('{!notificationType}','{!notificationMessage}');" reRender="errorMessage"/>
-        <apex:actionFunction name="CloseProject" action="{!updateProjectStatus}" oncomplete="hideLoader(); notifier('{!notificationType}','{!notificationMessage}');" reRender="tempDivId"/> 
+        <apex:actionFunction name="CloseProject" action="{!updateProjectStatus}" oncomplete="closeAllAndTableRefresh(); notifier('{!notificationType}','{!notificationMessage}');" reRender="tempDivId"/> 
 		<apex:actionFunction name="resetComponent" action="{!resetComponent}" reRender="s1,s2,s3,s4,s5,s6"/>
             <apex:outputPanel id="RequiredFieldMessagePanel">
                 <div class="row">
@@ -216,7 +216,7 @@
                                     </apex:outputPanel>   
                                 </div>
                                 <div class="row">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ApproverId">Marketer Name:</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ApproverId">Approver Name</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <apex:selectList id="ApproverId" size="1" value="{!selectedUser}" styleClass="form-control col-md-7 col-xs-12">
                                              <apex:selectOptions value="{!Users}" />
@@ -379,7 +379,7 @@
             }
          else{ 
          $("#prjSubmitBtn").attr("data-dismiss","");
-                         $("#rndApprover").text("Please select R&D!");
+                         $("#rndApprover").text("Please select R&D Approver!");
             } 
      }
     function Checkapprover()

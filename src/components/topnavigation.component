@@ -1,5 +1,6 @@
 <apex:component controller="TopNavigationController">
-    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+    <!-- CAUSES CONFLICT - ATUL 22 Feb 2017
+    <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />-->
     <div class="top_nav">
         <div class="nav_menu">
             <nav>

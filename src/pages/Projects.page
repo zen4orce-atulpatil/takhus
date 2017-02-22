@@ -130,11 +130,16 @@
                                                                     <apex:param name="prodName" value="{!pro.Product__r.Name}" assignTo="{!productName}"></apex:param>
                                                                 </apex:commandLink> &nbsp;&nbsp;
 																<!-- {!OR(pro.Approval_Status__c =='Not Submitted',pro.Approval_Status__c =='Rejected')}-->
-                                                                <apex:outputPanel rendered="{!AND(usr.Department=='Marketing',pro.Department__c=='Marketing')}">
+                                                                <apex:outputPanel rendered="{!AND(usr.Department=='Marketing',pro.Department__c=='Marketing',pro.Status__c!='Terminated')}">
                                                                     <apex:commandLink title="Edit" onclick="showLoader();" oncomplete="showCloseProjectBtn(); hideLoader();" action="{!editProjectDetails}" reRender="wrapProjectPanel,wrapProjectTabs,rndQuestions,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel,wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" html-data-toggle="tooltip">
                                                                         <i class="glyphicon glyphicon-pencil"></i>
                                                                         <apex:param name="projectId" value="{!pro.id}" assignTo="{!projectId}" />
                                                                     </apex:commandLink>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!pro.Status__c=='Terminated'}">
+                                                                    <apex:outputLink title="Lock" html-data-toggle="tooltip" disabled="true">
+                                                                        <i class="glyphicon glyphicon-lock"></i>
+                                                                    </apex:outputLink>
                                                                 </apex:outputPanel>
                                                             </td>
                                                         </tr>
