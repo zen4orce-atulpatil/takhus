@@ -9,7 +9,7 @@
                     
                     <div class="clearfix"></div>
                   </div>
-                  <apex:actionFunction name="save" action="{!saveProduct}" oncomplete="hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="projectStatus">
+                  <apex:actionFunction name="save" action="{!saveProduct}" oncomplete="closeAllAndTableRefresh();notifier('{!notificationType}','{!notificationMessage}');" reRender="temp">
                       <apex:param name="erpDataList" value="" assignTo="{!erpData}"/>
                   </apex:actionFunction>
                   <div class="x_content">
@@ -32,17 +32,6 @@
                               </div>
                           </div>
                          </div>
-                         <div class="form-group">
-                            <apex:outputPanel id="projectStatus">
-                            <label class="control-label col-sm-3"></label>
-                            <label class="control-label col-sm-4" for="email">Project Status:</label>
-                            <div class="col-sm-4">
-                                <div class="col-sm-6 form-group">
-                                    <apex:outputText value="{!projectRecord.Status__c}"></apex:outputText>
-                                </div>
-                            </div>
-                            </apex:outputPanel>
-                        </div>
                         <div class="form-group">        
                           <div class="col-sm-offset-5 col-sm-10">
                             <br/>

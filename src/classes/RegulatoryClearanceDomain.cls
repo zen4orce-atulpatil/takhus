@@ -22,6 +22,21 @@ public class RegulatoryClearanceDomain {
        return results.isSuccess();
     }
     
+    //14-2-2017
+    /*Description : Purpose of this method is to delete RegulatoryClearance record*/
+    public static boolean deleteRegulatoryClearance(List<PM_Regulatory_Clearance__c> regClearanceList){
+        boolean isSuccess = true;
+        if(regClearanceList.size()>0){
+			Database.DeleteResult[] results = Database.delete(regClearanceList,false);
+            for(Integer i=0;i<results.size();i++){
+                if(!results[i].isSuccess()){
+                    isSuccess = false;	
+                }	
+            }           
+        }
+        return isSuccess;
+    }
+    
     /*Description : Purpose of this method is to save/submit the project to SHE department.*/
     public static boolean  submitProjectToQAQC(Project__c prjToUpsert){
         prjToUpsert.Approval_Status__c = 'Submitted';

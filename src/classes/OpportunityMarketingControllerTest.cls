@@ -95,4 +95,14 @@ public class OpportunityMarketingControllerTest {
         OMC.opp = lstOpportunity[0];
         OMC.udateComments();
     }
+    
+    @isTest
+    public static void testCloseAllPanel(){
+        OppMarketingController OMC = new OppMarketingController();
+        OMC.closeAllPanel();
+        System.assertEquals(false,OMC.renderCreateProjectPanel);
+        System.assertEquals(false,OMC.rendereViewOppPanel);
+        System.assertEquals(false,OMC.renderSelectProject);
+    }
+    
 }

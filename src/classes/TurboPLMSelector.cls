@@ -360,7 +360,11 @@ public with sharing class TurboPLMSelector {
     
     /*Description : Purpose of this method is to return Bom list for the .*/
     public static List<Where_Used__c> getBomList(String productId){
-        List<Where_Used__c> lstBom = [SELECT Id,Percent__c,RNumber__r.Name,RNumber__r.Id,Product__c FROM Where_Used__c where Product__c=:productId];
+        List<Where_Used__c> lstBom = [SELECT Id,
+                                      Percent__c,
+                                      RNumber__r.Name,
+                                      RNumber__r.Id,
+                                      Product__c FROM Where_Used__c where Product__c=:productId];
         return lstBom;
     }
     

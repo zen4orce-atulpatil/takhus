@@ -70,6 +70,11 @@ public with sharing class ProjectDomain {
     	database.delete(lstChemRegulationIds);	    
     }
     
+    /*Description : Purpose of this method is to delete Pm_Application Records.*/
+    public static void deletePm_ApplicationRecords(PM_Application__c pmApplicationToDelete){
+        Database.delete(pmApplicationToDelete);
+    }
+    
     /*Description : Purpose of this method is to save the Product package.*/
     public static void insertProductPkg(List<Product_Pkg__c> lstProductPkg){
         insert lstProductPkg; 

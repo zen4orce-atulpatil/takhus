@@ -22,7 +22,8 @@ public class CostingDomain {
     /*Description : Purpose of this method is to save the project */
     public static boolean saveCostingProject(Project__c projectRecord){
         boolean isSuccess = true;
-        projectRecord.Status__c='Completed';
+        projectRecord.Approval_Status__c ='Completed';
+        projectRecord.Department__c = '';
         Database.UpsertResult results = Database.upsert(projectRecord);
       	return isSuccess;      
     }

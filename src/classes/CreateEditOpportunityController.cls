@@ -8,7 +8,7 @@ public class CreateEditOpportunityController {
     
     public Opportunity opp;
     public Opportunity oppRec{get;set;}
-    public String accId{get;set;}
+   // public String accId{get;set;}
     public String selectedUser{get;set;}
     public String notificationMessage{get;set;}
     public String notificationType{get;set;}
@@ -22,10 +22,12 @@ public class CreateEditOpportunityController {
         try{
             if(oppRec==null){
                 opp = new Opportunity();
-                accId = 'Select';
+                //accId = '001000000000000';
+                opp.AccountId = '001000000000000';
             }else{
+                    opp = new Opportunity();
                     opp = oppRec;
-                    accId= oppRec.AccountId;
+                    //accId= oppRec.AccountId;
                     selectedUser = oppRec.Approver__c;
             }   
         }catch(Exception e){
@@ -33,7 +35,13 @@ public class CreateEditOpportunityController {
        	}
         return opp; 
     }
-	
+    //reset method 
+    /*public void resetCreateOpp(){
+        opp=null;
+        oppRec =null;
+        System.debug('*****reset method opp:==.'+opp);
+        System.debug('*****reset method oppRec:==.'+oppRec);
+    }*/
 	/*Description : Purpose of this method is to prepare a list of type SelectOption for account object*/
     public List<SelectOption> getAccounts(){
         try{

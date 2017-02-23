@@ -89,8 +89,8 @@ public with sharing class OpportunitySalesControllerTest {
     public static void testDeleteOpportunityNegative(){
         OpportunitySalesController OSC = new OpportunitySalesController();
     	List<Opportunity> lstOpportunity = OSC.getfetchOpportunities();
-    	OSC.oppId = lstOpportunity[0].Id;
-        delete lstOpportunity[0];
+    	OSC.oppId = lstOpportunity[1].Id;
+        delete lstOpportunity[1];
     	OSC.deleteOpportunity();
         System.assertEquals(Label.FailureMessage,OSC.notificationMessage);
     }

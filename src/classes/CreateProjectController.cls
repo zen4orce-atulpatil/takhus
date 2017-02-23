@@ -91,9 +91,7 @@ public class CreateProjectController {
     
     //Purpose of this method is to set selected value of Application__c.
     public void setSelectedValue(String selValue){
-        if(selValue != 'Select'){
             this.selectedValue= selValue;            
-        }
     }
     
     //Purpose of this method is to populate Regulatory__c with checkbox.    
@@ -216,6 +214,12 @@ public class CreateProjectController {
                 }
                 PMApplication.Applications__c = selectedValue;    
                 ProjectDomain.upsertPMApplication(PMApplication);
+            }
+            else{// 14-2-2017
+                if(PMApplication!=null){
+                    ProjectDomain.deletePm_ApplicationRecords(PMApplication);
+                    PMApplication = null;
+                }
             }
         }catch(Exception e){
             System.debug('ERROR='+e.getMessage());

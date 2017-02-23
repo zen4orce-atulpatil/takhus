@@ -39,7 +39,7 @@ public with sharing class RndQuestionsController {
     }
     
     //Description : Purpose of this method is return SelectOption List to display raw material.
-    private List<SelectOption> getRawMaterials(){
+    public List<SelectOption> getRawMaterials(){
         try{
             if(soList == null){
                 list<RawMaterial__c> rawMaterialList = new list<RawMaterial__c>();
@@ -95,6 +95,7 @@ public with sharing class RndQuestionsController {
             }
         }catch(Exception e){
             System.debug('ERROR='+e.getMessage());
+            System.debug('Line Number='+e.getLineNumber());
         }            
         return bomList;
     }

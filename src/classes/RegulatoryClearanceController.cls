@@ -103,53 +103,67 @@ public class RegulatoryClearanceController {
     }
     //Description : Purpose of this method is save regulatory clearance details and product.
     public void saveRegulatoryClearanceDetails(){
-        boolean isSuccess = true;
         //upsert regulatory
-        List<PM_Regulatory_Clearance__c> regulatoryToUpsert = new List<PM_Regulatory_Clearance__c>();
-        List<PM_Regulatory_Clearance__c> regulatoryToDelete = new List<PM_Regulatory_Clearance__c>();
+        System.debug('rcWrapperList--->'+rcWrapperList);
          try{
-           		flagForError = true;
-                for(RegulatoryClearanceWrapper rw:rcWrapperList){
-				
-                if(rw.isRemoveRegulatory==false){
-                    if(!rw.selRegulatoryClearance.equalsIgnoreCase('Select')){
-                        if(rw.regulatoryClearanceRef.Project__c==null){
-                            rw.regulatoryClearanceRef.Project__c= productRecord.Id;
-                        }
-                        	rw.regulatoryClearanceRef.Regulatory_List__c = rw.selRegulatoryClearance;
-                        	regulatoryToUpsert.add(rw.regulatoryClearanceRef);
-                    }else{
-                        	flagForError = false;//check whether this will be replaced by notificationtype variable
-                        	notificationType = '';
-             				notificationMessage = '';
-                            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'please select regulatory clearance'));
-                           }
-                }else{
-                    if(rw.regulatoryClearanceRef.Id!=null){
-                    	regulatoryToDelete.add(rw.regulatoryClearanceRef);          	
-                    }
-                }
-                
-            }
-             if(flagForError == true){
-                 if(!RegulatoryClearanceDomain.updateRegulatoryClearanceProduct(productRecord)){
-                    isSuccess = false; 
+             
+             flagForError = true;
+             boolean isSuccess = true;
+             List<PM_Regulatory_Clearance__c> regulatoryToUpsert = new List<PM_Regulatory_Clearance__c>();
+             List<PM_Regulatory_Clearance__c> regulatoryToDelete = new List<PM_Regulatory_Clearance__c>();
+             for(RegulatoryClearanceWrapper rw:rcWrapperList){
+                 System.debug('********************** rw.selRegulatoryClearance -' + rw.selRegulatoryClearance);
+                 if(rw.isRemoveRegulatory==false){
+                     
+                     if(rw.selRegulatoryClearance != null){
+                         if(rw.selRegulatoryClearance !=null && !rw.selRegulatoryClearance.equalsIgnoreCase('Select')){
+                             if(rw.regulatoryClearanceRef.Project__c==null){
+                             rw.regulatoryClearanceRef.Project__c= productRecord.Id;
+                         		}
+                         rw.regulatoryClearanceRef.Regulatory_List__c = rw.selRegulatoryClearance;
+                         regulatoryToUpsert.add(rw.regulatoryClearanceRef);
+                         }
+                         else{
+                             flagForError = false;//check whether this will be replaced by notificationtype variable
+                             notificationType = '';
+                             notificationMessage = '';
+                             ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'please select regulatory clearance'));
+                     	}
+                     }
+                 }else{
+                     if(rw.regulatoryClearanceRef.Id!=null){
+                         regulatoryToDelete.add(rw.regulatoryClearanceRef);          	
+                     }
                  }
-                if(!RegulatoryClearanceDomain.upsertRegulatoryClearance(regulatoryToUpsert)){
-                	isSuccess = false;
-                }
-                if(isSuccess){
-                	notificationType = 'success';
-                    notificationMessage = Label.SaveMessage;
-                }else{
-                	notificationType = 'warning';
-                    notificationMessage = Label.PartialSaveMessageRnD;
-                }
+                 
              }
-    	}catch(Exception e){
+             if(flagForError == true){
+                 //14-2-2017
+                 /*if(!RegulatoryClearanceDomain.updateRegulatoryClearanceProduct(productRecord)){
+				isSuccess = false; 
+				}*/
+                 if(!RegulatoryClearanceDomain.upsertRegulatoryClearance(regulatoryToUpsert)){
+                     isSuccess = false;
+                 }
+                 regulatoryToUpsert = null;
+                 
+                 //for(RegulatoryClearanceWrapper rw:rcWrapperList){
+                 RegulatoryClearanceDomain.deleteRegulatoryClearance(regulatoryToDelete);
+                 regulatoryToDelete=null;	 
+                 if(isSuccess){
+                     notificationType = 'success';
+                     notificationMessage = Label.SaveMessage;
+                 }else{
+                     notificationType = 'warning';
+                     notificationMessage = Label.PartialSaveMessageRnD;
+                 }
+             }
+         }catch(Exception e){
             flagForError = false;
             notificationType = '';
             notificationMessage = '';
+            System.debug('Exception===>'+e);
+            System.debug('Line Number--->'+e.getLineNumber());
             ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,e.getMessage()));
         }     
     } 

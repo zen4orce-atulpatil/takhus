@@ -20,14 +20,14 @@ public class CostingController {
            isSuccessProduct = true;
            
         }
-        if(CostingDomain.saveCostingProject(projectRecord)){
+        /*if(CostingDomain.saveCostingProject(projectRecord)){
            isSuccessProject = true;
-        }
-        if(isSuccessProject == true && isSuccessProduct ==true){
+        }*/
+        /*if(isSuccessProduct ==true){
            notificationType = 'success';
            notificationMessage = Label.ProjectCompleteMessage; 
-        }
-        //
+        }*/
+      
          Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
                 req.setComments('Approving request');
                 req.setAction('Approve');
@@ -40,8 +40,12 @@ public class CostingController {
                     req.setWorkitemId(workItemId);
                     // Submit the request for approval
                     Approval.ProcessResult result =  Approval.process(req);
+                    if(result.isSuccess()){
+            			CostingDomain.saveCostingProject(projectRecord);
+                        notificationType = 'success';
+           				notificationMessage = Label.ProjectCompleteMessage; 
+        			}
                 }
-      //  
     }
      //Purpose of this method is to get ProcessInstanceWorkitem record for given object.
     public Id getWorkItemId(Id targetObjectId)

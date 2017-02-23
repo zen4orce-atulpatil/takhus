@@ -198,4 +198,52 @@ public class ProjectControllerTest {
         System.assertEquals(true,PC.prod!=null);
         System.assertEquals(true,PC.isRenderQaQc);    
     }
+    
+    @isTest
+    public static void testViewSHEProject(){
+        ProjectController PC = new ProjectController();
+    	List<Project__c> lstProjects = PC.getfetchProjects();
+        PC.projectId = lstProjects[1].Id;
+        PC.productId = lstProjects[1].Product__c;    
+        PC.viewSHEProject();
+        System.assertEquals(true,PC.pro!=null);
+        System.assertEquals(true,PC.prod!=null);
+        System.assertEquals(true, PC.isRerenderSHE);
+    }
+    
+    @isTest
+    public static void testViewMFGProject(){
+        ProjectController PC = new ProjectController();
+    	List<Project__c> lstProjects = PC.getfetchProjects();
+        PC.projectId = lstProjects[1].Id;
+        PC.productId = lstProjects[1].Product__c;    
+        PC.viewMFGProject();
+        System.assertEquals(true,PC.pro!=null);
+        System.assertEquals(true,PC.prod!=null);
+        System.assertEquals(true, PC.isRenderMfg);    
+    }
+    
+    @isTest
+    public static void testViewWHProject(){
+    	ProjectController PC = new ProjectController();
+    	List<Project__c> lstProjects = PC.getfetchProjects();
+        PC.projectId = lstProjects[1].Id;
+        PC.productId = lstProjects[1].Product__c;    
+        PC.viewWHProject();
+        System.assertEquals(true,PC.pro!=null);
+        System.assertEquals(true,PC.prod!=null);
+        System.assertEquals(true, PC.isRenderWh);    
+    }
+    
+    @isTest
+    public static void testViewCostingProject(){
+    	ProjectController PC = new ProjectController();
+    	List<Project__c> lstProjects = PC.getfetchProjects();
+        PC.projectId = lstProjects[1].Id;
+        PC.productId = lstProjects[1].Product__c;    
+        PC.viewCostingProject();
+        System.assertEquals(true,PC.pro!=null);
+        System.assertEquals(true,PC.prod!=null);
+        System.assertEquals(true, PC.isRenderCosting);    
+    }
 }

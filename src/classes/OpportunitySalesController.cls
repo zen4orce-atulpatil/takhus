@@ -93,14 +93,17 @@ public class OpportunitySalesController
                 if(CreateEditOpportunityDomain.deleteOpportunity(opportunityMap.get(oppId))){
                     notificationMessage = Label.DeleteMessage;
                 	notificationType = 'success';
-                }else{
+                }
+                //17-2-2017
+                /*else{
                     notificationMessage = Label.FailureMessage;
                 	notificationType = 'error';    
-                }
+                }*/
             }
             opportunityMap.remove(oppId);
             oppId = null;
         }catch(Exception e){
+          notificationType = 'error';   
           notificationMessage = Label.FailureMessage;  
           System.debug('ERROR'+e.getMessage()); 
        }            
