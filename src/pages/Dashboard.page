@@ -29,22 +29,56 @@
         <!-- NProgress -->
         <!--Changed Custom CSS-->
         <apex:stylesheet value="{!URLFOR($Resource.NewTurboPLM, 'NewTurboPLM/css/custom.css')}" />
+        <style>
+        .dashboardIcon{
+    		margin: 5px 0px -6px 0px;
+         }
+            .color1{
+            	background: #16a085 !important;
+            }
+            .color1:hover{
+  				background: #1abc9c !important;
+            	transform:rotate(360deg);
+			}
+            
+            .color2{
+            background: #8e44ad !important;
+            }
+            .color2:hover{
+  				background: #9b59b6 !important;
+            	transform:rotate(360deg);
+			}
+            
+            .color3{
+            background: #c0392b !important;
+            }
+            .color3:hover{
+  				background: #e74c3c !important;
+            	transform:rotate(360deg);
+			}
+            .color4{
+            background: #673AB7 !important;
+            }
+            .color4:hover{
+  				background: #AB47BC !important;
+            	transform:rotate(360deg);
+			}
+            .color5{
+            background: #e67e22 !important;
+            }
+            .color5:hover{
+  				background: #d35400 !important;
+            	transform:rotate(360deg);
+			}
+        </style>
         <script>
-            j$ = jQuery.noConflict();
-            var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
-                j$BODY = j$('body'),
-                j$MENU_TOGGLE = j$('#menu_toggle'),
-                j$SIDEBAR_MENU = j$('#sidebar-menu'),
-                j$SIDEBAR_FOOTER = j$('.sidebar-footer'),
-                j$LEFT_COL = j$('.left_col'),
-                j$RIGHT_COL = j$('.right_col'),
-                j$NAV_MENU = j$('.nav_menu'),
-                j$FOOTER = j$('footer');
+        //j$ = jQuery.noConflict();
+           
             var lsttask = {!taskJson};
 
-            j$(document).ready(function() {
-                hideLoader();
-                j$('#ItemsToApproveTable').dataTable({
+            $(document).ready(function() {
+                hideLoader(); 
+                $('#ItemsToApproveTable').dataTable({
                     "aaSorting": []
                 });
                 var taskRecords = [];
@@ -57,7 +91,7 @@
                         "duedate": item.duedate
                     });
                 }
-                var tasktable = j$('#opentasks').DataTable({
+                var tasktable = $('#opentasks').DataTable({
                     data: taskRecords,
                     "oLanguage": {
                         "sInfo": "_TOTAL_ entries", //"_START_ to _END_ of _TOTAL_ entries",
@@ -78,7 +112,7 @@
                     }]
                 });
                 
-                j$(".navigate").click(function(){
+                $(".navigate").click(function(){
             		showLoader();
             	});
             });
@@ -99,64 +133,58 @@
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <div class="x_panel">
                                         <div class="x_title ">
-                                            <h4>Overall monthly project status</h4>
+                                            <h4>Overall Monthly Project Status</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000007JAKq" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000007JAKq" size="tiny" cacheResults="false"></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <div class="x_panel">
                                         <div class="x_title">
-                                            <h4>Monthly project view for you</h4>
+                                            <h4>Monthly Project View For You</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" ></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <div class="x_panel">
                                         <div class="x_title">
-                                            <h4>Your performance</h4>
+                                            <h4>Your Performance</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" showRefreshButton="true"></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" ></analytics:reportChart>
                                     </div>
 
                                 </div>
                             </div>
-                            <div class="row x_title">
-                                <div class="col-md-6">
-                                    <h3>Create a New Project</h3>
-                                </div>
-                                <div class="col-md-6"></div>
-                            </div>
                             <div class="row">
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/OpportunitySales" class="navigate">
-                                        <div class="tile-stats bgcolor">
+                                        <div class="tile-stats color1">
                                             <div class="count1">
-                                                <i class="fa fa-lightbulb-o white"></i>
+                                                <i class="fa fa-lightbulb-o white dashboardIcon"></i>
                                                 <h4 class="white">Opportunity</h4>
                                             </div>
-                                            <p class="dashboard-description">New/Update</p>
+                                            <p class="dashboard-description">New / Update</p>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/OpportunityMarketing" class="navigate">
-                                        <div class="tile-stats bgcolor">
+                                        <div class="tile-stats color2">
                                             <div class="count1">
-                                                <i class="fa fa-rocket white"></i>
+                                                <i class="fa fa-rocket white dashboardIcon"></i>
                                             </div>
                                             <h4 class="white">NPI</h4>
-                                            <p class="dashboard-description">New product introduction
+                                            <p class="dashboard-description">New Product Introduction
                                             </p>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/Projects" class="navigate">
-                                        <div class="tile-stats bgcolor">
+                                        <div class="tile-stats color3">
                                             <div class="count1">
-                                                <i class="fa fa-gears white"></i>
+                                                <i class="fa fa-gears white dashboardIcon"></i>
                                             </div>
                                             <h4 class="white">Open Project</h4>
                                             <p class="dashboard-description">Project Maintenance
@@ -165,24 +193,28 @@
                                     </a>
                                 </div>
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
-                                    <div class="tile-stats bgcolor">
+                                    <a href="/apex/Dashboard" class="navigate">
+                                    <div class="tile-stats color4">
                                         <div class="count1">
-                                            <i class="fa fa-flask white"></i>
+                                            <i class="fa fa-flask white dashboardIcon"></i>
                                         </div>
                                         <h4 class="white">Raw material</h4>
-                                        <p class="dashboard-description">New raw material introduction
+                                        <p class="dashboard-description">New Raw Material Introduction
                                         </p>
-                                    </div>
+                                    </div> 
+                                    </a>
                                 </div>
                                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
-                                    <div class="tile-stats bgcolor">
+                                    <a href="/apex/Dashboard" class="navigate">
+                                    <div class="tile-stats color5">
                                         <div class="count1">
-                                            <i class="fa fa-cubes white"></i>
+                                            <i class="fa fa-cubes white dashboardIcon"></i>
                                         </div>
                                         <h4 class="white">Maintenance of RM</h4>
-                                        <p class="dashboard-description">Maintenance of existing RM
+                                        <p class="dashboard-description">Maintenance Of Existing RM
                                         </p>
                                     </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -192,8 +224,15 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="x_panel">
+                                    	<div class="x_title row">
+                                    		<div class="col-md-10 col-sm-10 col-xs-10">
+                                        		<h2>All Open Tasks</h2>
+                                    		</div>
+                                    		<div class="col-md-2 col-sm-2 col-xs-2">
+                                    		</div>
+                                    		<div class="clearfix"></div>
+                                		</div>
                                         <div class="x_title">
-                                            <h2>All Open Tasks</h2>
                                             <table id="opentasks" class="display">
                                                 <thead>
                                                     <tr>
@@ -211,11 +250,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
+                            <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <apex:outputPanel id="itemsToApproveTableOpPanel">
                             <div class="x_panel">
@@ -251,6 +286,9 @@
                                 </div>
                             </div>
                         </apex:outputPanel>
+                    </div>
+                </div>
+                        </div>
                     </div>
                 </div>
             </div>
