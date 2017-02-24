@@ -102,7 +102,6 @@
                                             </apex:selectList>
                                         </div>
                                         <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
-                                            	
                                             <apex:commandLink action="{!reg.removeRegulatoryRecord}" onclick="showLoader();" oncomplete="refreshRegulatoryClearance();">
                                                 <span class="fa fa-remove plusIconSize"></span>
                                             </apex:commandLink>
@@ -136,13 +135,9 @@
                                 	<apex:selectList id="MSDSId" size="1" value="{!productRecord.MSDS__c}"  styleClass="form-control" >
                                 		<apex:selectOption itemValue="True" itemLabel="Yes"></apex:selectOption>
                                         <apex:selectOption itemValue="False" itemLabel="No"></apex:selectOption>
-                                       <!-- <apex:actionSupport event="onchange" onsubmit="showLoader();"  oncomplete="enableButton();loadTheWizard();hideLoader();" reRender="regWizardPanel" />-->
-                                	</apex:selectList>
+                                    </apex:selectList>
                                 </div>
-                                <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
-                                            
-                                           
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -162,13 +157,9 @@
                                 	<apex:selectList id="allRegFunctionId" size="1" value="{!productRecord.All_Regulatory_Functions__c}" styleClass="form-control" >
                                 		<apex:selectOption itemValue="True" itemLabel="Yes"></apex:selectOption>
                                         <apex:selectOption itemValue="False" itemLabel="No"></apex:selectOption>
-                                        <!--<apex:actionSupport event="onchange" onsubmit="showLoader();"  oncomplete="enableButton();loadTheWizard();hideLoader();" reRender="Q3" />
-                                -->	</apex:selectList>
+                                    </apex:selectList>
                                 </div>
-                                <div id="removeButton" class="col-md-1 col-sm-1 col-xs-12">
-                                            
-                                           
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -220,12 +211,15 @@
         </div>
     </div>
     <style>
+    .plusIconSize {
+            font-size: 20px;
+    }
     .RequiredFields {
             color: red;
-        }
+    }
     .form_wizard .stepContainer {
             height: 200px!important;
-        }
+    }
     </style>
     <script>
     $(document).ready(function() {

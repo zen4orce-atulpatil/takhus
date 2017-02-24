@@ -49,14 +49,13 @@
         <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/custom.css')}" />
     </head>
     <apex:form id="opp4mktID" styleClass="form-horizontal form-label-left">
-        <apex:actionFunction name="modalSumbitBtn" action="{!udateComments}" oncomplete="refreshMasterTable();">
+        <apex:actionFunction name="modalSumbitBtn" action="{!updateComments}" oncomplete="refreshMasterTable();">
             <apex:param name="buttonClicked" value="" assignTo="{!buttonAction}" />
             <apex:param name="sumbitButton" value="" assignTo="{!oppAction}" />
         </apex:actionFunction>
         <apex:actionFunction name="refreshMasterTable" oncomplete="makeDataTable();" reRender="masterTablePanel,viewOppPanel,selectProjectPanel" />
-        <apex:actionFunction name="sample" oncomplete="alert('Sample Called')" reRender="createProjectPanel" />
-		<apex:actionFunction name="tableRefresh" oncomplete="makeDataTable(); hideLoader();" reRender="masterTablePanel" />
-        <apex:actionFunction name="closeAllAndTableRefresh" oncomplete="makeDataTable(); hideLoader();" action="{!closeAllPanel}" reRender="masterTablePanel,viewOppPanel,selectProjectPanel,createProjectPanel"  />
+        <apex:actionFunction name="tableRefresh" oncomplete="makeDataTable();" reRender="masterTablePanel" />
+        <apex:actionFunction name="closeAllAndTableRefresh" oncomplete="makeDataTable();" action="{!closeAllPanel}" reRender="masterTablePanel,viewOppPanel,selectProjectPanel,createProjectPanel"  />
         
         <body class="nav-md">
             <div class="container body">
@@ -201,7 +200,7 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12 ">
                                                         <apex:selectList id="ProjectType" value="{!selectedProjectType}" size="1" required="true" styleClass="form-control col-md-7 col-xs-12">
                                                             <apex:selectOptions value="{!projectTypeOptionList}"/>
-                                                            <apex:actionSupport event="onchange" onsubmit="showLoader();" action="{!viewCreateProjectPanel}" oncomplete="hideLoader(); resetComponent();" reRender="createProjectPanel"></apex:actionSupport>
+                                                            <apex:actionSupport event="onchange" onsubmit="showLoader();" action="{!viewCreateProjectPanel}" oncomplete="resetComponent();" reRender="createProjectPanel"></apex:actionSupport>
                                                         </apex:selectList>
                                                     </div>
                                                 </div>
@@ -219,9 +218,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <apex:outputPanel id="createProjectPanel">
                                     <apex:outputPanel rendered="{!renderCreateProjectPanel}">
-                                       <!-- <c:NewCreateProject oppId="{!selectedOppId}"></c:NewCreateProject>-->
                                       <c:CreateProject oppId="{!selectedOppId}"></c:CreateProject>
-                                        <!--<c:createprojectsample oppId="{!selectedOppId}"></c:createprojectsample>-->
                                     </apex:outputPanel>
                                 </apex:outputPanel>
                             </div>
@@ -248,6 +245,7 @@
                 });
 
                 function makeDataTable() {
+                    hideLoader();
                     $('#opportunityDatatable').dataTable({
                         "aaSorting": []
                     });

@@ -139,9 +139,9 @@ public class RegulatoryClearanceController {
              }
              if(flagForError == true){
                  //14-2-2017
-                 /*if(!RegulatoryClearanceDomain.updateRegulatoryClearanceProduct(productRecord)){
+                 if(!RegulatoryClearanceDomain.updateRegulatoryClearanceProduct(productRecord)){
 				isSuccess = false; 
-				}*/
+				}
                  if(!RegulatoryClearanceDomain.upsertRegulatoryClearance(regulatoryToUpsert)){
                      isSuccess = false;
                  }

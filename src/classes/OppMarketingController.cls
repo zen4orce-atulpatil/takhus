@@ -82,7 +82,7 @@ public class OppMarketingController {
     }
     
     //Description : Purpose of this method is to update the approval status of project and add comment
-    public void udateComments() {
+    public void updateComments() {
         try{
         if(opp != null && opp.id != null && buttonAction != null && buttonAction != '' && oppAction != null && oppAction != '') {
             CreateEditOpportunityDomain.updateOpportunity(opp, buttonAction);
