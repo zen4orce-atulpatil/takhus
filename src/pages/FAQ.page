@@ -1,0 +1,85 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>FAQ</title>
+        <!-- jQuery -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />
+        <!-- Bootstrap -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/bootstrap.js')}" />
+        <!-- Custom Theme Scripts-->
+        <apex:includeScript value="{!URLFOR($Resource.NewTurboPLM, 'NewTurboPLM/js/newcustom.js')}" />
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/bootstrap.css')}" />
+        <!-- Font Awesome -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/font-awesome.css')}" />
+        <!-- Datatable JS -->
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/jquery.dataTables.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/dataTables.buttons.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/datatable/buttons.bootstrap.min.js')}" />
+        <!-- DataTable CSS -->
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/dataTables.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/buttons.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/fixedHeader.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/responsive.bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/css/datatable/scroller.bootstrap.min.css')}" />
+        <!-- NProgress -->
+        <!--Changed Custom CSS-->
+        <apex:stylesheet value="{!URLFOR($Resource.NewTurboPLM, 'NewTurboPLM/css/custom.css')}" />
+    </head>
+    <apex:form >
+    	<div class="container body">
+            <div class="main_container">
+                <!-- sidebar -->
+                <c:sidebar ></c:sidebar>
+                <!-- top navigation -->
+                <c:topnavigation ></c:topnavigation>
+                	<div class="right_col" role="main">
+                		<div class="row">
+                    		<div class="col-md-12 col-sm-12 col-xs-12">
+                            	<div class="x_panel">
+                                    <div class="x_title row">
+                                    	<div class="col-md-10 col-sm-10 col-xs-10">
+                                        	<h2>FAQ</h2>
+                                    	</div>
+                                    	<div class="col-md-2 col-sm-2 col-xs-2">
+                                    	</div>
+                                    	<div class="clearfix"></div>
+                                	</div>
+                                    <!-- Enter your content here -->
+                                	<p><strong>What is TurboPLM</strong><strong>TM</strong><strong>?</strong></p>
+                                    <p><span style="font-weight: 400;">TurboPLM</span><span style="font-weight: 400;">TM</span><span style="font-weight: 400;"> is the first of its kind, a product lifecycle management system specifically developed for the chemical industries.</span></p>
+                                    <p>&nbsp;</p>
+                                    <p><strong>Who developed TurboPLM</strong><strong>TM</strong><strong>?</strong></p>
+                                    <p><span style="font-weight: 400;">TurboPLM</span><span style="font-weight: 400;">TM</span><span style="font-weight: 400;"> is the flagship product of a newly formed startup company, Takhus, LLC. &nbsp;The system is built by two industrial experts in <br/>chemical product management processes and information technologies. &nbsp;The team has a combined experience of more than 40 years.</span></p>
+                                    <p>&nbsp;</p>
+                                    <p><strong>How is TurboPLM</strong><strong>TM</strong><strong> different from other PLM systems in the marketplace?</strong></p>
+                                    <p><span style="font-weight: 400;">The readily available PLM systems have the one size fits all approach. &nbsp;Although these PLM systems adequately support industries with <br/>numerous discrete components, they do not support industries, like Chemicals, which have only a few discrete components but significant <br/> complexity in other areas.</span></p>
+                                    <p>&nbsp;</p>
+                                    <p><strong>What are the key features of TurboPLM</strong><strong>TM</strong><strong>?</strong></p>
+                                    <p><span style="font-weight: 400;">The system has several features over other similar systems which make it attractive to functions, such as, R&amp;D, marketing, regulatory <br/>affairs, to name a few. &nbsp;Couples of exemplary features are;</span></p>
+                                    <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Easy to understand step by step questionnaires</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Chemical regulatory inventory flags at the early stage of the product formulation</span></li>
+                                    </ul>
+                                    <p>&nbsp;</p>
+                                    <p><strong>Where can I get more information and demo?</strong></p>
+                                    <p><span style="font-weight: 400;">Please visit us at </span><a href="http://www.takhus.com"><span style="font-weight: 400;">www.takhus.com</span></a><span style="font-weight: 400;">. &nbsp;We are currently seeking opportunities for beta testing of our minimally viable product.</span></p>
+                                    <!-- Enter your content here -->
+                                    <br/>
+                                </div>
+                        	</div>
+                        </div>
+                </div>
+                <!--footer -->
+                <c:footer ></c:footer>
+            </div>
+        </div>
+    </apex:form>
+    <script>
+    	hideLoader();
+    </script>
+</apex:page>
