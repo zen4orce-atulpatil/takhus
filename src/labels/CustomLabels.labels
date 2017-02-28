@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Approval_Process_Initiated_Error</fullName>
+        <categories>Approval Process</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Approval Process Initiated Error</shortDescription>
+        <value>Approval process for the selected record not found. Please contact administrator.</value>
+    </labels>
+    <labels>
+        <fullName>CreateProjectSaveValidationMessage</fullName>
+        <categories>Validation</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CreateProjectSaveValidationMessage</shortDescription>
+        <value>Please enter Commercial Name.</value>
+    </labels>
+    <labels>
+        <fullName>DeleteMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DeleteMessage</shortDescription>
+        <value>Opportunity deleted successfully.</value>
+    </labels>
+    <labels>
+        <fullName>FailureMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FailureMessage</shortDescription>
+        <value>Internal Server Error Occurred. Please contact administrator</value>
+    </labels>
+    <labels>
+        <fullName>PartialSaveMessageRnD</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>PartialSaveMessageRnD</shortDescription>
+        <value>R&amp;D details saved partially</value>
+    </labels>
+    <labels>
+        <fullName>ProjectCompleteMessage</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ProjectCompleteMessage</shortDescription>
+        <value>Project Completed Successfully</value>
+    </labels>
+    <labels>
+        <fullName>RnD_BOM_Percentage_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD_BOM_Percentage_Validation</shortDescription>
+        <value>BOM total percentage should not be greater than 100%</value>
+    </labels>
+    <labels>
+        <fullName>RnD_CAS_Repeat_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD_CAS_Repeat_Validation</shortDescription>
+        <value>CAS should not be selected more than once</value>
+    </labels>
+    <labels>
+        <fullName>RnD_PhysicalProperty_Size_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD_PhysicalProperty_Size_Validation</shortDescription>
+        <value>value size should not be greater than 50</value>
+    </labels>
+    <labels>
+        <fullName>RnD_Product_Composition_Percentage_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD Product Composition Percentage Validation</shortDescription>
+        <value>Product Composition total percentage should not be greater than 100%</value>
+    </labels>
+    <labels>
+        <fullName>RnD_QAQC_Range_Manditory_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD_QAQC_Range_Manditory_Validation</shortDescription>
+        <value>You must enter value for range</value>
+    </labels>
+    <labels>
+        <fullName>RnD_QAQC_Range_Size_Validation</fullName>
+        <categories>R&amp;D</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RnD_QAQC_Range_Size_Validation</shortDescription>
+        <value>Range size should not be greater than 50</value>
+    </labels>
+    <labels>
+        <fullName>SC_Manufacturing_Plant_Validation</fullName>
+        <categories>SC</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SC Manufacturing Plant Validation</shortDescription>
+        <value>Please select manufacturing plant</value>
+    </labels>
+    <labels>
+        <fullName>SC_Warehouse_Plant_Validation</fullName>
+        <categories>SC</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SC Warehouse Plant Validation</shortDescription>
+        <value>Please select warehouse plant</value>
+    </labels>
+    <labels>
+        <fullName>SaveMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SaveMessage</shortDescription>
+        <value>Record created successfully</value>
+    </labels>
+    <labels>
+        <fullName>SaveValidationForSales</fullName>
+        <categories>Validation</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SaveValidationForSales</shortDescription>
+        <value>Please enter Opportunity Name and Close Date.</value>
+    </labels>
+    <labels>
+        <fullName>SubmitMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SubmitMessage</shortDescription>
+        <value>Record submitted successfully</value>
+    </labels>
+    <labels>
+        <fullName>SubmitValidationMessage</fullName>
+        <categories>Validation</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SubmitValidationMessage</shortDescription>
+        <value>Please enter all details.</value>
+    </labels>
+    <labels>
+        <fullName>TerminateMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TerminateMessage</shortDescription>
+        <value>Record terminated successfully</value>
+    </labels>
+    <labels>
+        <fullName>UpdateMessage</fullName>
+        <categories>Toaster Message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UpdateMessage</shortDescription>
+        <value>Record updated successfully</value>
+    </labels>
+    <labels>
+        <fullName>systemNotification</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>systemNotification</shortDescription>
+        <value>System will down from 8pm- 2am for maintainance</value>
+    </labels>
+</CustomLabels>

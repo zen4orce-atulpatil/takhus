@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>User selection for Switch to Turbo PLM Classic option</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>TurboPLMClassic__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>TurboPLMClassic</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>UserSelection</label>
+    <visibility>Public</visibility>
+</CustomObject>
