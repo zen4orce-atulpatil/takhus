@@ -77,7 +77,7 @@
         <apex:actionFunction name="closeAllAndTableRefresh" action="{!closeAllAndRerenderTable}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable,wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
         <apex:actionFunction name="closeAllPanels" action="{!closeAllOpenPanels}" oncomplete="hideLoader();" reRender="wrapProjectPanel,rndQuestions,wrapProjectTabs,wrapSCQuestionsPanel,wrapProcurementPanel,wrapRegulatoryPanel, wrapQAQCPanel,wrapSHEPanel,wrapMFGPanel,wrapWHPanel,wrapCostingPanel" />
         <apex:actionFunction name="rejectProject" action="{!rejectProject}" oncomplete="loadDatatable(); hideLoader();" reRender="projectTable,wrapProjectTabs" />
-		<apex:actionFunction name="reasignProject" action="{!reassignProject}" oncomplete="loadDatatable();hideLoader();" reRender="wrapProjectTabs,wrapProjectPanel,projectTable" />
+		<apex:actionFunction name="reasignProject" action="{!reassignProject}" oncomplete="hideLoader();loadDatatable();" reRender="wrapProjectTabs,wrapProjectPanel,projectTable" />
         
         <body class="nav-md">
             <div class="container body">

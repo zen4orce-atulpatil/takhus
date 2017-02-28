@@ -11,7 +11,7 @@
                       <apex:param name="allWHFunctionsLst" value="" assignTo="{!allWhFunctions}"/>
                       <apex:param name="erpDataLst" value="" assignTo="{!whERP}"/>
                   </apex:actionFunction>
-                  <apex:actionFunction name="submitForApproval" action="{!submitWHDetailsForApproval}" oncomplete="closeAllAndTableRefresh();notifier('{!notificationType}','{!notificationMessage}');" reRender="temp">
+                  <apex:actionFunction name="submitForApproval" action="{!submitWHDetailsForApproval}" oncomplete="closeAllAndTableRefresh();hideLoader();notifier('{!notificationType}','{!notificationMessage}');" reRender="temp">
                       <apex:param name="allWHFunctionsLst" value="" assignTo="{!allWhFunctions}"/>
                       <apex:param name="erpDataLst" value="" assignTo="{!whERP}"/>
                   </apex:actionFunction>  

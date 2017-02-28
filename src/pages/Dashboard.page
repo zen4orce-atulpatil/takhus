@@ -70,6 +70,13 @@
   				background: #d35400 !important;
             	transform:rotate(360deg);
 			}
+            .color6{
+            	background: #2196F3 !important;
+            }
+            .color6:hover{
+  				background: #64B5F6 !important;
+            	transform:rotate(360deg);
+			}
         </style>
         <script>
         //j$ = jQuery.noConflict();
@@ -135,15 +142,15 @@
                                         <div class="x_title ">
                                             <h4>Overall Monthly Project Status</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000007JAKq" size="tiny" cacheResults="false"></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000007JGR9" size="tiny" cacheResults="false"></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <div class="x_panel">
                                         <div class="x_title">
-                                            <h4>Monthly Project View For You</h4>
+                                            <h4>Open Project</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" ></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000007JGQL" size="tiny" cacheResults="false" ></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
@@ -151,77 +158,90 @@
                                         <div class="x_title">
                                             <h4>Your Performance</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000004925m" size="tiny" cacheResults="false" ></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000007JGW4" size="tiny" cacheResults="false" ></analytics:reportChart>
                                     </div>
 
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                           <div class="row ">
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/OpportunitySales" class="navigate">
                                         <div class="tile-stats color1">
                                             <div class="count1">
                                                 <i class="fa fa-lightbulb-o white dashboardIcon"></i>
                                                 <h4 class="white">Opportunity</h4>
                                             </div>
-                                            <p class="dashboard-description">New / Update</p>
+                                           <!-- <p class="dashboard-description">New / Update</p>-->
                                         </div>
                                     </a>
                                 </div>
-                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/OpportunityMarketing" class="navigate">
                                         <div class="tile-stats color2">
                                             <div class="count1">
                                                 <i class="fa fa-rocket white dashboardIcon"></i>
                                             </div>
                                             <h4 class="white">NPI</h4>
-                                            <p class="dashboard-description">New Product Introduction
-                                            </p>
+                                           <!-- <p class="dashboard-description">New Product Introduction
+                                            </p>-->
                                         </div>
                                     </a>
                                 </div>
-                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/Projects" class="navigate">
                                         <div class="tile-stats color3">
                                             <div class="count1">
                                                 <i class="fa fa-gears white dashboardIcon"></i>
                                             </div>
                                             <h4 class="white">Open Project</h4>
-                                            <p class="dashboard-description">Project Maintenance
-                                            </p>
+                                            <!--<p class="dashboard-description">Project Maintenance
+                                            </p>-->
                                         </div>
                                     </a>
                                 </div>
-                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                    <a href="/apex/Projects" class="navigate">
+                                        <div class="tile-stats color6">
+                                            <div class="count1">
+                                                <i class="fa fa-gear white dashboardIcon"></i>
+                                            </div>
+                                            <h4 class="white">Product</h4>
+                                           <!-- <p class="dashboard-description">Maintenance of Product
+                                            </p>-->
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/Dashboard" class="navigate">
                                     <div class="tile-stats color4">
                                         <div class="count1">
                                             <i class="fa fa-flask white dashboardIcon"></i>
                                         </div>
                                         <h4 class="white">Raw material</h4>
-                                        <p class="dashboard-description">New Raw Material Introduction
-                                        </p>
+                                        <!--<p class="dashboard-description">New Raw Material Introduction
+                                        </p>-->
                                     </div> 
                                     </a>
                                 </div>
-                                <div class="animated flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
+                                <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
                                     <a href="/apex/Dashboard" class="navigate">
                                     <div class="tile-stats color5">
                                         <div class="count1">
                                             <i class="fa fa-cubes white dashboardIcon"></i>
                                         </div>
-                                        <h4 class="white">Maintenance of RM</h4>
-                                        <p class="dashboard-description">Maintenance Of Existing RM
-                                        </p>
+                                        <h4 class="white">RM Maintenance</h4>
+                                        <!--<p class="dashboard-description">Maintenance Of Existing RM
+                                        </p>-->
                                     </div>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                
                             </div>
                             <div class="clearfix"></div>
                             <!-- table-->
-                            <div class="row">
+                            <!--<div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="x_panel">
                                     	<div class="x_title row">
@@ -249,7 +269,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <apex:outputPanel id="itemsToApproveTableOpPanel">
@@ -278,7 +298,11 @@
                                                     <td>{!ITA.relatedTo}</td>
                                                     <td>{!ITA.objType}</td>
                                                     <td>{!$User.FirstName} {!$User.LastName}</td>
-                                                    <td>{!ITA.dateSubmitted}</td>
+                                                    <td>
+                                                    	<apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                                        	<apex:param value="{!ITA.dateSubmitted}" />
+                                                        </apex:outputText>
+                                                    </td>
                                                 </tr>
                                             </apex:repeat>
                                         </tbody>

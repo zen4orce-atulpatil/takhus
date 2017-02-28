@@ -1,5 +1,5 @@
 <apex:component >
-  	<!-- CAUSES CONFLICT 
+  	<!-- CAUSES CONFLICT  ATUL 22 Feb 2017
 	<apex:includeScript value="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/js/jquery.js')}" />-->
     <apex:includeScript value="{!URLFOR($Resource.toastr, 'toastr/toastr.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.toastr, 'toastr/toastr.css')}" />
