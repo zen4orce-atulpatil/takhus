@@ -33,8 +33,7 @@
 								<ul class="nav side-menu">
 									<li><a href="/apex/Dashboard"><i class="fa fa-home"></i>
 											Home </a>
-										<ul class="nav child_menu">
-										</ul></li>
+									</li>
 									<li><a href="/apex/Dashboard"><i
 											class="fa fa-bar-chart"></i> Reports <span class="fa"></span></a></li>
 									<li><a href="/apex/Dashboard"><i
@@ -67,15 +66,11 @@
 							<div class="menu_section">
 								<h3>Help Center</h3>
 								<ul class="nav side-menu">
-									<li><a href="/apex/Dashboard"><i
-											class="fa fa-bug"></i> FAQ <span class="fa"></span></a>
-										<ul class="nav child_menu">
-											<li><a href="e_commerce.html">E-commerce</a></li>
-											<li><a href="projects.html">Projects</a></li>
-											<li><a href="project_detail.html">Project Detail</a></li>
-											<li><a href="contacts.html">Contacts</a></li>
-											<li><a href="profile.html">Profile</a></li>
-										</ul></li>
+									<li><a href="https://c.na35.visual.force.com/apex/FAQ">
+                                            <i class="fa fa-bug"></i> FAQ 
+                                            <span class="fa"></span>
+                                        </a>
+									</li>
 									<li><a href="/apex/Dashboard"><i
 											class="fa fa-windows"></i>Training Material<span class="label label-success pull-right">Coming Soon</span> </a>
 										<ul class="nav child_menu">
