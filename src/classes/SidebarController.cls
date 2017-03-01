@@ -5,7 +5,7 @@ Created Date : November 2016
 */
 
 public class SidebarController {
-
+    public String userImageURL{get;set;}
     public string taskJson{get;set;}
     public string param{get;set;}
     public List<Task> lstOpenTask;
@@ -21,6 +21,7 @@ public class SidebarController {
     	lstDueTask = new List<Task>([select Subject,WhatId,Status,ActivityDate from task where OwnerId=:uid]);
         loggedInUserId = UserInfo.getUserId();
         usr =[Select Department,Name From User where Id=:loggedInUserId limit 1];
+        userImageURL = TopNavigationDomain.getUserImage(uid);
     }
     
     //Purpose of this method is to return Open task in json string

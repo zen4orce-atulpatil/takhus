@@ -11,7 +11,7 @@
                     <li class="">
                         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                            <!-- {!userImageURL} atul--> 
-                            <apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}" style="border-radius: 50%;" width="50" height="50" /> {!$User.FirstName} {!$User.LastName} <span class=" fa fa-angle-down"></span>
+                            <apex:image url="{!userImageURL}" style="border-radius: 50%;" width="50" height="50" /> {!$User.FirstName} {!$User.LastName} <span class=" fa fa-angle-down"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-usermenu pull-right">
                             <li style="displaye:none;" id="switchToClassic"><a href="https://c.na35.visual.force.com/">Switch to Turbo PLM Classic</a></li>
@@ -28,7 +28,7 @@
                             <li>
                                 <a>
                                     <span> 
-										<apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}"
+										<apex:image url="{!userImageURL}"
 											style=" margin:15px;border-radius: 50%;" width="50"
 											height="50" />
 									</span>
@@ -43,7 +43,7 @@
                             <li>
                                 <a>
                                     <span class="image">
-										<apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}"
+										<apex:image url="{!userImageURL}"
 											width="50" height="50" /> </span> <span> <span>Mustafa
 											Jhabuawala</span> <span class="time">3 mins ago</span>
                                     </span>
@@ -54,7 +54,7 @@
                             </li>
                             <li>
                                 <a>
-                                    <span class="image"><apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}"
+                                    <span class="image"><apex:image url="{!userImageURL}"
 											width="50" height="50" /> </span> <span> <span>Mustafa
 											Jhabuawala</span> <span class="time">3 mins ago</span>
                                     </span>
@@ -66,7 +66,7 @@
                             <li>
                                 <a>
                                     <span class="image">
-										<apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}"
+										<apex:image url="{!userImageURL}"
 												width="50" height="50" /> </span> <span> <span>Mustafa
 												Jhabuawala</span> <span class="time">3 mins ago</span>
                                     </span>

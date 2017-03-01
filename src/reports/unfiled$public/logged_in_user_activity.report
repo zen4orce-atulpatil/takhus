@@ -11,13 +11,13 @@
         <chartType>Pie</chartType>
         <enableHoverLabels>true</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Project__c.Department__c</groupingColumn>
+        <groupingColumn>Project__c.Approval_Status__c</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_TOP</location>
         <showAxisLabels>false</showAxisLabels>
         <showPercentage>true</showPercentage>
         <showTotal>false</showTotal>
-        <showValues>false</showValues>
+        <showValues>true</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -30,6 +30,9 @@
     </columns>
     <columns>
         <field>CHILD_NAME</field>
+    </columns>
+    <columns>
+        <field>Project__c.Department__c</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -46,7 +49,7 @@
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Project__c.Department__c</field>
+        <field>Project__c.Approval_Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>logged in user activity</name>

@@ -15,7 +15,7 @@
 						<!-- menu profile quick info -->
 						<div class="profile">
 							<div class="profile_pic">
-								<apex:image url="{!URLFOR($Resource.TurboPLM, 'TurboPLM/TurboPLM/images/img.jpg')}"
+								<apex:image url="{!userImageURL}"
 									style=" margin:15px;border-radius: 50%;" width="50" height="50" />
 							</div>
 							<div class="profile_info">

@@ -244,7 +244,7 @@
                                                 </div>
                                             </apex:outputPanel>
                                             <!--buttons for WH department -->
-                                            <apex:outputPanel rendered="{!AND(usr.Department =='Warehouse',pro.Department__c == 'Warehouse',pro.Status__c != 'Completed')}">
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='Warehouse',pro.Department__c == 'Warehouse')}">
                                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                                     <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
@@ -253,7 +253,7 @@
                                                 </div>
                                             </apex:outputPanel>
                                              <!--buttons for costing department -->
-                                            <apex:outputPanel rendered="{!AND(usr.Department =='Costing',pro.Department__c == 'Costing',pro.Status__c!='Completed')}">
+                                            <apex:outputPanel rendered="{!AND(usr.Department =='Costing',pro.Department__c == 'Costing',pro.Approval_Status__c!='Completed')}">
                                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                                     <apex:commandButton value="Preview Past Discussion" styleClass="btn btn-primary" />
                                                     <apex:commandButton value="Discuss" styleClass="btn btn-primary" />
