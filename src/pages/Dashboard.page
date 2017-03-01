@@ -200,12 +200,12 @@
                                     </a>
                                 </div>
                                 <div class="flipInY col-lg-2 col-md-2 col-sm-4 col-xs-8 ">
-                                    <a href="/apex/Projects" class="navigate">
+                                    <a href="/apex/Dashboard" class="navigate">
                                         <div class="tile-stats color6">
                                             <div class="count1">
                                                 <i class="fa fa-gear white dashboardIcon"></i>
                                             </div>
-                                            <h4 class="white">Product</h4>
+                                            <h4 class="white">PR Maintenance</h4>
                                            <!-- <p class="dashboard-description">Maintenance of Product
                                             </p>-->
                                         </div>
