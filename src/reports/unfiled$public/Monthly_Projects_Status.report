@@ -83,6 +83,6 @@
     <showDetails>true</showDetails>
     <timeFrameFilter>
         <dateColumn>CHILD_LAST_UPDATE</dateColumn>
-        <interval>INTERVAL_THISMONTH</interval>
+        <interval>INTERVAL_LASTMONTH</interval>
     </timeFrameFilter>
 </Report>

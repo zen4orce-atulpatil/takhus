@@ -221,4 +221,39 @@ public class TestClassHelper {
         Insert physicalPropertiesList;
     }
     
+    //Description : Create manufacturing plants
+    public static void CreateManufacturingPlants(){
+        List<Plant__c> manufacturingPlantsList = new List<Plant__c>();
+        Plant__c plant1 = new Plant__c();
+        plant1.Name = 'plant1';
+        manufacturingPlantsList.add(plant1);
+        
+        Plant__c plant2 = new Plant__c();
+        plant2.Name = 'plant2';
+        manufacturingPlantsList.add(plant2);
+        
+        Plant__c plant3 = new Plant__c();
+        plant3.Name = 'plant3';
+        manufacturingPlantsList.add(plant3);
+        
+        insert manufacturingPlantsList;
+    }
+    
+    //Description : Create warehouse plants
+    public static void CreateWarehousePlants(){
+        List<Warehouse__c> warehouseList = new List<Warehouse__c>();
+        Warehouse__c wareHouse1 = new Warehouse__c();
+        wareHouse1.Name = 'wareHouse1';
+        warehouseList.add(wareHouse1);
+        
+        Warehouse__c wareHouse2 = new Warehouse__c();
+        wareHouse2.Name = 'wareHouse2';
+        warehouseList.add(wareHouse2);
+        
+        Warehouse__c wareHouse3 = new Warehouse__c();
+        wareHouse3.Name = 'wareHouse3';
+        warehouseList.add(wareHouse3);
+        
+        insert warehouseList;
+    }
 }

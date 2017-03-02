@@ -40,6 +40,11 @@
             <operator>equals</operator>
             <value>Submitted,Not Submitted,Approved,Completed</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Project__c.Department__c</column>
+            <operator>equals</operator>
+            <value>Sales,Marketing,R&amp;D,SC Opt,Procurement,Regulatory Clearance,QA/QC,SHE,MFG,Warehouse,Costing</value>
+        </criteriaItems>
     </filter>
     <format>Summary</format>
     <groupingsDown>
@@ -64,6 +69,6 @@
     <sortOrder>Asc</sortOrder>
     <timeFrameFilter>
         <dateColumn>CHILD_CREATED_DATE</dateColumn>
-        <interval>INTERVAL_THISMONTH</interval>
+        <interval>INTERVAL_LAST30</interval>
     </timeFrameFilter>
 </Report>
