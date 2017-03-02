@@ -14,7 +14,7 @@
                             <apex:image url="{!userImageURL}" style="border-radius: 50%;" width="50" height="50" /> {!$User.FirstName} {!$User.LastName} <span class=" fa fa-angle-down"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-usermenu pull-right">
-                            <li style="displaye:none;" id="switchToClassic"><a href="https://c.na35.visual.force.com/">Switch to Turbo PLM Classic</a></li>
+                            <li style="displaye:none;" id="switchToClassic"><a href="https://c.na35.visual.force.com/">Switch to TurboPLM Classic</a></li>
                             <li><a href="https://na35.salesforce.com/secur/logout.jsp">
                                 	<i class="fa fa-sign-out pull-right"></i> Log Out
                                 </a>
