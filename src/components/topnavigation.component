@@ -99,7 +99,7 @@
     <script>
     $(document).ready(function(){
         debugger;
-    	var switcherAccess = {!$Setup.UserSelection__c.TurboPLMClassic__c};
+    	var switcherAccess = {!$Setup.Takhus_Dev2__UserSelection__c.Takhus_Dev2__TurboPLMClassic__c};
         if(switcherAccess){
             $("#switchToClassic").show();
         }
