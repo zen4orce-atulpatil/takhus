@@ -8,16 +8,17 @@
             <axisBinding>y</axisBinding>
             <column>RowCount</column>
         </chartSummaries>
-        <chartType>Pie</chartType>
+        <chartType>VerticalColumnStacked</chartType>
         <enableHoverLabels>true</enableHoverLabels>
         <expandOthers>true</expandOthers>
-        <groupingColumn>Project__c.Approval_Status__c</groupingColumn>
+        <groupingColumn>CHILD_LAST_UPDATE</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_TOP</location>
+        <secondaryGroupingColumn>Project__c.Project_Status__c</secondaryGroupingColumn>
         <showAxisLabels>false</showAxisLabels>
-        <showPercentage>true</showPercentage>
+        <showPercentage>false</showPercentage>
         <showTotal>false</showTotal>
-        <showValues>true</showValues>
+        <showValues>false</showValues>
         <size>Medium</size>
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
@@ -31,28 +32,25 @@
     <columns>
         <field>CHILD_NAME</field>
     </columns>
-    <columns>
-        <field>Project__c.Department__c</field>
-    </columns>
     <filter>
         <criteriaItems>
-            <column>Project__c.UserActivity__c</column>
+            <column>Project__c.Approval_Status__c</column>
             <operator>equals</operator>
-            <value>1</value>
+            <value>Completed,Submitted,Not Submitted,Approved</value>
         </criteriaItems>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Project__c.UserActivity__c</field>
+        <field>Project__c.Project_Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Project__c.Approval_Status__c</field>
+        <field>CHILD_LAST_UPDATE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>logged in user activity</name>
+    <name>OpenAndClosedProjects</name>
     <params>
         <name>co</name>
         <value>1</value>

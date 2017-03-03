@@ -142,7 +142,7 @@
                                         <div class="x_title ">
                                             <h4>Overall Monthly Project Status</h4>
                                         </div>
-                                        <analytics:reportChart reportId="00O41000007JGR9" size="tiny" cacheResults="false"></analytics:reportChart>
+                                        <analytics:reportChart reportId="00O41000007JKsc" size="tiny" cacheResults="false"></analytics:reportChart>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">

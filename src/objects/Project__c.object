@@ -176,7 +176,7 @@
     <fields>
         <fullName>Project_Status__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(ISPICKVAL(Approval_Status__c, &quot;Completed&quot;), &quot;Closed Project&quot;, &quot;Open Project&quot;)</formula>
+        <formula>IF((ISPICKVAL(Approval_Status__c, &quot;Completed&quot;)), &quot;Closed Project&quot;, &quot;Open Project&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Project Status</label>
         <required>false</required>
